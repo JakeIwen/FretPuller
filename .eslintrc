@@ -1,0 +1,12 @@
+{
+  "extends": "react-app",
+  "rules": {
+    # "react/no-unused-state": 1
+    "no-undef": "off"
+  },
+  # "settings": {
+  #   "react": {
+  #     "version": "15.6.2"
+  #   }
+  # }
+}
