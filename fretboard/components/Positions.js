@@ -3,10 +3,11 @@ import PropTypes from 'prop-types'
 import { range } from 'lodash/fp'
 import styled from 'styled-components/native'
 import Nut from './Nut'
-import { Row } from 'react-native-table-component'
+import  Row  from 'react-native-row'
 
-const Position = styled.Text`
+const PosText = styled.Text`
   text-align: center;
+  flex: ${props => props.flex}
 `
 
 const positions = ['open', '', '', 'III', '', 'V', '', 'VII', '', '', 'X', '',
@@ -15,12 +16,11 @@ const positions = ['open', '', '', 'III', '', 'V', '', 'VII', '', '', 'X', '',
 // <Nut visible={false} />
 
 const Positions = ({ flexArr }) =>
-    <Row
-    flexArr={flexArr}
-    data={flexArr.map((pos, i) =>
-      <Position key={`pos-${i}`}>{positions[i]}</Position>
+  <Row dial={5} >
+    {flexArr.map((pos, i) =>
+      <PosText flex={flexArr[i]} key={`pos-${i}`}>{positions[i]}</PosText>
     )}
-  />
+  </Row>
 
 Positions.propTypes = {
   flexArr: PropTypes.arrayOf(PropTypes.number).isRequired,

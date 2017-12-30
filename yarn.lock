@@ -5624,16 +5624,6 @@ react-native-maps@0.17.1:
   version "0.17.1"
   resolved "https://registry.yarnpkg.com/react-native-maps/-/react-native-maps-0.17.1.tgz#ab2236341fd984dac8864202ae55331bc262f60c"
 
-react-native-picker-android@~1.0.3:
-  version "1.0.3"
-  resolved "https://registry.yarnpkg.com/react-native-picker-android/-/react-native-picker-android-1.0.3.tgz#1607843bce510d35a28522511994d3cfced344dd"
-
-react-native-picker@3.0.5:
-  version "3.0.5"
-  resolved "https://registry.yarnpkg.com/react-native-picker/-/react-native-picker-3.0.5.tgz#9cbce518640efe6211439cbe5c1fd20a5e117eea"
-  dependencies:
-    react-native-picker-android "~1.0.3"
-
 react-native-row@^1.1.1:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/react-native-row/-/react-native-row-1.1.1.tgz#1c094c18930db093cd18f01dbf9b41e63ae5d280"
@@ -5670,10 +5660,6 @@ react-native-scripts@1.8.1:
   dependencies:
     color "^2.0.1"
     lodash "^4.16.6"
-
-react-native-table-component@^1.1.3:
-  version "1.1.3"
-  resolved "https://registry.yarnpkg.com/react-native-table-component/-/react-native-table-component-1.1.3.tgz#5369365b456063444fccaeeada9360a7fd405330"
 
 react-native-vector-icons@4.4.2:
   version "4.4.2"

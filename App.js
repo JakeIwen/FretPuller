@@ -7,9 +7,9 @@ import { isEmpty, clone } from 'lodash/fp'
 import { Note, Chord } from 'tonal'
 
 const Container = styled.View`
-  ${'' /* display: flex;
+  display: flex;
   flex-direction: column;
-  justify-content: space-between; */}
+  justify-content: space-between;
   ${'' /* width: 100%;
   height: 100%; */}
 `
@@ -61,7 +61,6 @@ export default class App extends Component {
     //
     return (
       <Container>
-        <Options changeChord={newChord => this.changeChord(newChord)}/>
         <Fretboard
           isClickable
           settings={{
@@ -72,6 +71,7 @@ export default class App extends Component {
           fretMatrix={this.state.fretMatrix}
           onFretClick={(loc, midi) => this.onFretClick(loc, midi)}
         />
+        <Options changeChord={newChord => this.changeChord(newChord)}/>
       </Container>
     )
   }

@@ -9,7 +9,7 @@ const Container = styled.View`
   display: flex;
   flex-direction:row;
   width: 100%;
-  height: 100%;
+  height: 50%;
   border: 5px solid green;
   align-items: flex-end;
 `
@@ -36,7 +36,7 @@ const notes = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"]
 // }
 export default class Options extends Component {
 
-  state= {
+  state = {
     note: 'C',
     name: '7',
     notes,
