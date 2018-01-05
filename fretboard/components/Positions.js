@@ -10,7 +10,7 @@ const PosText = styled.Text`
   flex: ${props => props.flex}
 `
 
-const positions = ['open', '', '', 'III', '', 'V', '', 'VII', '', '', 'X', '',
+const positions = ['0', '', '', 'III', '', 'V', '', 'VII', '', '', 'X', '',
   'XII', '', '', 'XV', '', 'XVII', '', 'IXX']
 
 // <Nut visible={false} />

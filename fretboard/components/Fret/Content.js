@@ -12,7 +12,7 @@ const Wrapper = styled.Text`
 
 const formatSharp = sh => sh.replace('#', '\u266F')
 const formatFlat = fl => fl.replace('b', '\u266D')
-const formatEnharmonics = ([sh, fl]) => `${formatSharp(sh)}/${formatFlat(fl)}`
+const formatEnharmonics = ([sh, fl]) =>  `${formatSharp(sh)}/${formatFlat(fl)}`
 export const displayName = pc => (
   !hasAcc(pc) ? pc : compose(formatEnharmonics, enharmonics)(pc)
 )

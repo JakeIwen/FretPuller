@@ -1,7 +1,10 @@
 import styled from 'styled-components/native'
 
 
-export const backgroundColor = ({ status, showOctaves, oct, theme }) => {
+export const backgroundColor = ({ status, showOctaves, chordMode, selectionText, oct, theme }) => {
+  if (chordMode) {
+    return theme.intervalMap(selectionText)
+  }
   return (
     status === 'unselected' && showOctaves
       ? theme.octaveMap[oct]

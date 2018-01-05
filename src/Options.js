@@ -1,39 +1,25 @@
 import React, {Component} from 'react'
-import { StyleSheet, Text, View, Select } from 'react-native'
 import styled from "styled-components/native"
-import { Note, Chord } from 'tonal'
-import { Picker } from 'react-native-wheel-datepicker';
-
+import { Chord } from 'tonal'
+import { Picker } from 'react-native-wheel-datepicker'
 
 const Container = styled.View`
   display: flex;
-  flex-direction:row;
+  flex-direction: row;
   width: 100%;
-  height: 50%;
   border: 5px solid green;
   align-items: flex-end;
 `
 
 const Wrapper = styled.View`
   display: flex;
-  flex-direction:row;
+  flex-direction: row;
   width: 25%;
 `
 
 const notes = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"]
-// const names = Chord.names()
-// const rotate = (array, val) => {
-//   let result = [...array].reverse
-//   console.log("before:", result);
-//   let i = 0
-//   while(result.indexOf(val)!==5 && i<100) {
-//     result.unshift(result.pop())
-//     i++
-//   }
-//   console.log("after:", result);
-//
-//   return result
-// }
+const names = ['maj', 'min', '7', '9', '11', 'add2', 'add4', 'add9', 'sus2', 'sus4']
+
 export default class Options extends Component {
 
   state = {
@@ -55,22 +41,36 @@ export default class Options extends Component {
     return (
       <Container>
         <Wrapper>
-        <Picker
-          style={{flex:1}}
-          selectedValue={this.state.note}
-          pickerData={this.state.notes}
-          onValueChange={note =>
-            this.setChord({note})}
-        />
-        <Picker
-          style={{flex:1}}
-          selectedValue={this.state.name}
-          pickerData={this.state.names}
-          onValueChange={name =>
-            this.setChord({name})}
-        />
+          <Picker
+            style={{flex:1}}
+            selectedValue={this.state.note}
+            pickerData={this.state.notes}
+            onValueChange={note =>
+              this.setChord({note})}
+          />
+          <Picker
+            style={{flex:1}}
+            selectedValue={this.state.name}
+            pickerData={this.state.names}
+            onValueChange={name =>
+              this.setChord({name})}
+          />
       </Wrapper>
       </Container>
     )
   }
 }
+
+// const names = Chord.names()
+// const rotate = (array, val) => {
+//   let result = [...array].reverse
+//   console.log("before:", result);
+//   let i = 0
+//   while(result.indexOf(val)!==5 && i<100) {
+//     result.unshift(result.pop())
+//     i++
+//   }
+//   console.log("after:", result);
+//
+//   return result
+// }
