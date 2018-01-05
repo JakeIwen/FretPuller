@@ -8,15 +8,14 @@ import Fretboard, {
   fretMatrixForScale, } from './fretboard'
 import Options from './src/Options'
 import { isEmpty, clone } from 'lodash/fp'
-import { Note, Chord } from 'tonal'
+import { Note, Chord, Interval } from 'tonal'
 
 const Container = styled.View`
   display: flex;
   flex-direction: column;
-  ${'' /* justify-content: space-between; */}
-  ${'' /* width: 100%;
-  height: 100%; */}
 `
+
+console.log(Chord.intervals('CM7'));
 
 const width  = 13
 const tuning = ['E2', 'A2', 'D3', 'G3', 'B3', 'E4']

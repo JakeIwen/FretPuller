@@ -16,11 +16,7 @@ const EMPTY_STATE = {
   selectionText: '',
 }
 
-const fret = midi => loc => state => ({
-  midi,
-  loc,
-  state,
-})
+const fret = midi => loc => state => ({ midi, loc, state })
 
 const setText = showName => name => state => (
   showName && name

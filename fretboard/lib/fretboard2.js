@@ -5,6 +5,7 @@
 
 import { range, compose, curry, update, merge } from 'lodash/fp'
 import { Distance, Interval, Note, Chord, Scale } from 'tonal'
+import ivlColors from './colors'
 
 const transpose = curry(Distance.transpose)
 
@@ -29,16 +30,13 @@ export const updateFretMatrix = updates => matrix =>
     ), matrix)
 
 
-export const fretState = (status, selectionText) => ({
+export const fretState = (status, selectionText, bgColor) => ({
   status,
   selectionText,
+  bgColor
 })
 
-export const fret = (midi, loc, state) => ({
-  midi,
-  loc,
-  state,
-})
+export const fret = (midi, loc, state) => ({ midi, loc, state })
 
 export const createFret = ({ midi, loc }) =>
   fret(midi, loc, fretState('unselected', ''))
@@ -73,11 +71,11 @@ export const locationsForPc = (tuning, width, pc) =>
     [],
   )
 
-export const updatesForLocsAndName = (locs, name, showName) =>
+export const updatesForLocsAndName = (locs, name, showName, bgColor) =>
   locs.map(([crd, pos]) => (
     showName
-      ? { loc: { crd, pos }, state: fretState('selected', name) }
-      : { loc: { crd, pos }, state: fretState('selected', '') }
+      ? { loc: { crd, pos }, state: fretState('selected', name, bgColor) }
+      : { loc: { crd, pos }, state: fretState('selected', '', bgColor) }
   ))
 
 /* refactor this in
@@ -124,7 +122,8 @@ export const fretMatrixForChord = (tuning, width, chord, showName = false) => {
     (acc, pc, i) => {
       const locs = locationsForPc(tuning, width, pc)
       const name = intervals[i]
-      return [...acc, ...updatesForLocsAndName(locs, name, showName)]
+      const bgColor = ivlColors[name]
+      return [...acc, ...updatesForLocsAndName(locs, name, showName, bgColor)]
     },
     [],
   )

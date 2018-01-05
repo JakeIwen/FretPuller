@@ -1,10 +1,7 @@
 import styled from 'styled-components/native'
 
 
-export const backgroundColor = ({ status, showOctaves, chordMode, selectionText, oct, theme }) => {
-  if (chordMode) {
-    return theme.intervalMap(selectionText)
-  }
+export const backgroundColor = ({ status, showOctaves, oct, theme }) => {
   return (
     status === 'unselected' && showOctaves
       ? theme.octaveMap[oct]
@@ -13,7 +10,7 @@ export const backgroundColor = ({ status, showOctaves, chordMode, selectionText,
 }
 
 export default styled.View`
-  background-color: ${props => backgroundColor(props)};
+  background-color: ${props => props.bgColor || backgroundColor(props)};
   border-radius: 3px;
   border: 1px solid gray;
 `

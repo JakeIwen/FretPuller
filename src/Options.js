@@ -18,22 +18,28 @@ const Wrapper = styled.View`
 `
 
 const notes = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"]
-const names = ['maj', 'min', '7', '9', '11', 'add2', 'add4', 'add9', 'sus2', 'sus4']
-
+const names1 = ['M', 'm', '7', '9', '11', 'add2', 'add4', 'add9', 'sus2', 'sus4']
+// let names1 = new Set(Chord.names().map(name => name.slice(0,1)))
+// let names2 = new Set(Chord.names().map(name => name.slice(1,name.length)))
+// console.log({names1});
 export default class Options extends Component {
 
   state = {
     note: 'C',
-    name: '7',
+    name1: '7',
+    name2: '',
     notes,
-    names: Chord.names()
+    names: Chord.names(),
+    names1,
+    // names2: []
   }
 
-  setChord = ({note, name}) => {
+  setChord = ({note, name1, name2}) => {
     note = note || this.state.note
-    name = name || this.state.name
-    this.setState({ note, name })
-    this.props.changeChord(note + name)
+    name1 = name1 || this.state.name1
+    name2 = name2 || this.state.name2
+    this.setState({ note, name1, name2 })
+    this.props.changeChord(note + name1 + name2)
     // console.log(this.state);
   }
 
@@ -50,11 +56,18 @@ export default class Options extends Component {
           />
           <Picker
             style={{flex:1}}
-            selectedValue={this.state.name}
-            pickerData={this.state.names}
-            onValueChange={name =>
-              this.setChord({name})}
+            selectedValue={this.state.name1}
+            pickerData={this.state.names1}
+            onValueChange={name1 =>
+              this.setChord({name1})}
           />
+          {/* <Picker
+            style={{flex:1}}
+            selectedValue={this.state.name2}
+            pickerData={this.state.names2}
+            onValueChange={name2 =>
+              this.setChord({name2})}
+          /> */}
       </Wrapper>
       </Container>
     )
