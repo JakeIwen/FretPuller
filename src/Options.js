@@ -2,6 +2,7 @@ import React, {Component} from 'react'
 import styled from "styled-components/native"
 import { Chord } from 'tonal'
 import { Picker } from 'react-native-wheel-datepicker'
+import {TouchableOpacity, Text} from 'react-native'
 
 const Container = styled.View`
   display: flex;
@@ -68,6 +69,18 @@ export default class Options extends Component {
             onValueChange={name2 =>
               this.setChord({name2})}
           /> */}
+          <TouchableOpacity
+            onPress={this.props.nextVariation}
+          ><Text>Next Variation</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={this.props.showAll}
+          ><Text>Show All</Text>
+          </TouchableOpacity>
+          {/* <TouchableOpacity
+            onPress={this.props.prevVariation}
+          ><Text>Prev Variation</Text>
+          </TouchableOpacity> */}
       </Wrapper>
       </Container>
     )
