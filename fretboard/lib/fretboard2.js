@@ -124,7 +124,6 @@ export const fretMatrixForInterval = (tuning, width, tonic, ivl, showName = fals
 
 export const fretMatrixForChord = (tuning, width, chord, showName = false) => {
   const intervals = Chord.intervals(chord)
-  console.log({tuning, width, chord,});
   const updates = Chord.notes(chord).reduce(
     (acc, pc, i) => {
       const locs = chord ? locationsForPc(tuning, width, pc) : []

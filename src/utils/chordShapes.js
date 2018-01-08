@@ -30,8 +30,9 @@ export const initChord = (reqdTuning, width, chord) => {
   let includedAddresses = includedFrets(fretMatrix)
   let midiNotes = Chord.notes(chord).map(note => midi(note + '0') % 12)
   let chordShapes = getChordShapes(fretFilter(fretMatrix), midiNotes)
+  console.log('shapes', {tuning, reqdTuning});
   // console.log({midiNotes}, Chord.notes(chord))
-  console.log('CS', chordShapes)
+  // console.log('CS', chordShapes)
   return {
     tuning,
     chord,

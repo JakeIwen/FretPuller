@@ -11,7 +11,7 @@ const octForMidi = midi => compose(Note.oct,Note.fromMidi)(midi)
 const pcForMidi = midi => compose(Note.pc,Note.fromMidi)(midi)
 
 const Outer = styled(TouchableOpacity)`
-  height: 20px;
+  ${'' /* height: 20px; */}
   flex: ${props => props.flex};
 `
 
@@ -19,7 +19,10 @@ const Fret = ({ fret, settings, isClickable, onFretClick, flex }) => {
   const { showOctaves, showNotes, viewMode } = settings
   const { midi, loc, state: { status, selectionText, bgColor} } = fret
   const isFretClickable = isClickable
-  // && status === 'unselected'
+  let text = loc.pos===0 ? Note.fromMidi(midi).slice(0,-1) : selectionText
+
+  loc.pos===0 && console.log(Note.fromMidi(midi).slice(0,-1));
+  // console.log(text);
   return (
     <Outer
       flex={flex}
@@ -37,7 +40,8 @@ const Fret = ({ fret, settings, isClickable, onFretClick, flex }) => {
           pc={pcForMidi(midi)}
           showNotes={showNotes}
           viewMode={viewMode}
-          selectionText={selectionText}
+          selectionText={text}
+          isNut={loc.pos===0}
           isSelected={status === 'selected'}
         />
       </Inner>

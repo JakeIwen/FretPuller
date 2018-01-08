@@ -5633,6 +5633,10 @@ react-native-maps@0.17.1:
   version "0.17.1"
   resolved "https://registry.yarnpkg.com/react-native-maps/-/react-native-maps-0.17.1.tgz#ab2236341fd984dac8864202ae55331bc262f60c"
 
+react-native-picker@^4.3.2:
+  version "4.3.2"
+  resolved "https://registry.yarnpkg.com/react-native-picker/-/react-native-picker-4.3.2.tgz#dce7ee1a85d69045a217e3e654fad55702cc3ef8"
+
 react-native-popup-dialog@^0.10.45:
   version "0.10.45"
   resolved "https://registry.yarnpkg.com/react-native-popup-dialog/-/react-native-popup-dialog-0.10.45.tgz#af1c75534d69218cb38307820286f1bfb2d87c7d"

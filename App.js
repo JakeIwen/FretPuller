@@ -33,7 +33,7 @@ const emptyFretMatrix = fretMatrixForChord(tuning, width, '')
 export default class App extends Component {
   constructor(props) {
     super(props)
-    let { chordName,
+    let { chord,
           fretMatrix,
           includedAddresses,
           chordShapes,
@@ -44,7 +44,7 @@ export default class App extends Component {
       showNotes: false,
       showOctaves: false,
       fretMatrix,
-      chordName,
+      chord,
       variationIndex,
       includedAddresses,
       chordShapes,
@@ -101,8 +101,10 @@ export default class App extends Component {
     tuning = tuning || this.state.tuning
     width = width || this.state.width
     chord = chord || this.state.chord
+    console.log('cfb', {tuning, width, chord});
     this.setState(
-      Object.assign(this.state, this.initChord(chord))
+      Object.assign(this.state,
+      initChord(tuning, width, chord))
     )
   }
 
@@ -121,6 +123,8 @@ export default class App extends Component {
               tuning={this.state.tuning}
               onSave={(tuning)=>{
                 this.popupDialog.dismiss()
+                console.log('onsave', {tuning})
+
                 this.changeFretboard(tuning)}
               } />
         </PopupDialog>

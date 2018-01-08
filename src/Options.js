@@ -4,7 +4,7 @@ import { Chord } from 'tonal'
 import RadioSelect from './RadioSelect'
 import MultiSelect from './MultiSelect'
 // import { permute } from './utils'
-import {TouchableOpacity, Text} from 'react-native'
+import {TouchableOpacity, Text, Picker} from 'react-native'
 import ChordInfo from './ChordInfo'
 import {TuningActivate} from './TuningActivate'
 
@@ -40,7 +40,19 @@ const tonics = ["C", "D", "E", "F", "G", "A", "B"]
 const typeList = ['#','b','M','m','7', '9', '11']
 const typeListV = ['\u266D','\u266F','Maj','min', '7', '9', '11']
 const extensionList = ['add2', 'add4', 'add9', 'sus2', 'sus4']
-
+tunings = [
+  {name: "Mandolin", tuning: ['G3', 'D4', 'A4', 'E5']},
+  {name: "Mandola", tuning: ['C3', 'G3', 'D4', 'A4']},
+  {name: "Bass", tuning: ['E1', 'A1', 'D2', 'G2']},
+  {name: "Guitar", tuning: ['E2', 'A2', 'D3', 'G3', 'B3', 'E4']},
+  {name: "Drop_D", tuning: ['D2', 'A2', 'D3', 'G3', 'B3', 'E4']},
+  {name: "Celtic", tuning: ['D2', 'A2', 'D3', 'G3', 'A3', 'D4']},
+  {name: "Open_D", tuning: ['D2', 'A2', 'D3', 'F#3', 'A3', 'D4']},
+  {name: "Open_G", tuning: ['D2', 'G2', 'D2', 'G2', 'B3', 'D4']},
+  {name: "Bariton_Uke", tuning: ['D3', 'G3', 'B3', 'E4']},
+  {name: "Ukelele", tuning: ['G4', 'C4', 'E4', 'A4']},
+  {name: "Custom"}
+]
 export default class Options extends Component {
 
   constructor(props) {
@@ -63,6 +75,7 @@ export default class Options extends Component {
       chord: found,
       types: typeArr,
       extensions: extArr,
+      tuningName: 'Guitar'
     })
     console.log('st', this.state);
     found!=='unknown' && this.props.setChord(found)
@@ -99,8 +112,19 @@ export default class Options extends Component {
     }
   }
 
+  componentWillReceiveProps(newProps){
+    newTuning = (newProps.tuning || []).join('')
+    let tList = tunings.map(t=>(t.tuning || []).join(''))
+    if(tList.some(t=>t===newTuning)){
+      this.setState({tuningName: tunings[tList.indexOf(newTuning)].tuning})
+    } else {
+      this.setState({tuningName: undefined})
+    }
+  }
+
   render() {
     let {types, extensions, chord, tonic } = this.state
+    console.log('tnname', this.state.tuningName);
     let supersets = Chord.supersets(chord).map( superset => {
       types.forEach( type => {superset = superset.replace(type, '')})
       return superset
@@ -145,6 +169,18 @@ export default class Options extends Component {
             ><NavText>Prev</NavText>
             </TouchableOpacity>
           </Nav>
+          <Picker
+            selectedValue={this.state.tuningName}
+            onValueChange={(val, index) => val
+              ? this.props.changeFretboard({tuning: val})
+              : this.props.editTuning()
+            }
+          >
+            {tunings.map((tng, i) =>
+              <Picker.Item key={i} label={tng.name} value={tng.tuning} />
+            )}
+
+          </Picker>
           <TuningActivate
             activate={()=>this.props.editTuning()}
             tuning={this.props.tuning} />

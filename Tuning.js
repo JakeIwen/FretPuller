@@ -12,15 +12,7 @@ const Wrapper = styled.View`
   flex: 1;
   margin: 5px;
 `
-const Pop = styled.View`
-  display: ${props => props.show ? 'flex' : 'none'};
-  flex: 1;
-  ${'' /* height:60%; */}
-  top: 10;
-  bottom: 10;
-  left: 10;
-  right: 10;
-`
+
 const AddRemove = styled.View`
   display: flex;
   flex-direction: row;
@@ -45,10 +37,14 @@ export default class Tuning extends Component {
     tuning[i] = val
     this.setState({ tuning })
   }
+
+
+
   render() {
     // this.props.active && this.popupDialog.show()
-    // console.log({tuning});
     let {tuning} = this.state
+
+    console.log('tuning', {tuning});
     return (
         <Wrapper>
           <Row dial={5}>
