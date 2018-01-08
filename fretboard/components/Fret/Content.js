@@ -17,15 +17,16 @@ export const displayName = pc => (
   !hasAcc(pc) ? pc : compose(formatEnharmonics, enharmonics)(pc)
 )
 
-const content = (pc, showNotes, selectionText, isSelected) => {
-  if (isSelected && selectionText !== '') return selectionText
+const content = (pc, showNotes, selectionText, isSelected, viewMode) => {
+  if (isSelected && (selectionText !== '') )
+    return selectionText
   if (showNotes) return displayName(pc)
-  return '\u00A0'
+    return '\u00A0'
 }
 
-const Content = ({ pc, showNotes, selectionText, isSelected }) =>
+const Content = ({ pc, showNotes, selectionText, isSelected, viewMode }) =>
   <Wrapper>
-    {content(pc, showNotes, selectionText, isSelected)}
+    {content(pc, showNotes, selectionText, isSelected, viewMode)}
   </Wrapper>
 
 Content.propTypes = {

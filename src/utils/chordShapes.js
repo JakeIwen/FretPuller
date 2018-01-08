@@ -24,20 +24,22 @@ const includedFrets = (fretMatrix) => {
 const fretFilter = (matrix) =>
   matrix.map(string=>string.filter(fret=>fret.state.bgColor))
 
-export const initChord = (tuning, width, chordName) => {
-  let fretMatrix = fretMatrixForChord(tuning, width, chordName, true)
+export const initChord = (reqdTuning, width, chord) => {
+  let tuning = reqdTuning.map(note => /\d/.test(note) ? note : note + '2')
+  let fretMatrix = fretMatrixForChord(tuning, width, chord, true)
   let includedAddresses = includedFrets(fretMatrix)
-  let midiNotes = Chord.notes(chordName).map(note => midi(note + '0') % 12)
+  let midiNotes = Chord.notes(chord).map(note => midi(note + '0') % 12)
   let chordShapes = getChordShapes(fretFilter(fretMatrix), midiNotes)
-  console.log({midiNotes}, Chord.notes(chordName))
+  // console.log({midiNotes}, Chord.notes(chord))
   console.log('CS', chordShapes)
   return {
-    chordName,
+    tuning,
+    chord,
     fretMatrix,
     includedAddresses,
     chordShapes,
-    chordMode: true,
-    variationIndex: 0
+    variationIndex: 0,
+    viewMode: 'Chord Position'
   }
 }
 

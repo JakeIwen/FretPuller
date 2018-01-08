@@ -40,15 +40,21 @@ export default class MultiSelect extends Component {
     let newSelected = unselect
       ? this.props.selectedOptions.filter(option => option!==selectedOption)
       : this.props.selectedOptions.concat(selectedOption)
+      console.log(this.props.selectedOptions, {newSelected})
     this.props.onValueChange(newSelected)
   }
 
   renderOption = (option, index) => {
     let selected = this.props.selectedOptions.includes(option)
+    // console.log('soptions', this.props.selectedOption);
+    // console.log('option', option);
+    // console.log('isSelected', selected);
     return (
       <MultiBtn onPress={()=>this.setSelectedOption(option)} key={index}>
         <MultiItem>
-          <Txt selected={selected}>{option.replace(/m$/, 'min').replace(/M$/, 'Maj')}</Txt>
+          <Txt selected={selected}>
+            {option}
+          </Txt>
         </MultiItem>
       </MultiBtn>
     );

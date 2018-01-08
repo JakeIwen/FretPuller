@@ -5,7 +5,7 @@
 
 import { range, compose, curry, update, merge } from 'lodash/fp'
 import { Distance, Interval, Note, Chord, Scale } from 'tonal'
-import ivlColors from './colors'
+import ivlColors from '../../src/theme/colors'
 
 const transpose = curry(Distance.transpose)
 
@@ -77,11 +77,12 @@ export const locationsForPc = (tuning, width, pc) =>
   )
 
 export const updatesForLocsAndName = (locs, name, showName, bgColor) =>
-  locs.map(([crd, pos]) => (
-    showName
-      ? { loc: { crd, pos }, state: fretState('selected', name, bgColor) }
-      : { loc: { crd, pos }, state: fretState('selected', '', bgColor) }
-  ))
+  locs.map(([crd, pos]) => {
+    let status = bgColor ? 'unselected' : 'selected'
+    return showName
+      ? { loc: { crd, pos }, state: fretState(status, name, bgColor) }
+      : { loc: { crd, pos }, state: fretState(status, '', bgColor) }
+  })
 
 /* refactor this in
 export const entities = {
@@ -123,9 +124,10 @@ export const fretMatrixForInterval = (tuning, width, tonic, ivl, showName = fals
 
 export const fretMatrixForChord = (tuning, width, chord, showName = false) => {
   const intervals = Chord.intervals(chord)
+  console.log({tuning, width, chord,});
   const updates = Chord.notes(chord).reduce(
     (acc, pc, i) => {
-      const locs = locationsForPc(tuning, width, pc)
+      const locs = chord ? locationsForPc(tuning, width, pc) : []
       const name = intervals[i]
       const bgColor = ivlColors[name]
       return [...acc, ...updatesForLocsAndName(locs, name, showName, bgColor)]

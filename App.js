@@ -3,23 +3,33 @@ import styled from "styled-components/native"
 import Fretboard, {
   updateFretMatrix,
   fretMatrixForPc,
+  locationsForPc,
   fretMatrixForNote,
   fretMatrixForInterval,
   fretMatrixForChord,
   fretMatrixForScale, } from './fretboard'
   import Options from './src/Options'
 import {initChord} from './src/utils/chordShapes'
-import { isEmpty, clone, range } from 'lodash/fp'
+import { isEmpty, cloneDeep, range } from 'lodash/fp'
 import { Note, Chord, Interval } from 'tonal'
+import Tuning from './Tuning'
+
+import PopupDialog, { SlideAnimation, DialogTitle } from 'react-native-popup-dialog'
+
 
 const Container = styled.View`
   display: flex;
   flex-direction: column;
 `
 
+const slideAnimation = new SlideAnimation({
+  slideFrom: 'bottom',
+});
+
 const width  = 13
-const tuning = ['E2', 'A2', 'D3', 'G3', 'B3', 'E4']
-const emptyFretMatrix = fretMatrixForChord(tuning, width, '', true)
+const tuning = ['E', 'A', 'D', 'G', 'B', 'E']
+const emptyFretMatrix = fretMatrixForChord(tuning, width, '')
+
 export default class App extends Component {
   constructor(props) {
     super(props)
@@ -27,23 +37,29 @@ export default class App extends Component {
           fretMatrix,
           includedAddresses,
           chordShapes,
-          chordMode,
-          variationIndex } = initChord(tuning, width, '', true)
+          variationIndex,
+        viewMode } = initChord(tuning, width, 'CM')
 
     this.state = {
       showNotes: false,
       showOctaves: false,
       fretMatrix,
-      chordMode,
       chordName,
       variationIndex,
       includedAddresses,
-      chordShapes
+      chordShapes,
+      viewMode,
+      editTuning: true,
+      tuning,
+      width
     }
   }
 
-  onFretClick = (loc, midi) => {
-    this.selectLoc(loc, midi)
+  initChord = (chord) =>
+    initChord(this.state.tuning, this.state.width, chord || 'CM')
+
+  onFretClick = (fret) => {
+    this.selectLoc(fret)
     // this.selectPitch(midi)
   }
 
@@ -54,27 +70,18 @@ export default class App extends Component {
     let pitch = Note.fromMidi(midi)
     pitch = pitch.slice( 0, pitch.length - 1 )
     this.setState({
-      fretMatrix: fretMatrixForPc(tuning, width, pitch, true)
+      fretMatrix: fretMatrixForPc(this.state.tuning, width, pitch)
     })
   }
 
-  fretIterator = (fn) => {
-    let strings = this.state.fretMatrix.map(string=>
-      string.map(fret=> fn(clone(fret))
-    ))
-    return strings
-  }
-
-  selectLoc = (loc, midi) => {
-    let fretMatrix = this.fretIterator(fret => {
-      if (fret.loc.crd===loc.crd && fret.loc.pos===loc.pos) {
-        console.log('FRET', fret)
-        fret.state.status = "selected"
-        fret.state.selectionText = Note.fromMidi(fret.midi)
-      }
-      return fret
-    } )
-    this.setState({fretMatrix})
+  selectLoc = (fret) => {
+    let isSelected = fret.state.status==="selected"
+    newFret = cloneDeep(fret)
+    newFret.state.status = isSelected ? "unselected" : "selected"
+    newFret.state.selectionText = Note.fromMidi(newFret.midi)
+    this.setState({
+      fretMatrix:  updateFretMatrix([newFret])(this.state.fretMatrix),
+    })
   }
 
   getCombo = (reverse) => {
@@ -90,29 +97,59 @@ export default class App extends Component {
     })
   }
 
+  changeFretboard = ({tuning, width, chord}) => {
+    tuning = tuning || this.state.tuning
+    width = width || this.state.width
+    chord = chord || this.state.chord
+    this.setState(
+      Object.assign(this.state, this.initChord(chord))
+    )
+  }
+
+  editTuning = () => this.popupDialog.show()
+
   render() {
     return (
       <Container>
+          <PopupDialog
+            ref={(popupDialog) => { this.popupDialog = popupDialog; }}
+            dialogAnimation={slideAnimation}
+            dialogTitle={<DialogTitle title="Tuning" />}
+            dismissOnTouchOutside
+          >
+            <Tuning
+              tuning={this.state.tuning}
+              onSave={(tuning)=>{
+                this.popupDialog.dismiss()
+                this.changeFretboard(tuning)}
+              } />
+        </PopupDialog>
         <Fretboard
           isClickable
           settings={{
             showNotes: this.state.showNotes,
             showPositions: this.state.showPositions,
             showOctaves: this.state.showOctaves,
-            chordMode: this.state.chordMode,
+            viewMode: this.state.viewMode
           }}
           fretMatrix={this.state.fretMatrix}
           onFretClick={(loc, midi) => this.onFretClick(loc, midi)}
         />
         <Options
           setChord={newChord => this.setState(
-            Object.assign(this.state, initChord(tuning, width, newChord, true))
+            Object.assign(this.state, this.initChord(newChord))
           )}
           numVariations={this.state.chordShapes.length}
           variationIndex={this.state.variationIndex}
           newVariation={(reverse)=>this.getCombo(reverse)}
-          showAll={()=>this.setState({fretMatrix: fretMatrixForChord(tuning, width, 'C', true)})}
+          changeFretboard={this.changeFretboard}
+          editTuning={()=>{this.editTuning()}}
+          tuning={this.state.tuning}
+          showAll={()=>this.setState({
+            fretMatrix: fretMatrixForChord(this.state.tuning, width, 'C')}
+          )}
         />
+
       </Container>
     )
   }
