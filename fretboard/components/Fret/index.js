@@ -15,9 +15,9 @@ const Outer = styled(TouchableOpacity)`
   flex: ${props => props.flex};
 `
 
-const Fret = ({ fret, settings, isClickable, onFretClick, flex }) => {
+const Fret = ({ fret, settings, isClickable, onFretClick, flex , includedAddresses}) => {
   const { showOctaves, showNotes } = settings
-  const { midi, loc, state: { status, selectionText, bgColor } } = fret
+  const { midi, loc, state: { status, selectionText, bgColor , address} } = fret
   const isFretClickable = isClickable && status === 'unselected'
   return (
     <Outer
@@ -29,7 +29,7 @@ const Fret = ({ fret, settings, isClickable, onFretClick, flex }) => {
         // chordTone={Chord.notes(chordName).indexOf}
         status={status}
         showOctaves={showOctaves}
-        bgColor={bgColor}
+        bgColor={ bgColor}
         oct={octForMidi(midi)}
       >
         <Content

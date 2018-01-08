@@ -20,7 +20,6 @@ export const midiForLocation = (tuning, { crd, pos }) =>
 const fretStatePath = ({ crd, pos }) =>
   `[${crd}][${pos}].state`
 
-
 export const updateFretMatrix = updates => matrix =>
   updates.reduce((acc, upd) =>
     update(
@@ -42,9 +41,15 @@ export const createFret = ({ midi, loc }) =>
   fret(midi, loc, fretState('unselected', ''))
 
 export const fretMatrix = ({ tuning, width }) =>
-  range(0, tuning.length).map(crd =>
-    range(0, width).map(pos =>
-      createFret({ midi: midiForLocation(tuning, { crd, pos }), loc: { crd, pos } })))
+  range(0, tuning.length).map((crd, i) =>
+    range(0, width).map((pos, j) =>
+      createFret({
+        address: i*width+j,
+        midi: midiForLocation(tuning, { crd, pos }),
+        loc: { crd, pos } }
+      )
+    )
+  )
 
 
 export const locationsForNote = (tuning, width, note) =>
