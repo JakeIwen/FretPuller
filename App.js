@@ -8,27 +8,20 @@ import Fretboard, {
   fretMatrixForInterval,
   fretMatrixForChord,
   fretMatrixForScale, } from './fretboard'
-  import Options from './src/Options'
+import Options from './src/Options'
 import {initChord} from './src/utils/chordShapes'
 import { isEmpty, cloneDeep, range } from 'lodash/fp'
 import { Note, Chord, Interval } from 'tonal'
-import Tuning from './Tuning'
-
-import PopupDialog, { SlideAnimation, DialogTitle } from 'react-native-popup-dialog'
-
 
 const Container = styled.View`
   display: flex;
   flex-direction: column;
 `
 
-const slideAnimation = new SlideAnimation({
-  slideFrom: 'bottom',
-});
-
 const width  = 13
 const tuning = ['E2', 'A2', 'D3', 'G3', 'B3', 'E4']
-const emptyFretMatrix = fretMatrixForChord(tuning, width, '')
+const emptyFretMatrix = (tuning, width) =>
+  fretMatrixForChord(tuning, width, '')
 
 export default class App extends Component {
   constructor(props) {
@@ -49,7 +42,6 @@ export default class App extends Component {
       includedAddresses,
       chordShapes,
       viewMode,
-      editTuning: true,
       tuning,
       width
     }
@@ -92,7 +84,9 @@ export default class App extends Component {
     if (index > vars ) index = 0
     // console.log('st', this.state.chordShapes[index].keys());
     this.setState({
-      fretMatrix:  updateFretMatrix(this.state.chordShapes[index])(emptyFretMatrix),
+      fretMatrix:  updateFretMatrix(this.state.chordShapes[index])(
+        emptyFretMatrix(this.state.tuning, this.state.width)
+      ),
       variationIndex: index
     })
   }
@@ -112,20 +106,7 @@ export default class App extends Component {
   render() {
     return (
       <Container>
-          <PopupDialog
-            ref={(popupDialog) => { this.popupDialog = popupDialog; }}
-            dialogAnimation={slideAnimation}
-            dialogTitle={<DialogTitle title="Tuning" />}
-            dismissOnTouchOutside
-          >
-            <Tuning
-              tuning={this.state.tuning}
-              onSave={(tuning)=>{
-                this.popupDialog.dismiss()
-                console.log('onsave', {tuning})
-                this.changeFretboard(tuning)}
-              } />
-        </PopupDialog>
+
         <Fretboard
           isClickable
           settings={{

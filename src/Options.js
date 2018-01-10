@@ -7,7 +7,8 @@ import MultiSelect from './MultiSelect'
 import {TouchableOpacity, Text, Picker} from 'react-native'
 import ChordInfo from './ChordInfo'
 import {TuningActivate} from './TuningActivate'
-
+import Tuning from '../Tuning'
+import Modal from 'react-native-modal'
 const Container = styled.View`
   display: flex;
   flex-direction: row;
@@ -54,6 +55,7 @@ const tunings = [
   {name: "Custom"}
 ]
 const tStrings = tunings.map(t=>(t.tuning || []).join(''))
+console.log({tStrings});
 export default class Options extends Component {
 
   constructor(props) {
@@ -63,10 +65,14 @@ export default class Options extends Component {
       types: ['M'],
       extensions: [],
       chord: 'CM',
+      showTuningModal: false,
       tuningName: tunings.find(tuning=>
         tuning.tuning.join('')===this.props.tuning.join('')
         ).name || 'Custom'
     }
+  }
+  componentWillReceiveProps(newProps) {
+    console.log('new tuning', newProps.tuning);
   }
 
   setChord = ({tonic, types, extensions}) => {
@@ -159,11 +165,23 @@ export default class Options extends Component {
               <NavText>Prev</NavText>
             </TouchableOpacity>
           </Nav>
+          <Modal
+            isVisible={this.state.showTuningModal}
+            supportedOrientations={['portrait', 'landscape']}
+          >
+            <Tuning
+              initialTuning={this.props.tuning}
+              onSave={ tuning => {
+                this.setState({showTuningModal: false})
+                console.log('tuning onsave', tuning)
+                this.props.changeFretboard({tuning})}
+              } />
+          </Modal>
           <Picker
-            selectedValue={tunings[tStrings.indexOf(this.props.tuning.join(''))].name}
+            selectedValue={(tunings[tStrings.indexOf(this.props.tuning.join(''))] || {}).name || 'custom'}
             onValueChange={(val, index) => val!=='Custom'
               ? this.props.changeFretboard({tuning: tunings[index].tuning})
-              : this.props.editTuning()
+              : this.setState({showTuningModal: true})
             }
           >
             {tunings.map((tng, i) =>
@@ -171,9 +189,9 @@ export default class Options extends Component {
             )}
 
           </Picker>
-          <TuningActivate
-            activate={()=>this.props.editTuning()}
-            tuning={this.props.tuning} />
+          {/* <TuningActivate
+            activate={()=>this.setState({showTuningModal: true})}
+            tuning={this.props.tuning} /> */}
         </Wrapper>
       </Container>
     )

@@ -13,35 +13,36 @@ range(2, 6).map(num=>{
   return res
 })
 const pickerData = res
-console.log({pickerData});
+
 const Wrapper = styled.View`
   display: flex;
   flex-direction: column;
   flex: 1;
-  margin: 5px;
+  padding: 15px;
+  border: 2px solid black;
+  border-radius: 5px;
+  background-color: #708090;
 `
-
-const AddRemove = styled.View`
-  display: flex;
-  flex-direction: row;
-  justify-content:space-between;
+const TPicker = styled(Picker)`
   flex: 1;
+`
+const AddRemove = styled(Row)`
   margin: 5px;
 `
 
 const Label = styled.Text`
-  font-size: 14;
+  font-size: 16;
   font-family: Menlo;
 `
 
 export default class Tuning extends Component {
   state = {
-    tuning: this.props.tuning,
+    tuning: this.props.initialTuning,
   }
 
-  update = (val, i) => {
+  update = (val, picker) => {
     let tuning = this.state.tuning
-    tuning[i] = val
+    tuning[picker] = val + '2'
     this.setState({ tuning })
   }
 
@@ -53,24 +54,23 @@ export default class Tuning extends Component {
     return (
         <Wrapper>
           <Row dial={5}>
-            {tuning.map( (note, i) =>
-              <Picker
-                key={i}
-                style={{ flex: 1 }}
-                selectedValue={note}
-                pickerData={pickerData}
-                onValueChange={val => this.update(val, i)}
+            {tuning.map( (note, picker) =>
+              <TPicker
+                key={picker}
+                selectedValue={note.slice(0,-1)}
+                pickerData={allNotes}
+                onValueChange={(val) => this.update(val, picker)}
               />
             )}
           </Row>
-          <AddRemove>
+          <AddRemove flex dial={5} spaceBetween>
             <TouchableOpacity
               onPress={()=>this.setState({tuning: tuning.slice(0, tuning.length-1)})}>
               <Label>Remove</Label>
             </TouchableOpacity>
             <TouchableOpacity
               onPress={()=>
-                this.props.onSave({tuning: this.state.tuning})}>
+                this.props.onSave(this.state.tuning)}>
               <Label>Save</Label>
             </TouchableOpacity>
             <TouchableOpacity

@@ -1,25 +1,17 @@
 import React, {Component} from 'react'
 import PropTypes from 'prop-types'
-import  Row  from 'react-native-row'
+import Row from 'react-native-row'
 import Fret from './Fret'
-import {TouchableOpacity} from 'react-native'
-import styled from 'styled-components/native'
-
-const octForMidi = midi => compose(Note.oct,Note.fromMidi)(midi)
-const pcForMidi = midi => compose(Note.pc,Note.fromMidi)(midi)
-
-const Outer = styled(TouchableOpacity)`
-  flex: ${props => props.flex};
-`
+// import {TouchableOpacity} from 'react-native'
 
 export default class String extends Component {
 
-  constructor(props){
-    super()
-    this.state = {
-      activated: true
-    }
-  }
+  // constructor(props){
+  //   super()
+  //   this.state = {
+  //     activated: true
+  //   }
+  // }
 
   makeFrets = () => this.props.frets.map( (fret, j) =>
     <Fret
@@ -35,7 +27,7 @@ export default class String extends Component {
 
     return (
       <Row dial={5} >
-        {!!this.state.activated && this.makeFrets()}
+        {this.makeFrets()}
       </Row>
     )
   }
