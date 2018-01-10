@@ -63,6 +63,9 @@ export default class Options extends Component {
       types: ['M'],
       extensions: [],
       chord: 'CM',
+      tuningName: tunings.find(tuning=>
+        tuning.tuning.join('')===this.props.tuning.join('')
+        ).name || 'Custom'
     }
   }
 
@@ -76,7 +79,6 @@ export default class Options extends Component {
       chord: found,
       types: typeArr,
       extensions: extArr,
-      // tuningName: 'Guitar'
     })
     console.log('st', this.state);
     found!=='unknown' && this.props.setChord(found)
@@ -113,16 +115,6 @@ export default class Options extends Component {
     }
   }
 
-  // componentWillReceiveProps(newProps){
-  //   newTuning = (newProps.tuning || []).join('')
-  //   let tList = tunings.map(t=>(t.tuning || []).join(''))
-  //   if(tList.some(t=>t===newTuning)){
-  //     this.setState({tuningName: tunings[tList.indexOf(newTuning)].tuning})
-  //   } else {
-  //     this.setState({tuningName: undefined})
-  //   }
-  // }
-
   render() {
     let {types, extensions, chord, tonic } = this.state
     console.log('tnname', this.state.tuningName);
@@ -157,17 +149,14 @@ export default class Options extends Component {
         <Wrapper>
           <Text>{this.props.variationIndex+1} of {this.props.numVariations}</Text>
           <Nav>
-            <TouchableOpacity
-              onPress={()=>this.props.newVariation()}
-            ><NavText>Next</NavText>
+            <TouchableOpacity onPress={()=>this.props.newVariation()} >
+              <NavText>Next</NavText>
             </TouchableOpacity>
-            <TouchableOpacity
-              onPress={this.props.showAll}
-            ><NavText>Show All</NavText>
+            <TouchableOpacity onPress={this.props.showAll} >
+              <NavText>Show All</NavText>
             </TouchableOpacity>
-            <TouchableOpacity
-              onPress={()=>this.props.newVariation(true)}
-            ><NavText>Prev</NavText>
+            <TouchableOpacity onPress={()=>this.props.newVariation(true)} >
+              <NavText>Prev</NavText>
             </TouchableOpacity>
           </Nav>
           <Picker

@@ -34,7 +34,6 @@ const Label = styled.Text`
   font-family: Menlo;
 `
 
-
 export default class Tuning extends Component {
   state = {
     tuning: this.props.tuning,
