@@ -16,7 +16,6 @@ import Tuning from './Tuning'
 
 import PopupDialog, { SlideAnimation, DialogTitle } from 'react-native-popup-dialog'
 
-
 const Container = styled.View`
   display: flex;
   flex-direction: column;
@@ -27,7 +26,7 @@ const slideAnimation = new SlideAnimation({
 });
 
 const width  = 13
-const tuning = ['E', 'A', 'D', 'G', 'B', 'E']
+const tuning = 'E2A2D2G2B2E2'
 const emptyFretMatrix = fretMatrixForChord(tuning, width, '')
 
 export default class App extends Component {
@@ -58,10 +57,6 @@ export default class App extends Component {
   initChord = (chord) =>
     initChord(this.state.tuning, this.state.width, chord || 'CM')
 
-  onFretClick = (fret) => {
-    this.selectLoc(fret)
-    // this.selectPitch(midi)
-  }
 
   fretMatch = (fret1, fret2) =>
     fret1.loc.crd===fret2.loc.crd && fret1.loc.pos===fret2.loc.pos
@@ -72,6 +67,10 @@ export default class App extends Component {
     this.setState({
       fretMatrix: fretMatrixForPc(this.state.tuning, width, pitch)
     })
+  }
+
+  onFretClick = (fret) => {
+    this.selectLoc(fret)
   }
 
   selectLoc = (fret) => {
@@ -124,7 +123,6 @@ export default class App extends Component {
               onSave={(tuning)=>{
                 this.popupDialog.dismiss()
                 console.log('onsave', {tuning})
-
                 this.changeFretboard(tuning)}
               } />
         </PopupDialog>

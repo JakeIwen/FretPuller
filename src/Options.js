@@ -40,19 +40,22 @@ const tonics = ["C", "D", "E", "F", "G", "A", "B"]
 const typeList = ['#','b','M','m','7', '9', '11']
 const typeListV = ['\u266D','\u266F','Maj','min', '7', '9', '11']
 const extensionList = ['add2', 'add4', 'add9', 'sus2', 'sus4']
-tunings = [
+const tunings = [
   {name: "Mandolin", tuning: ['G3', 'D4', 'A4', 'E5']},
-  {name: "Mandola", tuning: ['C3', 'G3', 'D4', 'A4']},
-  {name: "Bass", tuning: ['E1', 'A1', 'D2', 'G2']},
-  {name: "Guitar", tuning: ['E2', 'A2', 'D3', 'G3', 'B3', 'E4']},
-  {name: "Drop_D", tuning: ['D2', 'A2', 'D3', 'G3', 'B3', 'E4']},
-  {name: "Celtic", tuning: ['D2', 'A2', 'D3', 'G3', 'A3', 'D4']},
-  {name: "Open_D", tuning: ['D2', 'A2', 'D3', 'F#3', 'A3', 'D4']},
-  {name: "Open_G", tuning: ['D2', 'G2', 'D2', 'G2', 'B3', 'D4']},
+  {name: "Mandola",  tuning: ['C3', 'G3', 'D4', 'A4']},
+  {name: "Bass",     tuning: ['E1', 'A1', 'D2', 'G2']},
+  {name: "Guitar",   tuning: ['E2', 'A2', 'D3', 'G3', 'B3', 'E4']},
+  {name: "Drop_D",   tuning: ['D2', 'A2', 'D3', 'G3', 'B3', 'E4']},
+  {name: "Celtic",   tuning: ['D2', 'A2', 'D3', 'G3', 'A3', 'D4']},
+  {name: "Open_D",   tuning: ['D2', 'A2', 'D3', 'F#3', 'A3', 'D4']},
+  {name: "Open_G",   tuning: ['D2', 'G2', 'D2', 'G2', 'B3', 'D4']},
   {name: "Bariton_Uke", tuning: ['D3', 'G3', 'B3', 'E4']},
   {name: "Ukelele", tuning: ['G4', 'C4', 'E4', 'A4']},
   {name: "Custom"}
 ]
+const tList = tunings.map(t=>(t.tuning || []).join(''))
+const nList = tunings.map(t=>t.name)
+
 export default class Options extends Component {
 
   constructor(props) {
@@ -113,10 +116,9 @@ export default class Options extends Component {
   }
 
   componentWillReceiveProps(newProps){
-    newTuning = (newProps.tuning || []).join('')
-    let tList = tunings.map(t=>(t.tuning || []).join(''))
+    newTuning = newProps.tuning
     if(tList.some(t=>t===newTuning)){
-      this.setState({tuningName: tunings[tList.indexOf(newTuning)].tuning})
+      this.setState({tuningName: tunings[tList.indexOf(newTuning)].name})
     } else {
       this.setState({tuningName: undefined})
     }
@@ -156,28 +158,25 @@ export default class Options extends Component {
         <Wrapper>
           <Text>{this.props.variationIndex+1} of {this.props.numVariations}</Text>
           <Nav>
-            <TouchableOpacity
-              onPress={()=>this.props.newVariation()}
-            ><NavText>Next</NavText>
+            <TouchableOpacity onPress={()=>this.props.newVariation()} >
+              <NavText>Next</NavText>
             </TouchableOpacity>
-            <TouchableOpacity
-              onPress={this.props.showAll}
-            ><NavText>Show All</NavText>
+            <TouchableOpacity onPress={this.props.showAll} >
+              <NavText>Show All</NavText>
             </TouchableOpacity>
-            <TouchableOpacity
-              onPress={()=>this.props.newVariation(true)}
-            ><NavText>Prev</NavText>
+            <TouchableOpacity onPress={()=>this.props.newVariation(true)} >
+              <NavText>Prev</NavText>
             </TouchableOpacity>
           </Nav>
           <Picker
-            selectedValue={this.state.tuningName}
+            selectedValue={tList[nList.indexOf(this.state.tuningName)]}
             onValueChange={(val, index) => val
               ? this.props.changeFretboard({tuning: val})
               : this.props.editTuning()
             }
           >
             {tunings.map((tng, i) =>
-              <Picker.Item key={i} label={tng.name} value={tng.tuning} />
+              <Picker.Item key={i} label={tng.name} value={(tng.tuning || []).join('')} />
             )}
 
           </Picker>

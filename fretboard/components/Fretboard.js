@@ -16,7 +16,7 @@ const defaultSettings = {
 }
 
 export const widthCalc = (pos, fbWidth) =>
-  ((Math.pow(2,(1/fbWidth)) - 1) / Math.pow(2,((pos+1)/fbWidth))) * 100 * 2
+  (Math.pow(2,(1/fbWidth)) - 1 / Math.pow(2,(pos+1/fbWidth))) * 100 * 2
 
 const Board =  styled.View`
   width: 100%;

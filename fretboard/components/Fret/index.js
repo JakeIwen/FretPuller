@@ -21,7 +21,7 @@ const Fret = ({ fret, settings, isClickable, onFretClick, flex }) => {
   const isFretClickable = isClickable
   let text = loc.pos===0 ? Note.fromMidi(midi).slice(0,-1) : selectionText
 
-  loc.pos===0 && console.log(Note.fromMidi(midi).slice(0,-1));
+  loc.pos===0 && console.log(Note.fromMidi(midi), midi)
   // console.log(text);
   return (
     <Outer

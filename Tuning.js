@@ -3,6 +3,8 @@ import styled from "styled-components/native"
 import {TouchableOpacity, Text, Button} from 'react-native'
 import { Picker } from 'react-native-wheel-datepicker'
 import Row from 'react-native-row'
+import {tuningStgToAry, tuningAryToStg} from './src/utils/convert'
+
 
 const allNotes = ["C", "C#", "D", "Eb", "E", "F", "F#", "G", "Ab", "A", "B"]
 
@@ -29,7 +31,7 @@ const Label = styled.Text`
 
 export default class Tuning extends Component {
   state = {
-    tuning: this.props.tuning,
+    tuning: tuningStgToAry(this.props.tuning),
   }
 
   update = (val, i) => {
@@ -37,8 +39,6 @@ export default class Tuning extends Component {
     tuning[i] = val
     this.setState({ tuning })
   }
-
-
 
   render() {
     // this.props.active && this.popupDialog.show()
@@ -64,7 +64,8 @@ export default class Tuning extends Component {
               <Label>Remove</Label>
             </TouchableOpacity>
             <TouchableOpacity
-              onPress={()=>this.props.onSave({tuning})}>
+              onPress={()=>
+                this.props.onSave({tuning: tuningAryToStg(this.state.tuning)})}>
               <Label>Save</Label>
             </TouchableOpacity>
             <TouchableOpacity
