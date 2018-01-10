@@ -42,13 +42,13 @@ const typeListV = ['\u266D','\u266F','Maj','min', '7', '9', '11']
 const extensionList = ['add2', 'add4', 'add9', 'sus2', 'sus4']
 const tunings = [
   {name: "Mandolin", tuning: ['G3', 'D4', 'A4', 'E5']},
-  {name: "Mandola", tuning: ['C3', 'G3', 'D4', 'A4']},
-  {name: "Bass", tuning: ['E1', 'A1', 'D2', 'G2']},
-  {name: "Guitar", tuning: ['E2', 'A2', 'D3', 'G3', 'B3', 'E4']},
-  {name: "Drop_D", tuning: ['D2', 'A2', 'D3', 'G3', 'B3', 'E4']},
-  {name: "Celtic", tuning: ['D2', 'A2', 'D3', 'G3', 'A3', 'D4']},
-  {name: "Open_D", tuning: ['D2', 'A2', 'D3', 'F#3', 'A3', 'D4']},
-  {name: "Open_G", tuning: ['D2', 'G2', 'D2', 'G2', 'B3', 'D4']},
+  {name: "Mandola",  tuning: ['C3', 'G3', 'D4', 'A4']},
+  {name: "Bass",     tuning: ['E1', 'A1', 'D2', 'G2']},
+  {name: "Guitar",   tuning: ['E2', 'A2', 'D3', 'G3', 'B3', 'E4']},
+  {name: "Drop_D",   tuning: ['D2', 'A2', 'D3', 'G3', 'B3', 'E4']},
+  {name: "Celtic",   tuning: ['D2', 'A2', 'D3', 'G3', 'A3', 'D4']},
+  {name: "Open_D",   tuning: ['D2', 'A2', 'D3', 'F#3', 'A3', 'D4']},
+  {name: "Open_G",   tuning: ['D2', 'G2', 'D2', 'G2', 'B3', 'D4']},
   {name: "Bariton_Uke", tuning: ['D3', 'G3', 'B3', 'E4']},
   {name: "Ukelele", tuning: ['G4', 'C4', 'E4', 'A4']},
   {name: "Custom"}

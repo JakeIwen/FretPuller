@@ -36,7 +36,7 @@ const Label = styled.Text`
 
 export default class Tuning extends Component {
   state = {
-    tuning: this.props.tuning,
+    tuning: tuningStgToAry(this.props.tuning),
   }
 
   update = (val, i) => {
@@ -44,8 +44,6 @@ export default class Tuning extends Component {
     tuning[i] = val
     this.setState({ tuning })
   }
-
-
 
   render() {
     // this.props.active && this.popupDialog.show()
@@ -71,7 +69,8 @@ export default class Tuning extends Component {
               <Label>Remove</Label>
             </TouchableOpacity>
             <TouchableOpacity
-              onPress={()=>this.props.onSave({tuning})}>
+              onPress={()=>
+                this.props.onSave({tuning: tuningAryToStg(this.state.tuning)})}>
               <Label>Save</Label>
             </TouchableOpacity>
             <TouchableOpacity

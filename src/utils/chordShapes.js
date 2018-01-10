@@ -3,8 +3,8 @@ import { Chord, midi } from 'tonal'
 
 const getChordShapes = (activeFretMatrix, midis) => {
   let chordShapes = []
-  let withNullStrings = activeFretMatrix.map(string=>string.concat({}))
-  for (let c of combinations(withNullStrings)) {
+  let inclNullStrings = activeFretMatrix.map(string=>string.concat({}))
+  for (let c of combinations(inclNullStrings)) {
     let chordMidis = c.map(fret=>fret.midi%12)
     midis.every(midi=>chordMidis.includes(midi)) && chordShapes.push(c.filter(fret=>fret.midi))
   }
@@ -24,13 +24,12 @@ const includedFrets = (fretMatrix) => {
 const fretFilter = (matrix) =>
   matrix.map(string=>string.filter(fret=>fret.state.bgColor))
 
-export const initChord = (reqdTuning, width, chord) => {
-  let tuning = reqdTuning.map(note => /\d/.test(note) ? note : note + '2')
+export const initChord = (tuning, width, chord) => {
   let fretMatrix = fretMatrixForChord(tuning, width, chord, true)
   let includedAddresses = includedFrets(fretMatrix)
   let midiNotes = Chord.notes(chord).map(note => midi(note + '0') % 12)
   let chordShapes = getChordShapes(fretFilter(fretMatrix), midiNotes)
-  console.log('shapes', {tuning, reqdTuning});
+  console.log('shapes', {tuning});
   // console.log({midiNotes}, Chord.notes(chord))
   // console.log('CS', chordShapes)
   return {
