@@ -3,11 +3,22 @@ import styled from "styled-components/native"
 import {TouchableOpacity, Text, Button} from 'react-native'
 import { Picker } from 'react-native-wheel-datepicker'
 import Row from 'react-native-row'
+<<<<<<< HEAD
 import {tuningStgToAry, tuningAryToStg} from './src/utils/convert'
 
+=======
+import {range} from 'lodash'
+>>>>>>> new
 
 const allNotes = ["C", "C#", "D", "Eb", "E", "F", "F#", "G", "Ab", "A", "B"]
 
+let res = []
+range(2, 6).map(num=>{
+  allNotes.forEach(note=>res.push(note+num))
+  return res
+})
+const pickerData = res
+console.log({pickerData});
 const Wrapper = styled.View`
   display: flex;
   flex-direction: column;
@@ -28,7 +39,6 @@ const Label = styled.Text`
   font-family: Menlo;
 `
 
-
 export default class Tuning extends Component {
   state = {
     tuning: tuningStgToAry(this.props.tuning),
@@ -44,7 +54,7 @@ export default class Tuning extends Component {
     // this.props.active && this.popupDialog.show()
     let {tuning} = this.state
 
-    console.log('tuning', {tuning});
+    console.log('tuning component', {tuning});
     return (
         <Wrapper>
           <Row dial={5}>
@@ -53,7 +63,7 @@ export default class Tuning extends Component {
                 key={i}
                 style={{ flex: 1 }}
                 selectedValue={note}
-                pickerData={allNotes}
+                pickerData={pickerData}
                 onValueChange={val => this.update(val, i)}
               />
             )}

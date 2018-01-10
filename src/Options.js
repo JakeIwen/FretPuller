@@ -53,9 +53,13 @@ const tunings = [
   {name: "Ukelele", tuning: ['G4', 'C4', 'E4', 'A4']},
   {name: "Custom"}
 ]
+<<<<<<< HEAD
 const tList = tunings.map(t=>(t.tuning || []).join(''))
 const nList = tunings.map(t=>t.name)
 
+=======
+const tStrings = tunings.map(t=>(t.tuning || []).join(''))
+>>>>>>> new
 export default class Options extends Component {
 
   constructor(props) {
@@ -65,6 +69,9 @@ export default class Options extends Component {
       types: ['M'],
       extensions: [],
       chord: 'CM',
+      tuningName: tunings.find(tuning=>
+        tuning.tuning.join('')===this.props.tuning.join('')
+        ).name || 'Custom'
     }
   }
 
@@ -78,7 +85,6 @@ export default class Options extends Component {
       chord: found,
       types: typeArr,
       extensions: extArr,
-      tuningName: 'Guitar'
     })
     console.log('st', this.state);
     found!=='unknown' && this.props.setChord(found)
@@ -115,6 +121,7 @@ export default class Options extends Component {
     }
   }
 
+<<<<<<< HEAD
   componentWillReceiveProps(newProps){
     newTuning = newProps.tuning
     if(tList.some(t=>t===newTuning)){
@@ -124,6 +131,8 @@ export default class Options extends Component {
     }
   }
 
+=======
+>>>>>>> new
   render() {
     let {types, extensions, chord, tonic } = this.state
     console.log('tnname', this.state.tuningName);
@@ -169,14 +178,24 @@ export default class Options extends Component {
             </TouchableOpacity>
           </Nav>
           <Picker
+<<<<<<< HEAD
             selectedValue={tList[nList.indexOf(this.state.tuningName)]}
             onValueChange={(val, index) => val
               ? this.props.changeFretboard({tuning: val})
+=======
+            selectedValue={tunings[tStrings.indexOf(this.props.tuning.join(''))].name}
+            onValueChange={(val, index) => val!=='Custom'
+              ? this.props.changeFretboard({tuning: tunings[index].tuning})
+>>>>>>> new
               : this.props.editTuning()
             }
           >
             {tunings.map((tng, i) =>
+<<<<<<< HEAD
               <Picker.Item key={i} label={tng.name} value={(tng.tuning || []).join('')} />
+=======
+              <Picker.Item key={i} label={tng.name} value={tng.name} />
+>>>>>>> new
             )}
 
           </Picker>

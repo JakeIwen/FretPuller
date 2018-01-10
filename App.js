@@ -26,7 +26,7 @@ const slideAnimation = new SlideAnimation({
 });
 
 const width  = 13
-const tuning = 'E2A2D2G2B2E2'
+const tuning = ['E2', 'A2', 'D3', 'G3', 'B3', 'E4']
 const emptyFretMatrix = fretMatrixForChord(tuning, width, '')
 
 export default class App extends Component {
@@ -37,7 +37,7 @@ export default class App extends Component {
           includedAddresses,
           chordShapes,
           variationIndex,
-        viewMode } = initChord(tuning, width, 'CM')
+          viewMode } = initChord(tuning, width, 'CM')
 
     this.state = {
       showNotes: false,
@@ -101,10 +101,9 @@ export default class App extends Component {
     width = width || this.state.width
     chord = chord || this.state.chord
     console.log('cfb', {tuning, width, chord});
-    this.setState(
-      Object.assign(this.state,
-      initChord(tuning, width, chord))
-    )
+    this.setState(Object.assign(this.state, initChord(tuning, width, chord)
+    ))
+    console.log('CFB STATE', this.state.tuning);
   }
 
   editTuning = () => this.popupDialog.show()
