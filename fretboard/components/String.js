@@ -1,9 +1,7 @@
 import React, {Component} from 'react'
 import PropTypes from 'prop-types'
 import  Row  from 'react-native-row'
-
 import Fret from './Fret'
-
 import {TouchableOpacity} from 'react-native'
 import styled from 'styled-components/native'
 
@@ -22,28 +20,29 @@ export default class String extends Component {
       activated: true
     }
   }
+
   makeFrets = () => this.props.frets.map( (fret, j) =>
     <Fret
-      {...fret}
+      fret={fret}
       key={`fret-${j}`}
       flex={this.props.flexArr[j]}
+      settings={this.props.settings}
       onFretClick={()=>this.props.onFretClick()}
     />
   )
 
   render() {
-    // console.log(text);//render empty boxes for off frets
 
-  return (
-      <Row dial={5} key={i}>
-        {this.state.activated && frets}
+    return (
+      <Row dial={5} >
+        {!!this.state.activated && this.makeFrets()}
       </Row>
     )
   }
 }
 
-Fret.propTypes = {
-  frets: PropTypes.shape([]).isRequired,
-  slexArr: PropTypes.shape([]).isRequired,
+String.propTypes = {
+  frets: PropTypes.array.isRequired,
+  flexArr: PropTypes.array.isRequired,
   onFretClick: PropTypes.func.isRequired,
 }

@@ -1,11 +1,12 @@
-import React from 'react'
+import React, {Component} from 'react'
 import PropTypes from 'prop-types'
-import { reverse, merge } from 'lodash/fp'
+import { reverse, merge, range } from 'lodash/fp'
 import defaultTheme from '../themes'
 import  Row  from 'react-native-row'
 import { ThemeProvider } from 'styled-components'
 import Positions from './Positions'
 import styled from 'styled-components/native'
+import String from './String'
 
 const defaultSettings = {
   showNotes: false,
@@ -45,6 +46,7 @@ export default class Fretboard extends Component {
         key={`string-${i}`}
         frets={crd}
         flexArr={flexArr}
+        settings={mergedSettings}
         onFretClick={otherProps.onFretClick} />
     )
 

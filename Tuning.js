@@ -36,7 +36,7 @@ const Label = styled.Text`
 
 export default class Tuning extends Component {
   state = {
-    tuning: tuningStgToAry(this.props.tuning),
+    tuning: this.props.tuning,
   }
 
   update = (val, i) => {
@@ -70,7 +70,7 @@ export default class Tuning extends Component {
             </TouchableOpacity>
             <TouchableOpacity
               onPress={()=>
-                this.props.onSave({tuning: tuningAryToStg(this.state.tuning)})}>
+                this.props.onSave({tuning: this.state.tuning})}>
               <Label>Save</Label>
             </TouchableOpacity>
             <TouchableOpacity

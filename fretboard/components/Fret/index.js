@@ -23,9 +23,14 @@ export default class Fret extends Component {
       selectionText: "1P",
       status: "unselected"
     }
+    // console.log("fret props", props);
+
   }
+
   render() {
     let { fret, settings, onFretClick, flex } = this.props
+    const { showOctaves, showNotes, viewMode } = settings
+
     const { midi, loc, state: { status, selectionText, bgColor} } = fret
     let text = loc.pos===0 ? Note.fromMidi(midi).slice(0,-1) : selectionText
 
@@ -33,20 +38,14 @@ export default class Fret extends Component {
     // console.log(text);//render empty boxes for off frets
 
     return (
-      <Outer
-        flex={flex}
-        onPress={onFretClick(fret)}
-      >
+      <Outer flex={flex} onPress={()=>onFretClick(fret)} >
         <Inner
-          // chordTone={Chord.notes(chordName).indexOf}
           status={status}
           bgColor={ bgColor}
-          oct={octForMidi(midi)}
         >
           <Content
             pc={pcForMidi(midi)}
             showNotes={showNotes}
-            viewMode={viewMode}
             selectionText={text}
             isNut={loc.pos===0}
             isSelected={status === 'selected'}
@@ -60,7 +59,8 @@ export default class Fret extends Component {
 Fret.propTypes = {
   fret: PropTypes.shape({}).isRequired,
   settings: PropTypes.shape({}).isRequired,
-  loc: PropTypes.shape({}).isRequired,
-  midi: PropTypes.number.isRequired,
+  // loc: PropTypes.shape({}).isRequired,
+  flex: PropTypes.number.isRequired,
+  // midi: PropTypes.number.isRequired,
   onFretClick: PropTypes.func.isRequired,
 }
