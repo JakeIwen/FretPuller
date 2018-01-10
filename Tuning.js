@@ -3,9 +3,10 @@ import styled from "styled-components/native"
 import {TouchableOpacity, Text, Button} from 'react-native'
 import { Picker } from 'react-native-wheel-datepicker'
 import Row from 'react-native-row'
+import {range} from 'lodash'
 
 const allNotes = ["C", "C#", "D", "Eb", "E", "F", "F#", "G", "Ab", "A", "B"]
-
+const pickerData =  range(2,6).map(num=>allNotes.map(note=>note+num))
 const Wrapper = styled.View`
   display: flex;
   flex-direction: column;
@@ -44,7 +45,7 @@ export default class Tuning extends Component {
     // this.props.active && this.popupDialog.show()
     let {tuning} = this.state
 
-    console.log('tuning', {tuning});
+    console.log('tuning component', {tuning});
     return (
         <Wrapper>
           <Row dial={5}>
@@ -53,7 +54,7 @@ export default class Tuning extends Component {
                 key={i}
                 style={{ flex: 1 }}
                 selectedValue={note}
-                pickerData={allNotes}
+                pickerData={pickerData}
                 onValueChange={val => this.update(val, i)}
               />
             )}
