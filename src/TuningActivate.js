@@ -3,9 +3,6 @@ import styled from "styled-components/native"
 import {TouchableOpacity} from 'react-native'
 
 const Activate = styled.View`
-  ${'' /* display: flex; */}
-  ${'' /* flex-direction: column; */}
-  ${'' /* flex: 1; */}
   margin: 5px;
   border: 2px solid black;
   border-radius: 5px;

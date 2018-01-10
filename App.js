@@ -34,8 +34,11 @@ export default class App extends Component {
           viewMode } = initChord(tuning, width, 'CM')
 
     this.state = {
-      showNotes: false,
-      showOctaves: false,
+      settings: {
+        showNotes: false,
+        showPositions: false,
+        showOctaves: false,
+      },
       fretMatrix,
       chord,
       variationIndex,
@@ -78,11 +81,10 @@ export default class App extends Component {
 
   getCombo = (reverse) => {
     let increment = reverse ? -1 : 1
-    let vars = this.state.chordShapes.length-1
+    let vars = this.state.chordShapes.length - 1
     let index = this.state.variationIndex + increment
     if (index < 0) index = vars
     if (index > vars ) index = 0
-    // console.log('st', this.state.chordShapes[index].keys());
     this.setState({
       fretMatrix:  updateFretMatrix(this.state.chordShapes[index])(
         emptyFretMatrix(this.state.tuning, this.state.width)
@@ -101,20 +103,17 @@ export default class App extends Component {
     console.log('CFB STATE', this.state.tuning);
   }
 
-  editTuning = () => this.popupDialog.show()
+  showAll = () => {
+    let {tuning, width, chord} = this.state
+    this.setState({ fretMatrix: fretMatrixForChord(tuning, width, chord) })
+  }
 
   render() {
     return (
       <Container>
-
         <Fretboard
           isClickable
-          settings={{
-            showNotes: this.state.showNotes,
-            showPositions: this.state.showPositions,
-            showOctaves: this.state.showOctaves,
-            viewMode: this.state.viewMode
-          }}
+          settings={this.state.settings}
           fretMatrix={this.state.fretMatrix}
           onFretClick={(loc, midi) => this.onFretClick(loc, midi)}
         />
@@ -126,11 +125,9 @@ export default class App extends Component {
           variationIndex={this.state.variationIndex}
           newVariation={(reverse)=>this.getCombo(reverse)}
           changeFretboard={this.changeFretboard}
-          editTuning={()=>{this.editTuning()}}
+          editTuning={this.editTuning}
           tuning={this.state.tuning}
-          showAll={()=>this.setState({
-            fretMatrix: fretMatrixForChord(this.state.tuning, width, 'C')}
-          )}
+          showAll={this.showAll}
         />
 
       </Container>

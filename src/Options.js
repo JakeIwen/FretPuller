@@ -6,7 +6,6 @@ import MultiSelect from './MultiSelect'
 // import { permute } from './utils'
 import {TouchableOpacity, Text, Picker} from 'react-native'
 import ChordInfo from './ChordInfo'
-import {TuningActivate} from './TuningActivate'
 import Tuning from '../Tuning'
 import Modal from 'react-native-modal'
 const Container = styled.View`
@@ -189,9 +188,6 @@ export default class Options extends Component {
             )}
 
           </Picker>
-          {/* <TuningActivate
-            activate={()=>this.setState({showTuningModal: true})}
-            tuning={this.props.tuning} /> */}
         </Wrapper>
       </Container>
     )
