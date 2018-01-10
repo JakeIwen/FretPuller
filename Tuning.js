@@ -6,7 +6,14 @@ import Row from 'react-native-row'
 import {range} from 'lodash'
 
 const allNotes = ["C", "C#", "D", "Eb", "E", "F", "F#", "G", "Ab", "A", "B"]
-const pickerData =  range(2,6).map(num=>allNotes.map(note=>note+num))
+
+let res = []
+range(2, 6).map(num=>{
+  allNotes.forEach(note=>res.push(note+num))
+  return res
+})
+const pickerData = res
+console.log({pickerData});
 const Wrapper = styled.View`
   display: flex;
   flex-direction: column;

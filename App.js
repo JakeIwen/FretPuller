@@ -124,7 +124,6 @@ export default class App extends Component {
               onSave={(tuning)=>{
                 this.popupDialog.dismiss()
                 console.log('onsave', {tuning})
-
                 this.changeFretboard(tuning)}
               } />
         </PopupDialog>

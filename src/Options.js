@@ -40,7 +40,7 @@ const tonics = ["C", "D", "E", "F", "G", "A", "B"]
 const typeList = ['#','b','M','m','7', '9', '11']
 const typeListV = ['\u266D','\u266F','Maj','min', '7', '9', '11']
 const extensionList = ['add2', 'add4', 'add9', 'sus2', 'sus4']
-tunings = [
+const tunings = [
   {name: "Mandolin", tuning: ['G3', 'D4', 'A4', 'E5']},
   {name: "Mandola", tuning: ['C3', 'G3', 'D4', 'A4']},
   {name: "Bass", tuning: ['E1', 'A1', 'D2', 'G2']},
@@ -53,6 +53,7 @@ tunings = [
   {name: "Ukelele", tuning: ['G4', 'C4', 'E4', 'A4']},
   {name: "Custom"}
 ]
+const tStrings = tunings.map(t=>(t.tuning || []).join(''))
 export default class Options extends Component {
 
   constructor(props) {
@@ -75,7 +76,7 @@ export default class Options extends Component {
       chord: found,
       types: typeArr,
       extensions: extArr,
-      tuningName: 'Guitar'
+      // tuningName: 'Guitar'
     })
     console.log('st', this.state);
     found!=='unknown' && this.props.setChord(found)
@@ -112,15 +113,15 @@ export default class Options extends Component {
     }
   }
 
-  componentWillReceiveProps(newProps){
-    newTuning = (newProps.tuning || []).join('')
-    let tList = tunings.map(t=>(t.tuning || []).join(''))
-    if(tList.some(t=>t===newTuning)){
-      this.setState({tuningName: tunings[tList.indexOf(newTuning)].tuning})
-    } else {
-      this.setState({tuningName: undefined})
-    }
-  }
+  // componentWillReceiveProps(newProps){
+  //   newTuning = (newProps.tuning || []).join('')
+  //   let tList = tunings.map(t=>(t.tuning || []).join(''))
+  //   if(tList.some(t=>t===newTuning)){
+  //     this.setState({tuningName: tunings[tList.indexOf(newTuning)].tuning})
+  //   } else {
+  //     this.setState({tuningName: undefined})
+  //   }
+  // }
 
   render() {
     let {types, extensions, chord, tonic } = this.state
@@ -170,14 +171,14 @@ export default class Options extends Component {
             </TouchableOpacity>
           </Nav>
           <Picker
-            selectedValue={this.state.tuningName}
-            onValueChange={(val, index) => val
-              ? this.props.changeFretboard({tuning: val})
+            selectedValue={tunings[tStrings.indexOf(this.props.tuning.join(''))].name}
+            onValueChange={(val, index) => val!=='Custom'
+              ? this.props.changeFretboard({tuning: tunings[index].tuning})
               : this.props.editTuning()
             }
           >
             {tunings.map((tng, i) =>
-              <Picker.Item key={i} label={tng.name} value={tng.tuning} />
+              <Picker.Item key={i} label={tng.name} value={tng.name} />
             )}
 
           </Picker>
