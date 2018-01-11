@@ -22,7 +22,7 @@ const MultiItem = styled.View`
 `
 const Wrapper = styled.View`
   display: flex;
-  flex-direction:column;
+  flex-direction: column;
   height: 100%;
   flex: ${props => props.flex || 1};
   border: 1px solid blue;

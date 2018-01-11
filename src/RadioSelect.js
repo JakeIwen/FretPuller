@@ -23,7 +23,7 @@ const RadioItem = styled.View`
 `
 const Wrapper = styled.View`
   display: flex;
-  flex-direction:column;
+  flex-direction: column;
   height: 100%;
   flex: 1;
   border: 1px solid blue;
@@ -66,7 +66,10 @@ export default class RadioSelect extends Component {
           onSelection={ this.setSelectedOption }
           selectedOption={ this.props.selectedOption }
           renderOption={ this.renderOption }
-          // renderContainer={ }
+          renderContainer={ this.props.row
+            ? RadioButtons.renderHorizontalContainer
+            : RadioButtons.renderVerticalContainer
+          }
         />
       </Wrapper>);
   }

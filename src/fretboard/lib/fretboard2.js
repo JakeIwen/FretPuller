@@ -5,7 +5,7 @@
 
 import { range, compose, curry, update, merge } from 'lodash/fp'
 import { Distance, Interval, Note, Chord, Scale } from 'tonal'
-import ivlColors from '../../src/theme/colors'
+import ivlColors from '../../theme/colors'
 
 const transpose = curry(Distance.transpose)
 

@@ -23,8 +23,6 @@ export default class Fret extends Component {
       selectionText: "1P",
       status: "unselected"
     }
-    // console.log("fret props", props);
-
   }
 
   render() {

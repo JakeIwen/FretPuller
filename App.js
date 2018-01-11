@@ -7,7 +7,7 @@ import Fretboard, {
   fretMatrixForNote,
   fretMatrixForInterval,
   fretMatrixForChord,
-  fretMatrixForScale, } from './fretboard'
+  fretMatrixForScale, } from './src/fretboard'
 import Options from './src/Options'
 import {initChord} from './src/utils/chordShapes'
 import { isEmpty, cloneDeep, range } from 'lodash/fp'
