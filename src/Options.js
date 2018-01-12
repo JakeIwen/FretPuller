@@ -72,13 +72,15 @@ export default class Options extends Component {
       types: typeArr,
       extensions: extArr,
     })
-    console.log('st', this.state);
     found!=='unknown' && this.props.setChord(found)
+    setTimeout(()=>console.log('new options st', this.state), 500);
+
   }
 
   render() {
     let {types, extensions, chord, tonic } = this.state
-    console.log('tn name', this.state.tuningName);
+    // console.log('tn name', this.state.tuningName);
+    console.log('names', Chord.names(true));
     return (
       <Container>
         <SelectChordFlex
@@ -101,7 +103,8 @@ export default class Options extends Component {
           </Nav>
           <Modal
             isVisible={this.state.showTuningModal}
-            supportedOrientations={['portrait', 'landscape']}>
+            supportedOrientations={['portrait', 'landscape']}
+          >
             <Tuning
               initialTuning={this.props.tuning}
               onSave={ tuning => {

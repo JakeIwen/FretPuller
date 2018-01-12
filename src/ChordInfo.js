@@ -4,6 +4,7 @@ import { Chord, Note } from 'tonal'
 import ivlColors from './theme/colors'
 import {romanIvls} from './utils/convert'
 import {tokenize} from './utils/tokenize'
+import {chordIntervals} from './utils/chordIntervals'
 
 const Wrapper = styled.View`
   display: flex;
@@ -46,11 +47,11 @@ const Name = styled.Text`
 
 const chordDetails = (chord) => {
   let tokens = tokenize(chord)
-  let intervals = Chord.intervals(chord)
-  if (tokens.length === 2)
-    intervals = Chord.intervals(tokens[1])
-
+  let intervals = (tokens.length === 2) 
+    ? chordIntervals(tokens[1])
+    : chordIntervals(tokens)
   let notes = Chord.notes(...tokens).map( n => Note.simplify(n) )
+
   return intervals.map( (ivl, i) =>
     <MapKey key={i}>
       <Ivl>{romanIvls(ivl)}: </Ivl>

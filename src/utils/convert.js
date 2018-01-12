@@ -1,8 +1,7 @@
 export const romanIvls = (ivl) => {
-  let roman = romanize(ivl[0])
+  let roman = romanize(ivl.replace(/\D/g, ''))
   return ivl[1]==='m' ? roman.toLowerCase() : roman
 }
-
 
 function romanize (num) {
 	if (!+num)

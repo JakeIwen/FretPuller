@@ -3,7 +3,7 @@
 // could be modified to expand the api with
 // functions that update an existing fretMatrix
 import {tokenize} from '../../utils/tokenize'
-
+import {chordIntervals} from '../../utils/chordIntervals'
 import { range, compose, curry, update, merge } from 'lodash/fp'
 import { Distance, Interval, Note, Chord, Scale } from 'tonal'
 import ivlColors from '../../theme/colors'
@@ -88,7 +88,7 @@ export const entities = {
   pc: pc => [[pc, pc]],
   pitch: pitch => [[pitch, pitch]],
   interval: (tonic, ivl) => [[tonic, '1P'], [Distance.transpose(tonic, ivl), ivl]],
-  chord: chord => zip(Chord.notes(chord), Chord.intervals(chord)),
+  chord: chord => zip(Chord.notes(chord), chordIntervals(chord)),
   scale: (tonic, scale) => zip(Scale.notes(tonic, scale), Scale.intervals(scale)),
 }
 */
@@ -122,10 +122,10 @@ export const fretMatrixForInterval = (tuning, width, tonic, ivl, showName = fals
 
 export const fretMatrixForChord = (tuning, width, chord, showName = false) => {
   let tokens = tokenize(chord)
-  let intervals = Chord.intervals(chord)
+  let intervals = chordIntervals(chord)
   if (tokens.length === 2)
-    intervals = Chord.intervals(tokens[1])
-  // const intervals = Chord.intervals(...tokenize(chord))
+    intervals = chordIntervals(tokens[1])
+  // const intervals = chordIntervals(...tokenize(chord))
   const updates = Chord.notes(...tokens).reduce(
     (acc, pc, i) => {
       const locs = chord ? locationsForPc(tuning, width, pc) : []
