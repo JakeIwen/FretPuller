@@ -10,13 +10,14 @@ const MainSelect = styled.View`
   flex-direction: column;
   flex: 1;
 `
-const tonics = ["C", "D", "E", "F", "G", "A", "B"]
-const typeList = ['#','b','M','m','7', '9', '11']
+const sfList = ['b', '#']
+const tonicsList = ["C", "D", "E", "F", "G", "A", "B"]
+const typeList = ['Maj','min','7', '9', '11']
 const extensionList = ['add2', 'add4', 'add9', 'sus2', 'sus4']
 
 export const SelectChord = (props) => {
-  console.log({props});
-  let {tonic, types, extensions, setChord, chord} = props
+  // console.log({props});
+  let {tonic, sf, types, extensions, setChord, chord} = props
   let supersets = Chord.supersets(chord).map( superset => {
     types.forEach( type => {superset = superset.replace(type, '')})
     return superset
@@ -25,19 +26,19 @@ export const SelectChord = (props) => {
   return (
     <Row flex>
       <MainSelect>
-        <Row dial={5} spaceAround >
+        <Row dial={6} spaceAround >
           <RadioSelect
             row
-            options={['b', '#']}
-            selectedOption={tonic}
-            onValueChange={tonic => setChord({tonic})}
+            options={sfList}
+            selectedOption={sf}
+            onValueChange={newSf => setChord({sf: newSf})}
           />
         </Row>
         <Row>
           <RadioSelect
-            options={tonics}
+            options={tonicsList}
             selectedOption={tonic}
-            onValueChange={tonic => setChord({tonic})}
+            onValueChange={newTonic => setChord({tonic: newTonic})}
           />
           <MultiSelect
             options={typeList}

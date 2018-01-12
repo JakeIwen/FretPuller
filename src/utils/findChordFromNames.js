@@ -1,15 +1,16 @@
 import { Chord } from 'tonal'
 
-export const findChordFromNames = ({tonic, typeArr, extArr }) => {
+export const findChordFromNames = ({tonic, sf, typeArr, extArr }) => {
 
   let usedChars = []
   let permArr = []
   let permuteInput = typeArr.concat(extArr)
-  console.log({permuteInput});
   let perMutes = permute(permuteInput)
-  console.log({perMutes});
+  !perMutes.length && perMutes.push('')
+  // debugger
+  console.log('permutes', {tonic, sf, typeArr, extArr , perMutes})
   for (var i = 0; i < perMutes.length; i++) {
-    let searchableName = tonic + perMutes[i]
+    let searchableName = tonic + sf + perMutes[i]
     if (Chord.exists(searchableName))
       return searchableName
   }
@@ -19,8 +20,8 @@ export const findChordFromNames = ({tonic, typeArr, extArr }) => {
 
     var i, ch;
     for (i = 0; i < input.length; i++) {
-      ch = input.splice(i, 1)[0];
-      usedChars.push(ch);
+      ch = input.splice(i, 1)[0]
+      usedChars.push(ch)
       if (input.length === 0) {
         permArr.push(usedChars.slice().join(''));
       }

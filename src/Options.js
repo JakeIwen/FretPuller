@@ -35,17 +35,19 @@ const SelectChordFlex = styled(SelectChord)`
   width: 25%;
 `
 
-const typeListV = ['\u266D','\u266F','Maj','min', '7', '9', '11']
+console.log('includes', Chord.exists(true));
 const tStrings = tunings.map( t => (t.value || []).join('') )
+
 export default class Options extends Component {
 
   constructor(props) {
     super(props)
     this.state = {
       tonic: 'C',
-      types: ['M'],
+      types: [],
       extensions: [],
-      chord: 'CM',
+      chord: 'C',
+      sf: '',
       showTuningModal: false,
       tuningName: tunings.find( tuning =>
         tuning.value.join('')===this.props.tuning.join('')
@@ -53,16 +55,19 @@ export default class Options extends Component {
     }
   }
   componentWillReceiveProps(newProps) {
-    console.log('new tuning', newProps.tuning);
+    console.log('new tuning', newProps.tuning)
   }
 
-  setChord = ({tonic, types, extensions}) => {
+  setChord = ({tonic, sf, types, extensions}) => {
     let typeArr = types ? types : this.state.types
     let extArr = extensions ? extensions : this.state.extensions
     tonic = tonic || this.state.tonic
-    let found = findChordFromNames({tonic, typeArr, extArr})
+    sf = sf===undefined ? this.state.sf : sf
+    // sf = sf || this.state.sf
+    let found = findChordFromNames({tonic, sf, typeArr, extArr})
     this.setState({
       tonic,
+      sf,
       chord: found,
       types: typeArr,
       extensions: extArr,
@@ -96,8 +101,7 @@ export default class Options extends Component {
           </Nav>
           <Modal
             isVisible={this.state.showTuningModal}
-            supportedOrientations={['portrait', 'landscape']}
-          >
+            supportedOrientations={['portrait', 'landscape']}>
             <Tuning
               initialTuning={this.props.tuning}
               onSave={ tuning => {

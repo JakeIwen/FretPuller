@@ -2,6 +2,7 @@
 // Alternate approach to lib/fretboard.js
 // could be modified to expand the api with
 // functions that update an existing fretMatrix
+import {tokenize} from '../../utils/tokenize'
 
 import { range, compose, curry, update, merge } from 'lodash/fp'
 import { Distance, Interval, Note, Chord, Scale } from 'tonal'
@@ -29,11 +30,9 @@ export const updateFretMatrix = updates => matrix =>
     ), matrix)
 
 
-export const fretState = (status, selectionText, bgColor) => ({
-  status,
-  selectionText,
-  bgColor
-})
+export const fretState = (status, selectionText, bgColor) => (
+  { status, selectionText, bgColor }
+)
 
 export const fret = (midi, loc, state) => ({ midi, loc, state })
 
@@ -104,7 +103,6 @@ export const fretMatrixForPc = (tuning, width, pc, showName = false) => {
 export const fretMatrixForNote = (tuning, width, note, showName = false) => {
   const locs = locationsForNote(tuning, width, note)
   const updates = updatesForLocsAndName(locs, note, showName)
-
   return updateFretMatrix(updates)(fretMatrix({ tuning, width }))
 }
 
@@ -123,8 +121,12 @@ export const fretMatrixForInterval = (tuning, width, tonic, ivl, showName = fals
 }
 
 export const fretMatrixForChord = (tuning, width, chord, showName = false) => {
-  const intervals = Chord.intervals(chord)
-  const updates = Chord.notes(chord).reduce(
+  let tokens = tokenize(chord)
+  let intervals = Chord.intervals(chord)
+  if (tokens.length === 2)
+    intervals = Chord.intervals(tokens[1])
+  // const intervals = Chord.intervals(...tokenize(chord))
+  const updates = Chord.notes(...tokens).reduce(
     (acc, pc, i) => {
       const locs = chord ? locationsForPc(tuning, width, pc) : []
       const name = intervals[i]

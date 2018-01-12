@@ -1,6 +1,3 @@
-
-
-
 import React, {Component} from 'react'
 import styled from "styled-components/native"
 import {TouchableHighlight, Text, View} from 'react-native'
@@ -23,9 +20,9 @@ const MultiItem = styled.View`
 const Wrapper = styled.View`
   display: flex;
   flex-direction: column;
-  height: 100%;
+  ${'' /* height: 100%; */}
   flex: ${props => props.flex || 1};
-  border: 1px solid blue;
+  ${'' /* border: 1px solid blue; */}
 `
 
 const Txt = styled.Text`

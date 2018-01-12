@@ -31,8 +31,8 @@ export default class App extends Component {
           includedAddresses,
           chordShapes,
           variationIndex,
-          viewMode } = initChord(tuning, width, 'CM')
-
+          viewMode } = initChord(tuning, width, 'C')
+          //TODO cant init 'C9'
     this.state = {
       settings: {
         showNotes: false,

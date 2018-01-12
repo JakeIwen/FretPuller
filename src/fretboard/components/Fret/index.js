@@ -32,9 +32,6 @@ export default class Fret extends Component {
     const { midi, loc, state: { status, selectionText, bgColor} } = fret
     let text = loc.pos===0 ? Note.fromMidi(midi).slice(0,-1) : selectionText
 
-    loc.pos===0 && console.log(Note.fromMidi(midi).slice(0,-1));
-    // console.log(text);//render empty boxes for off frets
-
     return (
       <Outer flex={flex} onPress={()=>onFretClick(fret)} >
         <Inner

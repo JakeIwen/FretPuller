@@ -1,8 +1,9 @@
 import React from 'react'
 import styled from "styled-components/native"
-import { Chord } from 'tonal'
+import { Chord, Note } from 'tonal'
 import ivlColors from './theme/colors'
 import {romanIvls} from './utils/convert'
+import {tokenize} from './utils/tokenize'
 
 const Wrapper = styled.View`
   display: flex;
@@ -44,8 +45,13 @@ const Name = styled.Text`
 `
 
 const chordDetails = (chord) => {
-  let notes = Chord.notes(chord)
-  return Chord.intervals(chord).map( (ivl, i) =>
+  let tokens = tokenize(chord)
+  let intervals = Chord.intervals(chord)
+  if (tokens.length === 2)
+    intervals = Chord.intervals(tokens[1])
+
+  let notes = Chord.notes(...tokens).map( n => Note.simplify(n) )
+  return intervals.map( (ivl, i) =>
     <MapKey key={i}>
       <Ivl>{romanIvls(ivl)}: </Ivl>
       <MockFret color={ivlColors[ivl]}>
@@ -58,7 +64,7 @@ const chordDetails = (chord) => {
 export default chordInfo = ({chord}) => (
   <Wrapper>
     <SelectedChord>
-      {chord.replace('#','\u266D').replace('b', '\u266F')}
+      {chord.replace('b','\u266D').replace('#', '\u266F')}
     </SelectedChord>
     {chordDetails(chord)}
   </Wrapper>
