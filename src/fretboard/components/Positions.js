@@ -7,6 +7,7 @@ import  Row  from 'react-native-row'
 
 const PosText = styled.Text`
   text-align: center;
+  font-family: Menlo;
   flex: ${props => props.flex}
 `
 
@@ -18,7 +19,9 @@ const positions = ['', '', '', 'III', '', 'V', '', 'VII', '', '', 'X', '',
 const Positions = ({ flexArr }) =>
   <Row dial={5} >
     {flexArr.map((pos, i) =>
-      <PosText flex={flexArr[i]} key={`pos-${i}`}>{positions[i]}</PosText>
+      <PosText flex={flexArr[i]} key={`pos-${i}`}>
+        {positions[i]}
+      </PosText>
     )}
   </Row>
 

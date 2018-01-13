@@ -39,3 +39,5 @@ export const tunings = [{
 		value: ["G4", "C4", "E4", "A4"]
 	}
 ]
+
+export const stringsOnly = tunings.map( t => (t.value || []).join('') )

@@ -1092,6 +1092,12 @@ babel-register@^6.24.1, babel-register@^6.26.0:
     mkdirp "^0.5.1"
     source-map-support "^0.4.15"
 
+babel-root-slash-import@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/babel-root-slash-import/-/babel-root-slash-import-1.1.0.tgz#27db03489f99669c520a1486dd4ad75d55dad7d8"
+  dependencies:
+    babel "^6.1.18"
+
 babel-runtime@^6.0.0, babel-runtime@^6.18.0, babel-runtime@^6.2.0, babel-runtime@^6.22.0, babel-runtime@^6.23.0, babel-runtime@^6.26.0, babel-runtime@^6.9.2:
   version "6.26.0"
   resolved "https://registry.yarnpkg.com/babel-runtime/-/babel-runtime-6.26.0.tgz#965c7058668e82b55d7bfe04ff2337bc8b5647fe"
@@ -1131,6 +1137,10 @@ babel-types@^6.18.0, babel-types@^6.19.0, babel-types@^6.24.1, babel-types@^6.26
     esutils "^2.0.2"
     lodash "^4.17.4"
     to-fast-properties "^1.0.3"
+
+babel@^6.1.18:
+  version "6.23.0"
+  resolved "https://registry.yarnpkg.com/babel/-/babel-6.23.0.tgz#d0d1e7d803e974765beea3232d4e153c0efb90f4"
 
 babylon@7.0.0-beta.36:
   version "7.0.0-beta.36"
@@ -5409,9 +5419,9 @@ react-native-branch@2.0.0-beta.3:
   version "2.0.0-beta.3"
   resolved "https://registry.yarnpkg.com/react-native-branch/-/react-native-branch-2.0.0-beta.3.tgz#2167af86bbc9f964bd45bd5f37684e5b54965e32"
 
-react-native-elements@^0.18.5:
-  version "0.18.5"
-  resolved "https://registry.yarnpkg.com/react-native-elements/-/react-native-elements-0.18.5.tgz#9d9a584395fea63f8cad7904fb21c1eac7cc63cf"
+react-native-elements@^0.19.0:
+  version "0.19.0"
+  resolved "https://registry.yarnpkg.com/react-native-elements/-/react-native-elements-0.19.0.tgz#737c5198bf7487f9986e2023826cd0bd7a500366"
   dependencies:
     lodash.isempty "^4.4.0"
     lodash.times "^4.3.2"
@@ -5434,6 +5444,10 @@ react-native-modal@^4.1.1:
   dependencies:
     prop-types "15.5.10"
     react-native-animatable "^1.2.3"
+
+react-native-multi-slider@^0.3.6:
+  version "0.3.6"
+  resolved "https://registry.yarnpkg.com/react-native-multi-slider/-/react-native-multi-slider-0.3.6.tgz#3fa9d98bb92c8c27e05e3b43849f0a99ee9a42cc"
 
 react-native-picker@^4.3.2:
   version "4.3.2"
@@ -5483,14 +5497,6 @@ react-native-scripts@1.8.1:
 react-native-vector-icons@4.4.2:
   version "4.4.2"
   resolved "https://registry.yarnpkg.com/react-native-vector-icons/-/react-native-vector-icons-4.4.2.tgz#090f42ee0396c4cc4eae0ddaa518028ba8df40c7"
-  dependencies:
-    lodash "^4.0.0"
-    prop-types "^15.5.10"
-    yargs "^8.0.2"
-
-react-native-vector-icons@^4.4.3:
-  version "4.4.3"
-  resolved "https://registry.yarnpkg.com/react-native-vector-icons/-/react-native-vector-icons-4.4.3.tgz#9e847b8c432a17e5e0ffd60ccf09f3112a18b9df"
   dependencies:
     lodash "^4.0.0"
     prop-types "^15.5.10"

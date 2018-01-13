@@ -5,7 +5,7 @@
 import {tokenize} from '../../utils/tokenize'
 import {chordIntervals} from '../../utils/chordIntervals'
 import { range, compose, curry, update, merge } from 'lodash/fp'
-import { Distance, Interval, Note, Chord, Scale } from 'tonal'
+import { Distance, Interval, Note, Chord, Scale } from '/src/lib/tonal.min.js'
 import ivlColors from '../../theme/colors'
 
 const transpose = curry(Distance.transpose)

@@ -1,11 +1,10 @@
 import React from 'react'
 import styled from "styled-components/native"
-import { Chord, Note } from 'tonal'
+import { Chord, Note } from '/src/lib/tonal.min.js'
 import ivlColors from './theme/colors'
-import {romanIvls} from './utils/convert'
+import {romanIvls, accFormat} from './utils/format'
 import {tokenize} from './utils/tokenize'
 import {chordIntervals} from './utils/chordIntervals'
-
 const Wrapper = styled.View`
   display: flex;
   flex-direction: column;
@@ -47,7 +46,7 @@ const Name = styled.Text`
 
 const chordDetails = (chord) => {
   let tokens = tokenize(chord)
-  let intervals = (tokens.length === 2) 
+  let intervals = (tokens.length === 2)
     ? chordIntervals(tokens[1])
     : chordIntervals(tokens)
   let notes = Chord.notes(...tokens).map( n => Note.simplify(n) )
@@ -65,7 +64,7 @@ const chordDetails = (chord) => {
 export default chordInfo = ({chord}) => (
   <Wrapper>
     <SelectedChord>
-      {chord.replace('b','\u266D').replace('#', '\u266F')}
+      {accFormat(chord)}
     </SelectedChord>
     {chordDetails(chord)}
   </Wrapper>

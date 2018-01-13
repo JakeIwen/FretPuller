@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import styled from "styled-components/native"
 import {TouchableHighlight, Text, View} from 'react-native'
+import {accFormat} from '/src/utils/format'
 
 const MultiBtn = styled.TouchableHighlight`
   display: flex;
@@ -20,9 +21,7 @@ const MultiItem = styled.View`
 const Wrapper = styled.View`
   display: flex;
   flex-direction: column;
-  ${'' /* height: 100%; */}
   flex: ${props => props.flex || 1};
-  ${'' /* border: 1px solid blue; */}
 `
 
 const Txt = styled.Text`
@@ -50,7 +49,7 @@ export default class MultiSelect extends Component {
       <MultiBtn onPress={()=>this.setSelectedOption(option)} key={index}>
         <MultiItem>
           <Txt selected={selected}>
-            {option}
+            {accFormat(option)}
           </Txt>
         </MultiItem>
       </MultiBtn>

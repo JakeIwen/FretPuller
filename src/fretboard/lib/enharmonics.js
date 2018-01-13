@@ -1,5 +1,5 @@
 import { isEmpty } from 'lodash/fp'
-import { Note } from 'tonal'
+import { Note } from '/src/lib/tonal.min.js'
 
 // assumption: we're only dealing with enharmonics
 // of 1st degree alt's with opposite acc types:

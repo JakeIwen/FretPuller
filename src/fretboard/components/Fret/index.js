@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import PropTypes from 'prop-types'
 import { compose } from 'lodash/fp'
-import { Note } from 'tonal'
+import { Note } from '/src/lib/tonal.min.js'
 import Inner from './Inner'
 import Content from './Content'
 import {TouchableOpacity} from 'react-native'

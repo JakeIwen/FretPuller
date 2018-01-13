@@ -2,7 +2,7 @@ import React, {Component} from 'react'
 import PropTypes from 'prop-types'
 import { reverse, merge, range } from 'lodash/fp'
 import defaultTheme from '../themes'
-import  Row  from 'react-native-row'
+import { Row } from '/src/styled'
 import { ThemeProvider } from 'styled-components'
 import Positions from './Positions'
 import styled from 'styled-components/native'
@@ -22,6 +22,7 @@ const Board =  styled.View`
   width: 100%;
 `
 
+
 export default class Fretboard extends Component {
   constructor(props){
     super()
@@ -35,6 +36,7 @@ export default class Fretboard extends Component {
     const mergedTheme = merge(defaultTheme, otherProps.theme)
     const mergedSettings = merge(defaultSettings, otherProps.settings)
     const numFrets = fretMatrix[0].length
+    console.log({mergedSettings, mergedTheme});
 
     let flexArr = [
       widthCalc(numFrets, numFrets),
@@ -53,8 +55,8 @@ export default class Fretboard extends Component {
     return (
       <ThemeProvider theme={mergedTheme}>
         <Board>
+          <Positions flexArr={flexArr}/>
           {cuerda}
-          {mergedSettings.showPositions ? <Positions flexArr={flexArr}/> : null }
         </Board>
       </ThemeProvider>
     )

@@ -1,15 +1,18 @@
 import React, {Component} from 'react'
 import styled from "styled-components/native"
-import { Chord } from 'tonal'
-import {TouchableOpacity, Text, Picker} from 'react-native'
+import { Chord } from '/src/lib/tonal.min.js'
+import { TouchableOpacity, Text, Picker } from 'react-native'
 import ChordInfo from './ChordInfo'
 import Tuning from './Tuning'
 import Modal from 'react-native-modal'
-import {findChordFromNames} from './utils/findChordFromNames'
-import {tunings} from './lib/tunings'
-import Row from 'react-native-row'
-import {SelectChord} from './SelectChord'
+import { findChordFromNames } from './utils/findChordFromNames'
+import { tunings, stringsOnly } from './lib/tunings'
+import { Row, Br } from '/src/styled'
+import { SelectChord } from './SelectChord'
+import { Button } from 'react-native-elements'
+// import {Slider} from 'react-native-multi-slider'
 
+import {accFormat} from '/src/utils/format'
 const Container = styled.View`
   display: flex;
   flex-direction: row;
@@ -24,7 +27,7 @@ const Wrapper = styled.View`
   flex: 1;
 `
 const NavText = styled.Text`
-  font-size: 26;
+  font-size: 32;
 `
 const Nav = styled.View`
   display: flex;
@@ -34,9 +37,6 @@ const Nav = styled.View`
 const SelectChordFlex = styled(SelectChord)`
   width: 25%;
 `
-
-console.log('includes', Chord.exists(true));
-const tStrings = tunings.map( t => (t.value || []).join('') )
 
 export default class Options extends Component {
 
@@ -64,7 +64,7 @@ export default class Options extends Component {
     tonic = tonic || this.state.tonic
     sf = sf===undefined ? this.state.sf : sf
     // sf = sf || this.state.sf
-    let found = findChordFromNames({tonic, sf, typeArr, extArr})
+    let found = findChordFromNames( {tonic, sf, typeArr, extArr} )
     this.setState({
       tonic,
       sf,
@@ -78,33 +78,31 @@ export default class Options extends Component {
   }
 
   render() {
-    let {types, extensions, chord, tonic } = this.state
+    let { types, extensions, chord, tonic } = this.state
     // console.log('tn name', this.state.tuningName);
+    let pickerVal = (tunings[stringsOnly.indexOf(
+      this.props.tuning.join(''))] || {}).name
+      || 'custom'
     console.log('names', Chord.names(true));
     return (
       <Container>
-        <SelectChordFlex
-          {...this.state}
-          setChord={this.setChord}
-        />
-        <ChordInfo chord={chord} />
+        <SelectChordFlex {...this.state} setChord={this.setChord} />
         <Wrapper>
-          <Text>{this.props.variationIndex+1} of {this.props.numVariations}</Text>
           <Nav>
-            <TouchableOpacity onPress={()=>this.props.newVariation()} >
-              <NavText>Next</NavText>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={this.props.showAll} >
-              <NavText>Show All</NavText>
-            </TouchableOpacity>
             <TouchableOpacity onPress={()=>this.props.newVariation(true)} >
-              <NavText>Prev</NavText>
+              <NavText>&larr;</NavText>
+            </TouchableOpacity>
+            <Text>
+              {this.props.variationIndex+1} of {this.props.numVariations}
+              <Br/>possible <Br/>variations
+            </Text>
+            <TouchableOpacity onPress={()=>this.props.newVariation()} >
+              <NavText>&rarr;</NavText>
             </TouchableOpacity>
           </Nav>
           <Modal
             isVisible={this.state.showTuningModal}
-            supportedOrientations={['portrait', 'landscape']}
-          >
+            supportedOrientations={['portrait', 'landscape']} >
             <Tuning
               initialTuning={this.props.tuning}
               onSave={ tuning => {
@@ -113,20 +111,30 @@ export default class Options extends Component {
                 this.props.changeFretboard({tuning})}
               } />
           </Modal>
+          <Button onPress={()=>this.setState({showTuningModal: true})}>
+            CHANGE TUNING
+          </Button>
           <Picker
-            selectedValue={(tunings[tStrings.indexOf(this.props.tuning.join(''))] || {}).name || 'custom'}
-            onValueChange={(val, index) => val!=='Custom'
-              ? this.props.changeFretboard({tuning: tunings[index].value})
-              : this.setState({showTuningModal: true})
+            selectedValue={pickerVal}
+            onValueChange={(val, index) => val==='Custom'
+              ? this.setState({showTuningModal: true})
+              : this.props.changeFretboard({tuning: tunings[index].value})
             }
           >
             {tunings.map((tng, i) =>
-              <Picker.Item key={i} label={tng.name} value={tng.name} />
+              <Picker.Item key={i} label={accFormat(tng.name)} value={tng.name} />
             )}
 
           </Picker>
         </Wrapper>
+        <TouchableOpacity
+          onPress={() => this.setChord({types: [], extensions: []}) }>
+          <ChordInfo chord={chord} />
+        </TouchableOpacity>
       </Container>
     )
   }
 }
+{/* <TouchableOpacity onPress={this.props.showAll} >
+  <NavText>Show All</NavText>
+</TouchableOpacity> */}

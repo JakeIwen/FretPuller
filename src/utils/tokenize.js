@@ -1,4 +1,4 @@
-import {Note} from 'tonal'
+import {Note} from '/src/lib/tonal.min.js'
 
 export const tokenize = (name) => {
   var p = Note.tokenize(name);

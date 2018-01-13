@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import PropTypes from 'prop-types'
-import Row from 'react-native-row'
+import { Row } from '/src/styled'
 import Fret from './Fret'
 // import {TouchableOpacity} from 'react-native'
 

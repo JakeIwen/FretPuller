@@ -2,7 +2,8 @@ import React, { Component } from 'react'
 import styled from "styled-components/native"
 import { RadioButtons } from 'react-native-radio-buttons'
 import { TouchableHighlight, Text, View } from 'react-native'
-import Row from 'react-native-row'
+import { Row } from '/src/styled'
+import {accFormat} from '/src/utils/format'
 
 const RadioBtn = styled.TouchableHighlight`
   display: flex;
@@ -30,7 +31,7 @@ export default class RadioSelect extends Component {
   renderOption = (option, selected, onSelect, index) => (
     <RadioBtn onPress={()=>this.setSelectedOption(option)} key={index}>
       <Txt selected={selected}>
-        {option.replace('b','\u266D').replace('#', '\u266F')}
+        {accFormat(option)}
       </Txt>
     </RadioBtn>
   )
