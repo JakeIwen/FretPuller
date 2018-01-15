@@ -4,21 +4,13 @@ import { RadioButtons } from 'react-native-radio-buttons'
 import { TouchableHighlight, Text, View } from 'react-native'
 import { Row } from '/src/styled'
 import {accFormat} from '/src/utils/format'
+import { SelectionButton, Txt } from '/src/styled/options'
 
-const RadioBtn = styled.TouchableHighlight`
-  display: flex;
-  align-items: center;
-  ${'' /* padding: 0 10px; */}
-`
 const RenderContainer = styled.View`
   display: flex;
   flex-direction: ${props => props.row ? 'row' : 'column'};
   justify-content: space-around;
-  flex: 1;
-`
-const Txt = styled.Text`
-  font-size: 24;
-  font-weight: ${props => props.selected ? 'bold' : 'normal' };
+  ${'' /* flex: 1; */}
 `
 
 export default class RadioSelect extends Component {
@@ -29,11 +21,11 @@ export default class RadioSelect extends Component {
   }
 
   renderOption = (option, selected, onSelect, index) => (
-    <RadioBtn onPress={()=>this.setSelectedOption(option)} key={index}>
+    <SelectionButton onPress={()=>this.setSelectedOption(option)} key={index}>
       <Txt selected={selected}>
         {accFormat(option)}
       </Txt>
-    </RadioBtn>
+    </SelectionButton>
   )
 
   renderContainer = (optionNodes) =>

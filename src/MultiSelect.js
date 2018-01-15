@@ -5,17 +5,11 @@ import {accFormat} from '/src/utils/format'
 
 const MultiBtn = styled.TouchableHighlight`
   display: flex;
-  align-items: center;
-  align-self:stretch;
-  justify-content:space-around;
   ${'' /* border: ${props => props.selected ? '1px solid gray' : ''} */}
 `
 
 const MultiItem = styled.View`
   display: flex;
-  align-items: center;
-  align-self:stretch;
-  justify-content:space-around;
   ${'' /* border: ${props => props.selected ? '1px solid gray' : ''}; */}
 `
 const Wrapper = styled.View`

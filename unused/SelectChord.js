@@ -9,15 +9,18 @@ import {ScrollView} from 'react-native'
 
 const sfList = ['b', '#']
 const tonicsList = ["C", "D", "E", "F", "G", "A", "B"]
-const typeList = ['maj','m','dim', 'aug', '11']
+const typeList = ['maj', 'min', 'dim', 'aug']
+const typeAlias = ['M', 'm', 'o', 'aug']
 const extensionList = ['add2', 'add4', 'add9', 'sus2', 'sus4']
 
 export const SelectChord = (props) => {
   // console.log({props});
-  let {tonic, sf, types, extensions, setChord, chord} = props
-  let supersets = Chord.supersets(chord).reverse()
+  let {tonic, sf, type, extensions, setChord, chord} = props
+  let alias = type && typeAlias[typeList.indexOf(type)] + extensions[0]
+  console.log({alias});
+  let supersets = Chord.supersets(chord).map(item=>item.replace(alias, '')).sort()
   // .map( superset => {
-  //   types.forEach( type => {superset = superset.replace(type, '')})
+  //   type.forEach( type => {superset = superset.replace(type, '')})
   //   return superset
   // })
   // .concat(extensions).reverse()
@@ -41,13 +44,14 @@ export const SelectChord = (props) => {
           />
         </Row>
       </Col>
-      <Col flex={0.5}>
-        <MultiSelect
+      <Col>
+        <RadioSelect
           options={typeList}
-          selectedOptions={types}
-          onValueChange={newTypes => setChord({types: newTypes})}
+          selectedOption={type}
+          onValueChange={newType => setChord({type: newType})}
         />
       </Col>
+      {/* <Col> */}
       <ScrollView>
         <MultiSelect
           options={supersets}
@@ -56,6 +60,7 @@ export const SelectChord = (props) => {
           // flex={2}
         />
       </ScrollView>
+    {/* </Col> */}
     </Row>
   )
 }

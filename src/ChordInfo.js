@@ -5,6 +5,7 @@ import ivlColors from './theme/colors'
 import {romanIvls, accFormat} from './utils/format'
 import {tokenize} from './utils/tokenize'
 import {chordIntervals} from './utils/chordIntervals'
+
 const Wrapper = styled.View`
   display: flex;
   flex-direction: column;
@@ -61,7 +62,7 @@ const chordDetails = (chord) => {
   )
 }
 
-export default chordInfo = ({chord}) => (
+export default ChordInfo = ({chord}) => (
   <Wrapper>
     <SelectedChord>
       {accFormat(chord)}
