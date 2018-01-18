@@ -130,7 +130,7 @@ export const fretMatrixForChord = (tuning, width, chord, showName = false) => {
     (acc, pc, i) => {
       const locs = chord ? locationsForPc(tuning, width, pc) : []
       const name = intervals[i]
-      const bgColor = ivlColors[name]
+      const bgColor = ivlColors[name] || '#e6beff'
       return [...acc, ...updatesForLocsAndName(locs, name, showName, bgColor)]
     },
     [],

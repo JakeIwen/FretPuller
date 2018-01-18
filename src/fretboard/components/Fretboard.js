@@ -22,7 +22,6 @@ const Board =  styled.View`
   width: 100%;
 `
 
-
 export default class Fretboard extends Component {
   constructor(props){
     super()
@@ -40,7 +39,7 @@ export default class Fretboard extends Component {
 
     let flexArr = [
       widthCalc(numFrets, numFrets),
-      ...range(0, numFrets-1).map( n => widthCalc(n, numFrets-1) )
+      ...range(0, numFrets-1).map( n => widthCalc(n, numFrets) )
     ]
 
     const cuerda = reverse(fretMatrix).map((crd,i) =>
@@ -54,7 +53,10 @@ export default class Fretboard extends Component {
 
     return (
       <ThemeProvider theme={mergedTheme}>
-        <Board>
+        <Board
+          onLayout={ event =>
+            this.props.setFretboardHeight(event.nativeEvent.layout.height)
+          }>
           <Positions flexArr={flexArr}/>
           {cuerda}
         </Board>

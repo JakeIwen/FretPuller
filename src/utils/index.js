@@ -15,6 +15,10 @@ export const permute = (input) => {
   return permArr
 }
 
+export const fretProportions = () => {
+  
+}
+
 // const majorSwap = (stType, newType) => {
 //   let majOld = stType.substr(0, 2)==='Maj'
 //   let majNew = newType.substr(0, 2)==='Maj'
