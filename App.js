@@ -12,6 +12,9 @@ import Options from './src/Options'
 import {initChord} from './src/utils/chordShapes'
 import { isEmpty, cloneDeep, range } from 'lodash/fp'
 import { Note, Chord, Interval } from 'tonal'
+import {tokenize} from '/src/utils/tokenize'
+import {ivlColors, tonicColors} from '/src/theme/colors'
+
 
 const Container = styled.View`
   display: flex;
@@ -21,14 +24,13 @@ const maxFretSpan = 7
 const width  = 13
 const tuning = ['E2', 'A2', 'D3', 'G3', 'B3', 'E4']
 const emptyFretMatrix = (tuning, width) =>
-  fretMatrixForChord(tuning, width, '')
+  fretMatrixForChord(tuning, width, tonic='')
 
 export default class App extends Component {
   constructor(props) {
     super(props)
     let { chord,
           fretMatrix,
-          includedAddresses,
           chordShapes,
           variationIndex,
           viewMode } = initChord(tuning, width, 'C')
@@ -46,7 +48,6 @@ export default class App extends Component {
       fretMatrix,
       chord,
       variationIndex,
-      includedAddresses,
       chordShapes,
       allShapes: chordShapes,
       viewMode,
@@ -59,8 +60,23 @@ export default class App extends Component {
     initChord(this.state.tuning, this.state.width, chord || 'CM')
 
   onFretClick = (fret) => {
-    this.selectLoc(fret)
     // this.selectPitch(midi)
+    console.log(fret);
+    this.showThisNote(fret.midi)
+  }
+
+  showThisNote = (midi) => {
+    let noteOctaves
+    this.setState({
+      settings: {
+        showNotes: false,
+        showPositions: false,
+        showOctaves: true,
+      }
+    })
+    this.setState({
+      fretMatrix: fretMatrixForPc(this.state.tuning, this.state.width, Note.fromMidi(midi))
+    })
   }
 
   fretMatch = (fret1, fret2) =>
@@ -70,17 +86,7 @@ export default class App extends Component {
     let pitch = Note.fromMidi(midi)
     pitch = pitch.slice( 0, pitch.length - 1 )
     this.setState({
-      fretMatrix: fretMatrixForPc(this.state.tuning, width, pitch)
-    })
-  }
-
-  selectLoc = (fret) => {
-    let isSelected = fret.state.status==="selected"
-    newFret = cloneDeep(fret)
-    newFret.state.status = isSelected ? "unselected" : "selected"
-    newFret.state.selectionText = Note.fromMidi(newFret.midi)
-    this.setState({
-      fretMatrix:  updateFretMatrix([newFret])(this.state.fretMatrix),
+      fretMatrix: fretMatrixForNote(this.state.tuning, width, pitch)
     })
   }
 
@@ -115,7 +121,7 @@ export default class App extends Component {
   fretFilter = ({fretRange, maxFretSpan, incZeroFret}) => {
     fretRange = fretRange || this.state.fretRange
     maxFretSpan = maxFretSpan || this.state.maxFretSpan
-    incZeroFret = incZeroFret || this.state.incZeroFret
+    incZeroFret = incZeroFret===undefined ? this.state.incZeroFret : incZeroFret
     console.log({fretRange, maxFretSpan, incZeroFret})
 
     let newShapes = this.state.allShapes
@@ -138,13 +144,14 @@ export default class App extends Component {
   }
 
   render() {
-    console.log('HEIGHT', this.state.fbHeight);
+    let colorArr = tonicColors(tokenize(this.state.chord)[0])
     return (
       <Container>
         <Fretboard
           isClickable
           settings={this.state.settings}
           fretMatrix={this.state.fretMatrix}
+          colorArr={colorArr}
           onFretClick={(loc, midi) => this.onFretClick(loc, midi)}
           setFretboardHeight={height=>this.setState({fbHeight: height})}
         />
@@ -163,6 +170,7 @@ export default class App extends Component {
             editTuning={this.editTuning}
             tuning={this.state.tuning}
             showAll={this.showAll}
+            colorArr={colorArr}
         />}
 
       </Container>

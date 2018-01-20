@@ -14,7 +14,7 @@ export const Container = styled(Col)`
 export const RightOptions = styled.View`
   display: flex;
   flex-direction: column;
-  align-items: flex-end;
+  align-items: stretch;
   flex: 1;
 `
 export const NavText = styled.Text`

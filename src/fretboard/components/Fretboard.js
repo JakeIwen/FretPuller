@@ -35,8 +35,6 @@ export default class Fretboard extends Component {
     const mergedTheme = merge(defaultTheme, otherProps.theme)
     const mergedSettings = merge(defaultSettings, otherProps.settings)
     const numFrets = fretMatrix[0].length
-    console.log({mergedSettings, mergedTheme});
-
     let flexArr = [
       widthCalc(numFrets, numFrets),
       ...range(0, numFrets-1).map( n => widthCalc(n, numFrets) )
@@ -48,6 +46,7 @@ export default class Fretboard extends Component {
         frets={crd}
         flexArr={flexArr}
         settings={mergedSettings}
+        colorArr={otherProps.colorArr}
         onFretClick={otherProps.onFretClick} />
     )
 

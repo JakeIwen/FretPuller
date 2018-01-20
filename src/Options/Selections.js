@@ -105,8 +105,6 @@ export default class Selections extends Component {
         lastPoss = poss
       })
     }
-    // res = [...new Set(res)]
-    console.log({possibilities, res});
     return res
   }
 
@@ -118,7 +116,7 @@ export default class Selections extends Component {
       <Row flex flexStart>
         <TouchableOpacity
           onPress={() => this.setChord({extensions: []}) }>
-          <ChordInfo chord={fullChord} />
+          <ChordInfo colorArr={this.props.colorArr} chord={fullChord} />
         </TouchableOpacity>
         <Row>
           <SelectionButton

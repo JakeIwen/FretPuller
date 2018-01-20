@@ -1,11 +1,11 @@
 export {
+} from './lib/fretboard'
+
+export {
   fretMatrixForPc,
   fretMatrixForNote,
   fretMatrixForInterval,
   fretMatrixForScale,
-} from './lib/fretboard'
-
-export {
   fretMatrixForChord,
   updateFretMatrix,
   locationsForPc

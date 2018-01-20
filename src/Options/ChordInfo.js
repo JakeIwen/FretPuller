@@ -1,10 +1,10 @@
 import React from 'react'
 import styled from "styled-components/native"
 import { Chord, Note } from '/src/lib/tonal.min.js'
-import ivlColors from './theme/colors'
-import {romanIvls, accFormat} from './utils/format'
-import {tokenize} from './utils/tokenize'
-import {chordIntervals} from './utils/chordIntervals'
+import {ivlColors} from '/src/theme/colors'
+import {romanIvls, accFormat} from '/src/utils/format'
+import {tokenize} from '/src/utils/tokenize'
+import {chordIntervals} from '/src/utils/chordIntervals'
 
 const Wrapper = styled.View`
   display: flex;
@@ -45,7 +45,7 @@ const Name = styled.Text`
   font-family: Menlo;
 `
 
-const chordDetails = (chord) => {
+const chordDetails = (chord, colorArr) => {
   let tokens = tokenize(chord)
   let intervals = (tokens.length === 2)
     ? chordIntervals(tokens[1])
@@ -55,18 +55,18 @@ const chordDetails = (chord) => {
   return intervals.map( (ivl, i) =>
     <MapKey key={i}>
       <Ivl>{romanIvls(ivl)}: </Ivl>
-      <MockFret color={ivlColors[ivl]}>
+      <MockFret color={colorArr[Note.chroma(notes[i])]}>
         <Name>{notes[i]}</Name>
       </MockFret>
     </MapKey>
   )
 }
 
-export default ChordInfo = ({chord}) => (
+export default ChordInfo = ({chord, colorArr}) => (
   <Wrapper>
     <SelectedChord>
       {accFormat(chord)}
     </SelectedChord>
-    {chordDetails(chord)}
+    {chordDetails(chord, colorArr)}
   </Wrapper>
 )

@@ -3,10 +3,11 @@
 // could be modified to expand the api with
 // functions that update an existing fretMatrix
 import {tokenize} from '../../utils/tokenize'
+import {arrayRotate} from '../../utils'
 import {chordIntervals} from '../../utils/chordIntervals'
 import { range, compose, curry, update, merge } from 'lodash/fp'
 import { Distance, Interval, Note, Chord, Scale } from '/src/lib/tonal.min.js'
-import ivlColors from '../../theme/colors'
+import {ivlColors, colors} from '/src/theme/colors'
 
 const transpose = curry(Distance.transpose)
 
@@ -30,30 +31,25 @@ export const updateFretMatrix = updates => matrix =>
     ), matrix)
 
 
-export const fretState = (status, selectionText, bgColor) => (
-  { status, selectionText, bgColor }
+export const fretState = (status, selectionText) => (
+  { status, selectionText }
 )
 
-export const fret = (midi, loc, state) => ({ midi, loc, state })
-
 export const createFret = ({ midi, loc }) =>
-  fret(midi, loc, fretState('unselected', ''))
+  ({midi, loc, state: fretState('unselected', Note.pc(Note.fromMidi(midi)))})
 
 export const fretMatrix = ({ tuning, width }) =>
   range(0, tuning.length).map((crd, i) =>
     range(0, width).map((pos, j) =>
       createFret({
-        address: i*width+j,
         midi: midiForLocation(tuning, { crd, pos }),
         loc: { crd, pos } }
       )
     )
   )
 
-
 export const locationsForNote = (tuning, width, note) =>
-  tuning.reduce(
-    (acc, openNote, i) => {
+  tuning.reduce( (acc, openNote, i) => {
       const smtns = Distance.semitones(openNote, note)
       return (smtns >= 0 && smtns < width)
         ? [...acc, [i, smtns]]
@@ -63,11 +59,9 @@ export const locationsForNote = (tuning, width, note) =>
   )
 
 export const locationsForPc = (tuning, width, pc) =>
-  tuning.reduce(
-    (acc, openNote, i) => {
-      const smtns = Distance.semitones(openNote, pc)
+  tuning.reduce( (acc, openNote, i) => {
+      const smtns = Distance.semitones(openNote, Note.pc(pc))
       const occurences = Math.floor((width - smtns - 1) / 12) + 1
-
       return (smtns < width)
         ? [...acc, ...range(0, occurences).map(o => [i, smtns + (o * 12)])]
         : acc
@@ -75,12 +69,12 @@ export const locationsForPc = (tuning, width, pc) =>
     [],
   )
 
-export const updatesForLocsAndName = (locs, name, showName, bgColor) =>
+export const updatesForLocsAndName = (locs, name, showName) =>
   locs.map(([crd, pos]) => {
-    let status = bgColor ? 'unselected' : 'selected'
+    let status = 'selected'
     return showName
-      ? { loc: { crd, pos }, state: fretState(status, name, bgColor) }
-      : { loc: { crd, pos }, state: fretState(status, '', bgColor) }
+      ? { loc: { crd, pos }, state: fretState(status, name ) }
+      : { loc: { crd, pos }, state: fretState(status, '') }
   })
 
 /* refactor this in
@@ -97,7 +91,7 @@ export const fretMatrixForPc = (tuning, width, pc, showName = false) => {
   const locs = locationsForPc(tuning, width, pc)
   const updates = updatesForLocsAndName(locs, pc, showName)
 
-  return updateFretMatrix(updates)(fretMatrix({ tuning, width }))
+  return updateFretMatrix(updates)(fretMatrix({ tuning, width, pc }))
 }
 
 export const fretMatrixForNote = (tuning, width, note, showName = false) => {
@@ -120,18 +114,16 @@ export const fretMatrixForInterval = (tuning, width, tonic, ivl, showName = fals
   return updateFretMatrix(updates)(fretMatrix({ tuning, width }))
 }
 
-export const fretMatrixForChord = (tuning, width, chord, showName = false) => {
+export const fretMatrixForChord = (tuning, width, chord, showName = true) => {
   let tokens = tokenize(chord)
   let intervals = chordIntervals(chord)
   if (tokens.length === 2)
     intervals = chordIntervals(tokens[1])
-  // const intervals = chordIntervals(...tokenize(chord))
   const updates = Chord.notes(...tokens).reduce(
     (acc, pc, i) => {
       const locs = chord ? locationsForPc(tuning, width, pc) : []
-      const name = intervals[i]
-      const bgColor = ivlColors[name] || '#e6beff'
-      return [...acc, ...updatesForLocsAndName(locs, name, showName, bgColor)]
+      const name = pc
+      return [...acc, ...updatesForLocsAndName(locs, name, showName)]
     },
     [],
   )

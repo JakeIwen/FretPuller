@@ -1,14 +1,15 @@
 import React, {Component} from 'react'
 import styled from "styled-components/native"
 import { Chord } from '/src/lib/tonal.min.js'
-import { TouchableOpacity,Text} from 'react-native'
+import { TouchableOpacity, Text} from 'react-native'
+import CheckBox from 'react-native-checkbox'
 import Tuning from './Tuning'
 import Modal from 'react-native-modal'
-import { tunings, stringsOnly } from './lib/tunings'
+import { tunings, stringsOnly } from '/src/lib/tunings'
 import { Row, Col, Br } from '/src/styled'
 import { Button } from 'react-native-elements'
 import {Container, RightOptions, NavText, OptionSection, OptionSectionCol, Txt, ChordOpts, ChangeTuning} from '/src/styled/options'
-import Selections from '/src/Selections'
+import Selections from './Selections'
 import Slider from '@ptomasroos/react-native-multi-slider'
 import {accFormat} from '/src/utils/format'
 import { range } from 'lodash/fp'
@@ -71,7 +72,10 @@ export default class Options extends Component {
           containerStyle={{ height: 15 }}
         />
         <Row flex>
-          <Selections setChord={this.props.setChord} />
+          <Selections
+            colorArr={this.props.colorArr}
+            setChord={this.props.setChord}
+          />
           <RightOptions>
             <OptionSection>
               <TouchableOpacity onPress={()=>this.props.newVariation(true)} >
@@ -117,8 +121,12 @@ export default class Options extends Component {
                   <NavText>&rarr;</NavText>
                 </TouchableOpacity>
               </Row>
-
             </OptionSectionCol>
+            <CheckBox
+              label='Allow Open Strings'
+              onChange={val => this.props.fretFilter({incZeroFret: val})}
+              checked={this.props.incZeroFret}
+            />
             <ChangeTuning
               title='CHANGE TUNING'
               onPress={()=>this.setState({showTuningModal: true})}

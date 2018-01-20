@@ -35,22 +35,11 @@ function stringCombos(arr) {
   return result
 }
 
-const includedFrets = (fretMatrix) => {
-  let incFrets = []
-  fretMatrix.forEach( (string, i) =>
-    string.forEach( (fret, j) =>
-      fret.state.bgColor && incFrets.push(i*string.length + j)
-    )
-  )
-  return incFrets
-}
-
 const fretFilter = (matrix) =>
-  matrix.map(string=>string.filter(fret=>fret.state.bgColor))
+  matrix.map(string=>string.filter(fret=>fret.state.status==='selected'))
 
 export const initChord = (tuning, width, chord) => {
-  let fretMatrix = fretMatrixForChord(tuning, width, chord, true)
-  let includedAddresses = includedFrets(fretMatrix)
+  let fretMatrix = fretMatrixForChord(tuning, width, chord)
   let midiNotes = Chord.notes(chord).map(note => midi(note + '0') % 12)
   let chordShapes = getChordShapes(fretFilter(fretMatrix), midiNotes)
   // console.log('CS', chordShapes)
@@ -58,7 +47,6 @@ export const initChord = (tuning, width, chord) => {
     tuning,
     chord,
     fretMatrix,
-    includedAddresses,
     chordShapes,
     variationIndex: 0,
     viewMode: 'Chord Position'
