@@ -13,18 +13,20 @@ import {initChord} from './src/utils/chordShapes'
 import { isEmpty, cloneDeep, range } from 'lodash/fp'
 import { Note, Chord, Interval } from 'tonal'
 import {tokenize} from '/src/utils/tokenize'
+import {fretTruth} from '/src/utils/frets'
 import {ivlColors, tonicColors} from '/src/theme/colors'
-
 
 const Container = styled.View`
   display: flex;
   flex-direction: column;
 `
 const maxFretSpan = 7
-const width  = 13
+const defaultWidth  = 13
 const tuning = ['E2', 'A2', 'D3', 'G3', 'B3', 'E4']
 const emptyFretMatrix = (tuning, width) =>
   fretMatrixForChord(tuning, width, tonic='')
+
+
 
 export default class App extends Component {
   constructor(props) {
@@ -33,8 +35,10 @@ export default class App extends Component {
           fretMatrix,
           chordShapes,
           variationIndex,
-          viewMode } = initChord(tuning, width, 'C')
-          //TODO cant init 'C9'
+          viewMode,
+          width,
+          selectionMatrix } = initChord(tuning, defaultWidth, 'C')
+
     this.state = {
       settings: {
         showNotes: false,
@@ -52,7 +56,10 @@ export default class App extends Component {
       allShapes: chordShapes,
       viewMode,
       tuning,
-      width
+      width,
+      selectionMatrix,
+      incOctaves: true,
+      activeStrings: [true,true,true,true,true,true]
     }
   }
 
@@ -62,22 +69,26 @@ export default class App extends Component {
   onFretClick = (fret) => {
     // this.selectPitch(midi)
     console.log(fret);
-    this.showThisNote(fret.midi)
+    this.showThisNote(fret)
   }
 
-  showThisNote = (midi) => {
-    let noteOctaves
+  showThisNote = (clickedFret) => {
+    let {incOctaves, viewMode, selectionMatrix} = this.state
     this.setState({
-      settings: {
-        showNotes: false,
-        showPositions: false,
-        showOctaves: true,
-      }
-    })
-    this.setState({
-      fretMatrix: fretMatrixForPc(this.state.tuning, this.state.width, Note.fromMidi(midi))
+      viewMode: 'select',
+      selectionMatrix: this.state.fretMatrix.map( (stg, i) =>
+        stg.map( (fret,j) =>
+          fretTruth(fret, clickedFret, incOctaves, viewMode, selectionMatrix[i][j])
+        )
+      )
     })
   }
+  changeSettings = ({incOctaves}) => {
+    console.log({incOctaves});
+    this.setState({incOctaves})
+  }
+
+
 
   fretMatch = (fret1, fret2) =>
     fret1.loc.crd===fret2.loc.crd && fret1.loc.pos===fret2.loc.pos
@@ -96,10 +107,14 @@ export default class App extends Component {
     let index = reset ? 0 : this.state.variationIndex + increment
     if (index < 0) index = vars
     if (index > vars) index = 0
+    let thisShape = this.state.chordShapes[index]
+    let newSelect = this.state.fretMatrix.map((stg, i) =>
+      stg.map( (fret,j) =>
+        thisShape.some( chord => chord.loc.crd===i && chord.loc.pos===j)
+      )
+    )
     this.setState({
-      fretMatrix:  updateFretMatrix(this.state.chordShapes[index])(
-        emptyFretMatrix(this.state.tuning, this.state.width)
-      ),
+      selectionMatrix: newSelect,
       variationIndex: index
     })
   }
@@ -118,26 +133,31 @@ export default class App extends Component {
     this.setState({ fretMatrix: fretMatrixForChord(tuning, width, chord) })
   }
 
-  fretFilter = ({fretRange, maxFretSpan, incZeroFret}) => {
+  fretFilter = ({fretRange, maxFretSpan, incZeroFret, activeStrings}) => {
     fretRange = fretRange || this.state.fretRange
     maxFretSpan = maxFretSpan || this.state.maxFretSpan
+    activeStrings = activeStrings || this.state.activeStrings
     incZeroFret = incZeroFret===undefined ? this.state.incZeroFret : incZeroFret
-    console.log({fretRange, maxFretSpan, incZeroFret})
+
+    console.log({fretRange, maxFretSpan, incZeroFret, activeStrings})
 
     let newShapes = this.state.allShapes
     newShapes = this.state.allShapes.filter(frets => {
       let positions = frets.map(fret=>fret.loc.pos)
         .filter( pos => !(incZeroFret && pos===0))
+      let crds = frets.map(fret=>fret.loc.crd)
       let spanOk = (Math.max(...positions) - Math.min(...positions)) < maxFretSpan
       let rangeOk = positions.every( pos => pos > fretRange[0] && pos < fretRange[1])
-      return spanOk && rangeOk
+      let stringOk = crds.every( crd => activeStrings[crd]!==false)
+      return spanOk && rangeOk && stringOk
     })
 
     this.setState({
       chordShapes: newShapes,
       incZeroFret,
       maxFretSpan,
-      fretRange
+      fretRange,
+      activeStrings
     })
 
     this.getCombo(false, true)
@@ -149,10 +169,13 @@ export default class App extends Component {
       <Container>
         <Fretboard
           isClickable
+          activeStrings={this.state.activeStrings}
+          selectionMatrix={this.state.selectionMatrix}
           settings={this.state.settings}
           fretMatrix={this.state.fretMatrix}
           colorArr={colorArr}
           onFretClick={(loc, midi) => this.onFretClick(loc, midi)}
+          fretFilter={this.fretFilter}
           setFretboardHeight={height=>this.setState({fbHeight: height})}
         />
         {!!this.state.fbHeight &&
@@ -171,6 +194,9 @@ export default class App extends Component {
             tuning={this.state.tuning}
             showAll={this.showAll}
             colorArr={colorArr}
+            viewMode={this.state.viewMode}
+            incOctaves={this.state.incOctaves}
+            changeSettings={this.changeSettings}
         />}
 
       </Container>

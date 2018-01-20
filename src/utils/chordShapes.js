@@ -46,10 +46,12 @@ export const initChord = (tuning, width, chord) => {
   return {
     tuning,
     chord,
+    width,
     fretMatrix,
     chordShapes,
-    variationIndex: 0,
-    viewMode: 'Chord Position'
+    viewMode: 'chord',
+    selectionMatrix: fretMatrix.map(stg => stg.map(fret => fret.state.status==='selected')),
+    variationIndex: 0
   }
 }
 

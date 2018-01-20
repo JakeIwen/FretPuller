@@ -18,9 +18,7 @@ export const displayName = pc => (
 )
 
 const content = (pc, showNotes, selectionText, isSelected, isNut) => {
-  if (isNut)
-    return selectionText
-  if (isSelected && (selectionText !== '') )
+  if (isNut || isSelected)
     return selectionText
   if (showNotes) return displayName(pc)
     return '\u00A0'

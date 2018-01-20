@@ -43,11 +43,16 @@ export default class Fretboard extends Component {
     const cuerda = reverse(fretMatrix).map((crd,i) =>
       <String
         key={`string-${i}`}
+        stringNum={i}
         frets={crd}
         flexArr={flexArr}
+        selectionArr={reverse(this.props.selectionMatrix)[i]}
         settings={mergedSettings}
         colorArr={otherProps.colorArr}
-        onFretClick={otherProps.onFretClick} />
+        onFretClick={otherProps.onFretClick}
+        activeStrings={this.props.activeStrings}
+        fretFilter={this.props.fretFilter}
+      />
     )
 
     return (

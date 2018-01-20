@@ -111,7 +111,6 @@ export default class Selections extends Component {
   render(){
   // console.log({props});
     let {chord, tonic, sf, type, activeSelector, extensions, fullChord} = this.state
-    console.log('selections render', this.state);
     return (
       <Row flex flexStart>
         <TouchableOpacity

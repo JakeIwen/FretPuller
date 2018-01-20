@@ -11,6 +11,7 @@ const octForMidi = midi => compose(Note.oct, Note.fromMidi)(midi)
 const pcForMidi = midi => compose(Note.pc,Note.fromMidi)(midi)
 console.log('octmidi', octForMidi(60));
 console.log(Note.oct('C4'), Note.fromMidi(60));
+
 const Outer = styled(TouchableOpacity)`
   flex: ${props => props.flex};
 `
@@ -26,7 +27,7 @@ export default class Fret extends Component {
   }
 
   render() {
-    let { fret, settings, onFretClick, flex , bgColor} = this.props
+    let { fret, settings, onFretClick, flex , bgColor, selected} = this.props
     const { showOctaves, showNotes, viewMode } = settings
     const { midi, loc, state: { status, selectionText} } = fret
     let text = loc.pos===0 ? Note.fromMidi(midi).slice(0,-1) : selectionText
@@ -35,9 +36,10 @@ export default class Fret extends Component {
       <Outer
         flex={flex}
         onPress={()=>onFretClick(fret)}
+        onLongPress={()=>this.props.toggleString(fret.loc.crd)}
       >
         <Inner
-          selected={status === 'selected'}
+          selected={selected}
           bgColor={bgColor}
         >
           <Content
@@ -45,7 +47,7 @@ export default class Fret extends Component {
             showNotes={showNotes}
             selectionText={text}
             isNut={loc.pos===0}
-            isSelected={status === 'selected'}
+            isSelected={selected}
           />
         </Inner>
       </Outer>

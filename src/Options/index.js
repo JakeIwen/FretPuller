@@ -43,10 +43,6 @@ export default class Options extends Component {
     }
   }
 
-  componentWillReceiveProps(newProps) {
-    console.log('new tuning', newProps.tuning)
-  }
-
   sliderValuesChange = (vals) => {
     let snappedVals = vals.map(val => closest(this.state.sliderStops, val))
     console.log({snappedVals})
@@ -126,6 +122,11 @@ export default class Options extends Component {
               label='Allow Open Strings'
               onChange={val => this.props.fretFilter({incZeroFret: val})}
               checked={this.props.incZeroFret}
+            />
+            <CheckBox
+              label='Select Octaves'
+              onChange={val => this.props.changeSettings({incOctaves: !val})}
+              checked={this.props.incOctaves}
             />
             <ChangeTuning
               title='CHANGE TUNING'

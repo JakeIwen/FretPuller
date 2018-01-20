@@ -6,8 +6,7 @@ import { Button } from 'react-native-elements'
 
 export const Container = styled(Col)`
   width: 100%;
-  ${'' /* height: 65%; */}
-  height: ${props => console.log('propsheight', props.height) && props.height};
+  height: ${props => props.height};
   border: 2px solid green;
   background-color: #FDF3E7;
 `
