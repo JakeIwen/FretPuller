@@ -59,13 +59,13 @@ export default class Options extends Component {
     return (
       <Container height={Dimensions.get('window').height - this.props.fbHeight}>
         <Slider
-          sliderLength={Dimensions.get('window').width}
+          sliderLength={Dimensions.get('window').width-30}
           values={this.state.sliderValue}
           min={0}
           max={100}
           step={1}
           onValuesChangeFinish={this.sliderValuesChange}
-          containerStyle={{ height: 15 }}
+          containerStyle={{ height: 15, paddingLeft: 30 }}
         />
         <Row flex>
           <Selections
@@ -128,6 +128,16 @@ export default class Options extends Component {
               onChange={val => this.props.changeSettings({incOctaves: !val})}
               checked={this.props.incOctaves}
             />
+            <CheckBox
+              label='Keep All Frets'
+              onChange={val => this.props.changeSettings({keepAllFrets: !val})}
+              checked={this.props.keepAllFrets}
+            />
+            {/* <CheckBox
+              label='Choose Strings'
+              onChange={this.props.editStrings}
+              checked={this.props.chooseStrings}
+            /> */}
             <ChangeTuning
               title='CHANGE TUNING'
               onPress={()=>this.setState({showTuningModal: true})}

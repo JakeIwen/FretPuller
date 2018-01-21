@@ -23,10 +23,6 @@ const Container = styled.View`
 const maxFretSpan = 7
 const defaultWidth  = 13
 const tuning = ['E2', 'A2', 'D3', 'G3', 'B3', 'E4']
-const emptyFretMatrix = (tuning, width) =>
-  fretMatrixForChord(tuning, width, tonic='')
-
-
 
 export default class App extends Component {
   constructor(props) {
@@ -40,15 +36,11 @@ export default class App extends Component {
           selectionMatrix } = initChord(tuning, defaultWidth, 'C')
 
     this.state = {
-      settings: {
-        showNotes: false,
-        showPositions: false,
-        showOctaves: false,
-      },
       maxFretSpan,
       fretRange: [0, width],
       incZeroFret: true,
       fbHeight: 0,
+      nutWidth: 0,
       fretMatrix,
       chord,
       variationIndex,
@@ -58,8 +50,10 @@ export default class App extends Component {
       tuning,
       width,
       selectionMatrix,
+      fullSelectionMatrix: selectionMatrix,
       incOctaves: true,
-      activeStrings: [true,true,true,true,true,true]
+      keepAllFrets: true,
+      activeStrings: [true,true,true,true,true,true],
     }
   }
 
@@ -83,12 +77,11 @@ export default class App extends Component {
       )
     })
   }
-  changeSettings = ({incOctaves}) => {
-    console.log({incOctaves});
-    this.setState({incOctaves})
+
+  changeSettings = ({incOctaves, keepAllFrets}) => {
+    incOctaves!==undefined && this.setState({incOctaves})
+    keepAllFrets!==undefined && this.setState({keepAllFrets})
   }
-
-
 
   fretMatch = (fret1, fret2) =>
     fret1.loc.crd===fret2.loc.crd && fret1.loc.pos===fret2.loc.pos
@@ -171,12 +164,12 @@ export default class App extends Component {
           isClickable
           activeStrings={this.state.activeStrings}
           selectionMatrix={this.state.selectionMatrix}
-          settings={this.state.settings}
+          defaultMatrix={this.state.keepAllFrets && this.state.fullSelectionMatrix}
           fretMatrix={this.state.fretMatrix}
           colorArr={colorArr}
           onFretClick={(loc, midi) => this.onFretClick(loc, midi)}
           fretFilter={this.fretFilter}
-          setFretboardHeight={height=>this.setState({fbHeight: height})}
+          setFretboardDims={dims=>this.setState(dims)}
         />
         {!!this.state.fbHeight &&
           <Options
@@ -196,7 +189,9 @@ export default class App extends Component {
             colorArr={colorArr}
             viewMode={this.state.viewMode}
             incOctaves={this.state.incOctaves}
+            keepAllFrets={this.state.keepAllFrets}
             changeSettings={this.changeSettings}
+
         />}
 
       </Container>

@@ -5380,6 +5380,10 @@ rc@^1.0.1, rc@^1.1.2, rc@^1.1.6, rc@^1.1.7:
     minimist "^1.2.0"
     strip-json-comments "~2.0.1"
 
+react-animations@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/react-animations/-/react-animations-1.0.0.tgz#d96222920dfeabec8984d9b2ef2c5a5aadb40f06"
+
 react-clone-referenced-element@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/react-clone-referenced-element/-/react-clone-referenced-element-1.0.1.tgz#2bba8c69404c5e4a944398600bcc4c941f860682"
@@ -5444,6 +5448,12 @@ react-native-gesture-handler@1.0.0-alpha.30:
   dependencies:
     prop-types "^15.5.10"
 
+react-native-gesture-responder@^0.1.1:
+  version "0.1.1"
+  resolved "https://registry.yarnpkg.com/react-native-gesture-responder/-/react-native-gesture-responder-0.1.1.tgz#802552d8eb7153c0d81a396e98f4b80b404b6798"
+  dependencies:
+    react-timer-mixin "^0.13.3"
+
 react-native-maps@0.17.1:
   version "0.17.1"
   resolved "https://registry.yarnpkg.com/react-native-maps/-/react-native-maps-0.17.1.tgz#ab2236341fd984dac8864202ae55331bc262f60c"
@@ -5503,6 +5513,18 @@ react-native-scripts@1.8.1:
   dependencies:
     color "^2.0.1"
     lodash "^4.16.6"
+
+react-native-swiper@^1.5.13:
+  version "1.5.13"
+  resolved "https://registry.yarnpkg.com/react-native-swiper/-/react-native-swiper-1.5.13.tgz#fa695cd4ab77b9a9df2d2bfee38ea7274dd07a2e"
+  dependencies:
+    prop-types "^15.5.10"
+
+react-native-switch@^1.3.0:
+  version "1.3.0"
+  resolved "https://registry.yarnpkg.com/react-native-switch/-/react-native-switch-1.3.0.tgz#a037e5793c3d9ee09c67f7485eb5008491267962"
+  dependencies:
+    prop-types "^15.6.0"
 
 react-native-vector-icons@4.4.2:
   version "4.4.2"
@@ -5600,7 +5622,7 @@ react-test-renderer@16.0.0:
     fbjs "^0.8.16"
     object-assign "^4.1.1"
 
-react-timer-mixin@^0.13.2:
+react-timer-mixin@^0.13.2, react-timer-mixin@^0.13.3:
   version "0.13.3"
   resolved "https://registry.yarnpkg.com/react-timer-mixin/-/react-timer-mixin-0.13.3.tgz#0da8b9f807ec07dc3e854d082c737c65605b3d22"
 

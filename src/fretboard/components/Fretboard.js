@@ -33,7 +33,6 @@ export default class Fretboard extends Component {
   render() {
     let {fretMatrix, ...otherProps} = this.props
     const mergedTheme = merge(defaultTheme, otherProps.theme)
-    const mergedSettings = merge(defaultSettings, otherProps.settings)
     const numFrets = fretMatrix[0].length
     let flexArr = [
       widthCalc(numFrets, numFrets),
@@ -46,12 +45,12 @@ export default class Fretboard extends Component {
         stringNum={i}
         frets={crd}
         flexArr={flexArr}
-        selectionArr={reverse(this.props.selectionMatrix)[i]}
-        settings={mergedSettings}
+        selectionArr={reverse(otherProps.selectionMatrix)[i]}
         colorArr={otherProps.colorArr}
         onFretClick={otherProps.onFretClick}
-        activeStrings={this.props.activeStrings}
-        fretFilter={this.props.fretFilter}
+        activeStrings={otherProps.activeStrings}
+        defaultMatrix={reverse(otherProps.defaultMatrix)[i]}
+        fretFilter={otherProps.fretFilter}
       />
     )
 
@@ -59,7 +58,9 @@ export default class Fretboard extends Component {
       <ThemeProvider theme={mergedTheme}>
         <Board
           onLayout={ event =>
-            this.props.setFretboardHeight(event.nativeEvent.layout.height)
+            this.props.setFretboardDims({
+              fbHeight: event.nativeEvent.layout.height
+            })
           }>
           <Positions flexArr={flexArr}/>
           {cuerda}
@@ -71,7 +72,6 @@ export default class Fretboard extends Component {
 
 Fretboard.propTypes = {
   fretMatrix: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.shape({}))),
-  settings: PropTypes.shape({}),
   onFretClick: PropTypes.func,
   theme: PropTypes.shape({}),
 }
