@@ -33,7 +33,8 @@ export default class App extends Component {
           variationIndex,
           viewMode,
           width,
-          selectionMatrix } = initChord(tuning, defaultWidth, 'C')
+          selectionMatrix,
+          fullSelectionMatrix } = initChord(tuning, defaultWidth, 'C')
 
     this.state = {
       maxFretSpan,
@@ -50,7 +51,7 @@ export default class App extends Component {
       tuning,
       width,
       selectionMatrix,
-      fullSelectionMatrix: selectionMatrix,
+      fullSelectionMatrix,
       incOctaves: true,
       keepAllFrets: true,
       activeStrings: [true,true,true,true,true,true],
@@ -80,7 +81,7 @@ export default class App extends Component {
 
   changeSettings = ({incOctaves, keepAllFrets}) => {
     incOctaves!==undefined && this.setState({incOctaves})
-    keepAllFrets!==undefined && this.setState({keepAllFrets})
+    keepAllFrets!==undefined && this.setState({keepAllFrets}) && console.log({keepAllFrets});
   }
 
   fretMatch = (fret1, fret2) =>
@@ -134,14 +135,15 @@ export default class App extends Component {
 
     console.log({fretRange, maxFretSpan, incZeroFret, activeStrings})
 
-    let newShapes = this.state.allShapes
-    newShapes = this.state.allShapes.filter(frets => {
-      let positions = frets.map(fret=>fret.loc.pos)
-        .filter( pos => !(incZeroFret && pos===0))
-      let crds = frets.map(fret=>fret.loc.crd)
-      let spanOk = (Math.max(...positions) - Math.min(...positions)) < maxFretSpan
+    let newShapes = this.state.allShapes.filter(fretsInChord => {
+      let positions = fretsInChord.map(fret=>fret.loc.pos)
+      let noZeros = positions.filter( pos => !(incZeroFret && pos===0))
+      let crds = fretsInChord.map(fret=>fret.loc.crd)
+      let spanOk = (Math.max(...noZeros) - Math.min(...noZeros)) < maxFretSpan
       let rangeOk = positions.every( pos => pos > fretRange[0] && pos < fretRange[1])
-      let stringOk = crds.every( crd => activeStrings[crd]!==false)
+      let stringOk = crds.every( crd => {
+        return activeStrings[crd]
+      })
       return spanOk && rangeOk && stringOk
     })
 
@@ -164,12 +166,12 @@ export default class App extends Component {
           isClickable
           activeStrings={this.state.activeStrings}
           selectionMatrix={this.state.selectionMatrix}
-          defaultMatrix={this.state.keepAllFrets && this.state.fullSelectionMatrix}
+          defaultMatrix={this.state.keepAllFrets &&  this.state.fullSelectionMatrix}
           fretMatrix={this.state.fretMatrix}
           colorArr={colorArr}
           onFretClick={(loc, midi) => this.onFretClick(loc, midi)}
           fretFilter={this.fretFilter}
-          setFretboardDims={dims=>this.setState(dims)}
+          setFretboardDims={dims => this.setState(dims)}
         />
         {!!this.state.fbHeight &&
           <Options
@@ -191,7 +193,6 @@ export default class App extends Component {
             incOctaves={this.state.incOctaves}
             keepAllFrets={this.state.keepAllFrets}
             changeSettings={this.changeSettings}
-
         />}
 
       </Container>

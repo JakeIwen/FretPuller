@@ -38,14 +38,33 @@ export const ChangeTuning = styled(Button)`
 // export const SelectChordFlex = styled(SelectChord)`
 //   width: 25%;
 // `
-
-
 export const SelectionButton = styled.TouchableHighlight`
   display: flex;
   align-items: center;
   border: ${props => props.activated ? '2px solid red' : '0'}
   ${'' /* padding: 0 10px; */}
 
+`
+
+export const sButton = (props) =>
+  <Button
+    {...props}
+    raised
+    // outline
+    fontWeight={'600'}
+    buttonStyle={{
+      // padding: '2 auto'
+      margin: 2,
+      paddingTop: 2,
+      paddingBottom: 2,
+    }}
+  />
+
+export const SelectionOption = styled(sButton)`
+  ${'' /* display: flex; */}
+  ${'' /* align-items: center; */}
+  border: ${props => props.activated ? '2px solid red' : '0'}
+  ${'' /* padding: 0 10px; */}
 `
 export const Txt = styled.Text`
   font-size: 24;

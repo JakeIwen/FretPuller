@@ -18,7 +18,7 @@ const defaultSettings = {
 const widthCalc = (pos, fbWidth) =>
   ((Math.pow(2,(1/fbWidth)) - 1) / Math.pow(2,((pos+1)/fbWidth))) * 100 * 2
 
-const Board =  styled.View`
+const Board = styled.View`
   width: 100%;
 `
 
@@ -48,8 +48,8 @@ export default class Fretboard extends Component {
         selectionArr={reverse(otherProps.selectionMatrix)[i]}
         colorArr={otherProps.colorArr}
         onFretClick={otherProps.onFretClick}
-        activeStrings={otherProps.activeStrings}
-        defaultMatrix={reverse(otherProps.defaultMatrix)[i]}
+        activeStrings={reverse(otherProps.activeStrings)}
+        defaultMatrix={reverse(otherProps.defaultMatrix)[i] || []}
         fretFilter={otherProps.fretFilter}
       />
     )

@@ -6,6 +6,7 @@ import { Chord } from '/src/lib/tonal.min.js'
 import {TouchableOpacity, Text} from 'react-native'
 import { SelectionButton, Txt } from '/src/styled/options'
 import ChordInfo from './ChordInfo'
+import {ScrollView} from 'react-native'
 
 const sfList = ['b', '#']
 const tonicList = ["C", "D", "E", "F", "G", "A", "B"]
@@ -43,7 +44,6 @@ export default class Selections extends Component {
     }
     tonic = tonic || this.state.tonic
     let exists = Chord.exists(extArr.join(''))
-    console.log({exists}, extArr.join(''))
     this.setState({
       tonic,
       sf,
@@ -61,6 +61,7 @@ export default class Selections extends Component {
     let sIndex = activeSelector.slice(-1)
     return (
       <Col>
+        <ScrollView>
         {activeSelector==='tonic' && <RadioSelect
           options={tonicList}
           selectedOption={tonic}
@@ -78,13 +79,13 @@ export default class Selections extends Component {
             : this.setChord({extensions: extensions.slice(0,sIndex)})
           }/>
         }
+        </ScrollView>
       </Col>
     )
   }
   extOptions = (currentName) => {
     let {extensions} = this.state
     // let alias = type && typeAlias[typeList.indexOf(type)]
-    console.log({currentName})
     let possibilities = currentName
       ? allNames.filter(name => name.startsWith(currentName))
         .map(name => name.replace(currentName, ''))
@@ -109,7 +110,6 @@ export default class Selections extends Component {
   }
 
   render(){
-  // console.log({props});
     let {chord, tonic, sf, type, activeSelector, extensions, fullChord} = this.state
     return (
       <Row flex flexStart>

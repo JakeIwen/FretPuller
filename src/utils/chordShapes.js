@@ -43,6 +43,7 @@ export const initChord = (tuning, width, chord) => {
   let midiNotes = Chord.notes(chord).map(note => midi(note + '0') % 12)
   let chordShapes = getChordShapes(fretFilter(fretMatrix), midiNotes)
   // console.log('CS', chordShapes)
+  let selectionMatrix = fretMatrix.map(stg => stg.map(fret => fret.state.status==='selected'))
   return {
     tuning,
     chord,
@@ -50,7 +51,8 @@ export const initChord = (tuning, width, chord) => {
     fretMatrix,
     chordShapes,
     viewMode: 'chord',
-    selectionMatrix: fretMatrix.map(stg => stg.map(fret => fret.state.status==='selected')),
+    selectionMatrix,
+    fullSelectionMatrix: selectionMatrix,
     variationIndex: 0
   }
 }

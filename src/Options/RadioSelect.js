@@ -4,7 +4,7 @@ import { RadioButtons } from 'react-native-radio-buttons'
 import { TouchableHighlight, Text, View } from 'react-native'
 import { Row } from '/src/styled'
 import {accFormat} from '/src/utils/format'
-import { SelectionButton, Txt } from '/src/styled/options'
+import { SelectionOption, Txt } from '/src/styled/options'
 
 const RenderContainer = styled.View`
   display: flex;
@@ -15,17 +15,22 @@ const RenderContainer = styled.View`
 
 export default class RadioSelect extends Component {
 
-  setSelectedOption = (selectedOption) => {
-    let unselect = selectedOption===this.props.selectedOption
-    this.props.onValueChange(unselect ? '' : selectedOption)
+  setSelectedOption = (newSelectedOption) => {
+    let {preventUnselect, selectedOption, onValueChange} = this.props
+    let unselect = !preventUnselect && selectedOption===newSelectedOption
+    onValueChange(unselect ? '' : newSelectedOption)
   }
 
   renderOption = (option, selected, onSelect, index) => (
-    <SelectionButton onPress={()=>this.setSelectedOption(option)} key={index}>
-      <Txt selected={selected}>
-        {accFormat(option)}
-      </Txt>
-    </SelectionButton>
+    // <SelectionOption onPress={()=>this.setSelectedOption(option)} key={index}>
+    //   <Txt selected={selected}>
+    //     {accFormat(option)}
+    //   </Txt>
+    // </SelectionOption>
+    <SelectionOption
+      onPress={()=>this.setSelectedOption(option)}
+      key={index}
+      title={accFormat(option)} />
   )
 
   renderContainer = (optionNodes) =>
