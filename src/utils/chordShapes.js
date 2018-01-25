@@ -14,7 +14,7 @@ const getChordShapes = (activeFretMatrix, midis, fretRange = 7) => {
         fretNums.push(fret.loc.pos)
       })
       midis.every(midi=>chordMidis.includes(midi))
-        && (Math.max(...fretNums) - Math.min(...fretNums)) < fretRange
+        && (fretNums.includes(0) || (Math.max(...fretNums) - Math.min(...fretNums)) < fretRange)
         && chordShapes.push(c)
     }
   }
@@ -50,6 +50,7 @@ export const initChord = (tuning, width, chord) => {
     width,
     fretMatrix,
     chordShapes,
+    allShapes: chordShapes,
     viewMode: 'chord',
     selectionMatrix,
     fullSelectionMatrix: selectionMatrix,

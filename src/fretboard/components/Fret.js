@@ -9,6 +9,7 @@ import {animateLoop, interpolateFade, hexToRGBGray} from '/src/utils/bgFade'
 const Outer = styled(TouchableOpacity)`
   flex: ${props => props.flex};
   border: 1px solid gray;
+  borderRightWidth: ${props => props.isNut ? '10px' : '1px'};
   margin: -1px;
 `
 const Content = styled.Text`
@@ -39,7 +40,11 @@ export default class Fret extends Component {
       : hexToRGBGray(bgColor)
 
     return (
-      <Outer flex={flex} onPress={()=>onFretClick(fret)} >
+      <Outer
+        flex={flex}
+        onPress={()=>onFretClick(fret)}
+        isNut={fret.loc.pos===0}
+        >
         <Animated.View
           style={{backgroundColor: (selected && color) || `transparent`}} >
           <Content>{text}</Content>

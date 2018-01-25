@@ -11,13 +11,14 @@ const PosText = styled.Text`
   flex: ${props => props.flex}
 `
 
-const positions = ['', '', '', 'III', '', 'V', '', 'VII', '', '', 'X', '',
+const positions = ['', '', '', '', 'III', '', 'V', '', 'VII', '', '', 'X', '',
   'XII', '', '', 'XV', '', 'XVII', '', 'IXX']
 
 // <Nut visible={false} />
 
 const Positions = ({ flexArr }) =>
   <Row dial={5} >
+    <PosText style={{width: 30}} />
     {flexArr.map((pos, i) =>
       <PosText flex={flexArr[i]} key={`pos-${i}`}>
         {positions[i]}

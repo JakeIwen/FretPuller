@@ -78,8 +78,8 @@ export default class Options extends Component {
                   <NavText>&larr;</NavText>
                 </TouchableOpacity>
                 <Text>
+                  Variation <Br/>
                   {this.props.variationIndex+1} of {this.props.numVariations}
-                  <Br/>possible <Br/>variations
                 </Text>
                 <TouchableOpacity onPress={()=>this.props.newVariation()} >
                   <NavText>&rarr;</NavText>
@@ -113,11 +113,11 @@ export default class Options extends Component {
               onChange={val => this.props.fretFilter({incZeroFret: !val})}
               checked={this.props.incZeroFret}
             />
-            <CheckBox
+            {/* <CheckBox
               label='Select Octaves'
               onChange={val => this.props.changeSettings({incOctaves: !val})}
               checked={this.props.incOctaves}
-            />
+            /> */}
             <CheckBox
               label='Show All Included Frets'
               onChange={val => this.props.changeSettings({keepAllFrets: !val})}
@@ -163,43 +163,3 @@ export default class Options extends Component {
     )
   }
 }
-
-// setChord = ({tonic, sf, type, extensions}) => {
-//   type = type ? type : this.state.type
-//   let extArr = extensions ? extensions : this.state.extensions
-//   tonic = tonic || this.state.tonic
-//   sf = sf===undefined ? this.state.sf : sf
-//   // sf = sf || this.state.sf
-//   let found = findChordFromNames( {tonic, sf, type, extArr} )
-//   this.setState({
-//     tonic,
-//     sf,
-//     chord: found,
-//     type,
-//     extensions: extArr,
-//   })
-//   found!=='unknown' && this.props.setChord(found)
-//   setTimeout(()=>console.log('new options st', this.state), 500);
-//
-// }
-
-{/* <TouchableOpacity onPress={this.props.showAll} >
-  <NavText>Show All</NavText>
-</TouchableOpacity> */}
-{/*
-  let pickerVal = (tunings[stringsOnly.indexOf(
-    this.props.tuning.join(''))] || {}).name
-    || 'custom'
-
-  <Picker
-  selectedValue={pickerVal}
-  onValueChange={(val, index) => val==='Custom'
-    ? this.setState({showTuningModal: true})
-    : this.props.changeFretboard({tuning: tunings[index].value})
-  }
->
-  {tunings.map((tng, i) =>
-    <Picker.Item key={i} label={accFormat(tng.name)} value={tng.name} />
-  )}
-
-</Picker> */}

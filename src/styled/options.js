@@ -28,16 +28,6 @@ export const OptionSectionCol = styled(Col)`
 export const ChangeTuning = styled(Button)`
   align-self: flex-end;
 `
-
-// const LeftArr = () =>
-//   <TouchableOpacity
-//     onPress={ ()=>this.props.fretFilter({maxFretSpan: this.props.maxFretSpan-1})}>
-//     <NavText>&larr;</NavText>
-//   </TouchableOpacity>
-
-// export const SelectChordFlex = styled(SelectChord)`
-//   width: 25%;
-// `
 export const SelectionButton = styled.TouchableHighlight`
   display: flex;
   align-items: center;

@@ -4,12 +4,11 @@ import RadioSelect from './RadioSelect'
 import {Row, Col} from '/src/styled'
 import { Chord } from '/src/lib/tonal.min.js'
 import {TouchableOpacity, Text} from 'react-native'
-import { SelectionButton, Txt } from '/src/styled/options'
+import { SelectionButton, ResetButton, Txt } from '/src/styled/selections'
 import ChordInfo from './ChordInfo'
 import {ScrollView} from 'react-native'
 import {indexLoop} from '/src/utils/indexLoop'
 
-const sfList = ['b', '#']
 const tonicList = ["C", "D", "E", "F", "G", "A", "B"]
 const preferredList = ["C", "C#", "D", "Eb", "E", "F", "F#", "G", "Ab", "A", "Bb", "B"]
 const typeList = ['M', 'm', 'o', 'aug']
@@ -23,25 +22,22 @@ export default class Selections extends Component {
       tonic: 'C',
       extensions: [],
       chord: 'C',
-      sf: '',
       fullChord: 'C',
       activeSelector: 'tonic',
     }
   }
 
-
-  setChord = ({tonic, sf, extensions}) => {
-    sf = sf===undefined ? this.state.sf : sf
+  setChord = ({tonic, extensions}) => {
     let newChord, activeSelector, extArr
     if (tonic) {
-      newChord = tonic + sf
+      newChord = tonic
       activeSelector = 'extensions0'
     } else {
       tonic = this.state.tonic
     }
     if (extensions) {
       extArr = extensions
-      newChord = tonic + sf + extArr.join('')
+      newChord = tonic + extArr.join('')
     } else {
       extArr = this.state.extensions
     }
@@ -49,7 +45,6 @@ export default class Selections extends Component {
     let exists = Chord.exists(extArr.join(''))
     this.setState({
       tonic,
-      sf,
       fullChord: exists ? newChord : this.state.fullChord,
       chord: exists ? newChord : this.state.chord,
       extensions: extArr,
@@ -66,6 +61,7 @@ export default class Selections extends Component {
       <Col>
         <ScrollView>
         {activeSelector==='tonic' && <RadioSelect
+          preventUnselect
           options={tonicList}
           selectedOption={tonic}
           onValueChange={newTonic => newTonic===this.state.tonic
@@ -109,10 +105,10 @@ export default class Selections extends Component {
         lastPoss = poss
       })
     }
-    return res
+    return res.filter(item=>!!item)
   }
 
-  reset() { this.setChord({extensions: []}) }
+  reset = () => this.setChord({extensions: []})
 
   cycleTonic(tonic, diff) {
     let index = preferredList.indexOf(tonic)
@@ -120,14 +116,38 @@ export default class Selections extends Component {
     this.setChord({tonic: preferredList[index]})
   }
 
+  chordElements = () => (
+    <Row style={{width: 120}}>
+      <SelectionButton
+        activated={this.state.activeSelector==='tonic'}
+        onPress={() => this.setState({activeSelector: 'tonic'}) }
+      >
+        <Txt>{this.state.tonic}</Txt>
+      </SelectionButton>
+      {this.state.extensions.concat('').map((ext,i) =>
+        <SelectionButton
+          key={i}
+          activated={this.state.activeSelector===('extensions' + i)}
+          onPress={() => this.setState({activeSelector: 'extensions' + i})}
+        >
+          <Txt>{ext}</Txt>
+        </SelectionButton>
+      )}
+    </Row>
+  )
+
   render(){
-    let {chord, tonic, sf, type, activeSelector, extensions, fullChord} = this.state
+    let {tonic, fullChord} = this.state
     return (
-      <Row flex spaceBetween>
+      <Row flex>
         <Col>
-          <TouchableOpacity onPress={this.reset}>
-            <Txt>{"RESET"}</Txt>
-          </TouchableOpacity>
+          <ChordInfo colorArr={this.props.colorArr} chord={fullChord} />
+          <ResetButton title='RESET' onPress={this.reset} />
+        </Col>
+        <Col>
+          {this.chordElements()}
+        </Col>
+        <Col flex>
           <Row spaceAround>
             <TouchableOpacity onPress={() => this.cycleTonic(tonic, -1)}>
               <Txt>{'\u266D'}</Txt>
@@ -136,27 +156,8 @@ export default class Selections extends Component {
               <Txt>{'\u266F'}</Txt>
             </TouchableOpacity>
           </Row>
-          <ChordInfo colorArr={this.props.colorArr} chord={fullChord} />
+          {this.optionList()}
         </Col>
-        <Row>
-          <SelectionButton
-            activated={activeSelector==='tonic'}
-            onPress={() => this.setState({activeSelector: 'tonic'}) }
-          >
-            <Txt>{tonic}</Txt>
-          </SelectionButton>
-          {extensions.concat('').map((ext,i) =>
-            <SelectionButton
-              key={i}
-              activated={activeSelector===('extensions' + i)}
-              onPress={() => this.setState({activeSelector: 'extensions' + i})}
-            >
-              <Txt>{ext}</Txt>
-            </SelectionButton>
-            )
-          }
-        </Row>
-        {this.optionList()}
       </Row>
     )
   }

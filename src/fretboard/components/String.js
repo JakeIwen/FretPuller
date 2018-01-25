@@ -6,7 +6,6 @@ import Fret from './Fret'
 import { Switch } from 'react-native-switch'
 import {ivlColors} from '/src/theme/colors'
 // import Swiper from 'react-native-swiper';
-import {createResponder} from 'react-native-gesture-responder';
 import { Text} from 'react-native'
 import { reverse, merge, range } from 'lodash/fp'
 

@@ -9,12 +9,12 @@ import {chordIntervals} from '/src/utils/chordIntervals'
 const Wrapper = styled.View`
   display: flex;
   flex-direction: column;
-  flex: 0.5;
+  flex: 1;
   margin: 5px;
 `
 const SelectedChord = styled.Text`
   font-size: 30;
-  align-self: center;
+  ${'' /* align-self: center; */}
 `
 const MockFret = styled.View`
   display: flex;
