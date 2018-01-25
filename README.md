@@ -1,6 +1,6 @@
 Pre Beta release; work in progress.
 
-##FretPuller
+## FretPuller
 
 A chord mapping utility for fretted instruments.
 
