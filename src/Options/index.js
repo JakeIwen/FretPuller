@@ -36,9 +36,9 @@ export default class Options extends Component {
       sliderStops,
       showTuningModal: false,
       sliderValue: [0,100],
-      tuningName: tunings.find( tuning =>
+      tuningName: (tunings.find( tuning =>
         tuning.value.join('')===this.props.tuning.join('')
-        ).name || 'Custom'
+      ) || {}).name || 'Custom'
     }
   }
 
@@ -72,54 +72,45 @@ export default class Options extends Component {
             setChord={this.props.setChord}
           />
           <RightOptions>
-            <OptionSection>
-              <TouchableOpacity onPress={()=>this.props.newVariation(true)} >
-                <NavText>&larr;</NavText>
-              </TouchableOpacity>
-              <Text>
-                {this.props.variationIndex+1} of {this.props.numVariations}
-                <Br/>possible <Br/>variations
-              </Text>
-              <TouchableOpacity onPress={()=>this.props.newVariation()} >
-                <NavText>&rarr;</NavText>
-              </TouchableOpacity>
-            </OptionSection>
-            <Modal
-              isVisible={this.state.showTuningModal}
-              supportedOrientations={['portrait', 'landscape']} >
-              <Tuning
-                initialTuning={this.props.tuning}
-                onSave={ tuning => {
-                  this.setState({showTuningModal: false})
-                  console.log('tuning onsave', tuning)
-                  this.props.changeFretboard({tuning})}
-                } />
-            </Modal>
-            <OptionSectionCol spaceBetween>
-              <Text>Max Fret Span</Text>
+            <OptionSection spaceAround>
               <Row>
-                <TouchableOpacity
-                  disabled={this.props.maxFretSpan < 3}
-                  onPress={ ()=>this.props.fretFilter({
-                    maxFretSpan: this.props.maxFretSpan-1,
-                    incZeroFret: true
-                  })}>
+                <TouchableOpacity onPress={()=>this.props.newVariation(true)} >
                   <NavText>&larr;</NavText>
                 </TouchableOpacity>
-                <NavText>{this.props.maxFretSpan}</NavText>
-                <TouchableOpacity
-                  disabled={this.props.maxFretSpan > 6}
-                   onPress={()=>this.props.fretFilter({
-                  maxFretSpan: this.props.maxFretSpan+1,
-                  incZeroFret: true
-                })} >
+                <Text>
+                  {this.props.variationIndex+1} of {this.props.numVariations}
+                  <Br/>possible <Br/>variations
+                </Text>
+                <TouchableOpacity onPress={()=>this.props.newVariation()} >
                   <NavText>&rarr;</NavText>
                 </TouchableOpacity>
               </Row>
-            </OptionSectionCol>
+              <Col spaceBetween>
+                <Text>Max Fret Span</Text>
+                <Row>
+                  <TouchableOpacity
+                    disabled={this.props.maxFretSpan < 3}
+                    onPress={ ()=>this.props.fretFilter({
+                      maxFretSpan: this.props.maxFretSpan-1,
+                      incZeroFret: true
+                    })}>
+                    <NavText>&larr;</NavText>
+                  </TouchableOpacity>
+                  <NavText>{this.props.maxFretSpan}</NavText>
+                  <TouchableOpacity
+                    disabled={this.props.maxFretSpan > 6}
+                     onPress={()=>this.props.fretFilter({
+                    maxFretSpan: this.props.maxFretSpan+1,
+                    incZeroFret: true
+                  })} >
+                    <NavText>&rarr;</NavText>
+                  </TouchableOpacity>
+                </Row>
+              </Col>
+            </OptionSection>
             <CheckBox
               label='Allow Open Strings'
-              onChange={val => this.props.fretFilter({incZeroFret: val})}
+              onChange={val => this.props.fretFilter({incZeroFret: !val})}
               checked={this.props.incZeroFret}
             />
             <CheckBox
@@ -128,9 +119,23 @@ export default class Options extends Component {
               checked={this.props.incOctaves}
             />
             <CheckBox
-              label='Keep All Frets'
+              label='Show All Included Frets'
               onChange={val => this.props.changeSettings({keepAllFrets: !val})}
               checked={this.props.keepAllFrets}
+            />
+            <CheckBox
+              label='No Inner Muted Strings'
+              onChange={val => this.props.fretFilter({noGaps: !val})}
+              checked={this.props.noGaps}
+            />
+            <CheckBox
+              label='Require All Strings'
+              onChange={val => this.props.fretFilter({
+                allStrings: !val,
+                activeStrings: range(0,this.props.tuning.length).map(s=>true),
+                noGaps: true
+              })}
+              checked={this.props.allStrings}
             />
             {/* <CheckBox
               label='Choose Strings'
@@ -143,6 +148,17 @@ export default class Options extends Component {
             />
           </RightOptions>
         </Row>
+        <Modal
+          isVisible={this.state.showTuningModal}
+          supportedOrientations={['portrait', 'landscape']} >
+          <Tuning
+            initialTuning={this.props.tuning}
+            onSave={ tuning => {
+              this.setState({showTuningModal: false})
+              console.log('tuning onsave', tuning)
+              this.props.changeFretboard({tuning})}
+            } />
+        </Modal>
       </Container>
     )
   }

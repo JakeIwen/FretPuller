@@ -62,7 +62,7 @@ export default class Fretboard extends Component {
               fbHeight: event.nativeEvent.layout.height
             })
           }>
-          <Positions flexArr={flexArr}/>
+          <Positions flexArr={[30].concat(flexArr)}/>
           {cuerda}
         </Board>
       </ThemeProvider>

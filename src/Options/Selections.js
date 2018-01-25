@@ -7,9 +7,11 @@ import {TouchableOpacity, Text} from 'react-native'
 import { SelectionButton, Txt } from '/src/styled/options'
 import ChordInfo from './ChordInfo'
 import {ScrollView} from 'react-native'
+import {indexLoop} from '/src/utils/indexLoop'
 
 const sfList = ['b', '#']
 const tonicList = ["C", "D", "E", "F", "G", "A", "B"]
+const preferredList = ["C", "C#", "D", "Eb", "E", "F", "F#", "G", "Ab", "A", "Bb", "B"]
 const typeList = ['M', 'm', 'o', 'aug']
 const typeAlias = ['M', 'm', 'o', 'aug']
 const allNames = Chord.names().sort().reverse()
@@ -26,6 +28,7 @@ export default class Selections extends Component {
       activeSelector: 'tonic',
     }
   }
+
 
   setChord = ({tonic, sf, extensions}) => {
     sf = sf===undefined ? this.state.sf : sf
@@ -109,14 +112,32 @@ export default class Selections extends Component {
     return res
   }
 
+  reset() { this.setChord({extensions: []}) }
+
+  cycleTonic(tonic, diff) {
+    let index = preferredList.indexOf(tonic)
+    index = indexLoop(index + diff, preferredList)
+    this.setChord({tonic: preferredList[index]})
+  }
+
   render(){
     let {chord, tonic, sf, type, activeSelector, extensions, fullChord} = this.state
     return (
-      <Row flex flexStart>
-        <TouchableOpacity
-          onPress={() => this.setChord({extensions: []}) }>
+      <Row flex spaceBetween>
+        <Col>
+          <TouchableOpacity onPress={this.reset}>
+            <Txt>{"RESET"}</Txt>
+          </TouchableOpacity>
+          <Row spaceAround>
+            <TouchableOpacity onPress={() => this.cycleTonic(tonic, -1)}>
+              <Txt>{'\u266D'}</Txt>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => this.cycleTonic(tonic, 1)}>
+              <Txt>{'\u266F'}</Txt>
+            </TouchableOpacity>
+          </Row>
           <ChordInfo colorArr={this.props.colorArr} chord={fullChord} />
-        </TouchableOpacity>
+        </Col>
         <Row>
           <SelectionButton
             activated={activeSelector==='tonic'}

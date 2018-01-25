@@ -13,7 +13,6 @@ import {initChord} from './src/utils/chordShapes'
 import { isEmpty, cloneDeep, range, reverse } from 'lodash/fp'
 import { Note, Chord, Interval } from 'tonal'
 import {tokenize} from '/src/utils/tokenize'
-// import FretPuller from '/src/FretPuller'
 import {fretTruth} from '/src/utils/frets'
 import {indexLoop} from '/src/utils/indexLoop'
 import {ivlColors, tonicColors} from '/src/theme/colors'
@@ -26,7 +25,7 @@ const maxFretSpan = 7
 const defaultWidth  = 13
 const tuning = reverse(['E2', 'A2', 'D3', 'G3'])
 
-export default class App extends Component {
+export default class FretPuller extends Component {
   constructor(props) {
     super(props)
     let { chord,
@@ -36,7 +35,7 @@ export default class App extends Component {
           viewMode,
           width,
           selectionMatrix,
-          fullSelectionMatrix } = initChord(tuning, defaultWidth, 'C')
+          fullSelectionMatrix } = this.props
 
     this.state = {
       maxFretSpan,
@@ -64,7 +63,7 @@ export default class App extends Component {
 
   componentDidMount() {
     console.log('state', this.state);
-    // setTimeout(()=>this.fretFilter(), 500)
+    setTimeout(()=>this.fretFilter(), 500)
   }
 
   initChord = (chord) =>

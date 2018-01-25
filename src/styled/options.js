@@ -23,7 +23,7 @@ export const OptionSection = styled(Row)`
   border: 1px solid black;
 `
 export const OptionSectionCol = styled(Col)`
-  border: 1px solid black;
+  ${'' /* border: 1px solid black; */}
 `
 export const ChangeTuning = styled(Button)`
   align-self: flex-end;
