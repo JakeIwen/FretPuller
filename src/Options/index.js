@@ -35,7 +35,7 @@ export default class Options extends Component {
     this.state = {
       sliderStops,
       showTuningModal: false,
-      sliderValue: [0,100],
+      sliderValue: this.props.defaultRange.map(fretNum => Math.floor(closest(sliderStops, 100*fretNum/numFrets))),
       tuningName: (tunings.find( tuning =>
         tuning.value.join('')===this.props.tuning.join('')
       ) || {}).name || 'Custom'
@@ -99,10 +99,10 @@ export default class Options extends Component {
                   <NavText>{this.props.maxFretSpan}</NavText>
                   <TouchableOpacity
                     disabled={this.props.maxFretSpan > 6}
-                     onPress={()=>this.props.fretFilter({
-                    maxFretSpan: this.props.maxFretSpan+1,
-                    incZeroFret: true
-                  })} >
+                    onPress={()=>this.props.fretFilter({
+                      maxFretSpan: this.props.maxFretSpan+1,
+                      incZeroFret: true
+                    })} >
                     <NavText>&rarr;</NavText>
                   </TouchableOpacity>
                 </Row>

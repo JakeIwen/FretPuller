@@ -17,12 +17,13 @@ export const fretFilter = ({fretRange, maxFretSpan, incZeroFret, activeStrings, 
       let positions = fretsInChord.map(fret=>fret.loc.pos)
       let noZeros = incZeroFret ? positions.filter( pos => pos!==0) : positions
       let spanOk = (Math.max(...noZeros) - Math.min(...noZeros)) < maxFretSpan
-      let rangeOk = positions.every( pos => pos >= fretRange[0] && pos < fretRange[1])
+      let rangeOk = noZeros.every( pos => pos >= fretRange[0] && pos < fretRange[1])
       let stringOk = crds.every( crd => activeStrings[crd])
       let noGapsOk = !noGaps || crds.every((val, index) => {
         return index===crds.length-1 || (crds[index+1]-val)===1
       })
       let allStringsOk = !allStrings || (crds.length===state.tuning.length)
+
       return spanOk && rangeOk && stringOk && noGapsOk && allStringsOk
     })
 

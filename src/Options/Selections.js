@@ -28,19 +28,15 @@ export default class Selections extends Component {
   }
 
   setChord = ({tonic, extensions}) => {
-    let newChord, activeSelector, extArr
+    let newChord, activeSelector
     if (tonic) {
       newChord = tonic
       activeSelector = 'extensions0'
     } else {
       tonic = this.state.tonic
     }
-    if (extensions) {
-      extArr = extensions
-      newChord = tonic + extArr.join('')
-    } else {
-      extArr = this.state.extensions
-    }
+    let extArr = extensions || this.state.extensions
+    newChord = tonic + extArr.join('')
     tonic = tonic || this.state.tonic
     let exists = Chord.exists(extArr.join(''))
     this.setState({

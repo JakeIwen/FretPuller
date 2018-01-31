@@ -13,7 +13,7 @@ let defaultSettings = {
   noGaps: true,
   allStrings: true,
   maxFretSpan: 7,
-  fretRange: [0, width],
+  fretRange: [0, 7],
   tuning,
   width
 }

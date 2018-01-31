@@ -60,7 +60,7 @@ export default class FretPuller extends Component {
     })
   }
 
-  initChord = (chord) =>
+  initNewChord = (chord) =>
     initChord(this.state.tuning, this.state.width, chord || 'CM')
 
   onFretClick = (fret) => {
@@ -99,6 +99,8 @@ export default class FretPuller extends Component {
 
   getCombo = ({reverse, reset, newState}) => {
     let chordShapes = newState ? newState.chordShapes : this.state.chordShapes
+    console.log('comboshapes', chordShapes);
+    console.log('combonewst', newState);
     let increment = reverse ? -1 : 1
     reset = reset || !!newState
     let index = reset ? 0 : this.state.variationIndex + increment
@@ -129,9 +131,8 @@ export default class FretPuller extends Component {
     this.setState({ fretMatrix: fretMatrixForChord(tuning, width, chord) })
   }
 
-
-
   render() {
+    console.log('allShapes:', this.state.allShapes);
     let colorArr = tonicColors(tokenize(this.state.chord)[0])
     return (
       <Col flex>
@@ -152,10 +153,11 @@ export default class FretPuller extends Component {
         {!!this.state.fbHeight &&
           <Options
             setChord={newChord => {
-              let state = Object.assign(this.state, this.initChord(newChord))
+              console.log('INIt',this.initNewChord(newChord), 'NEXT');
+              let state = Object.assign(this.state, this.initNewChord(newChord))
               fretFilter({
                 state,
-                callback: () => this.getCombo({newState: state})
+                callback: this.getCombo
               })
             }
             }
@@ -180,6 +182,7 @@ export default class FretPuller extends Component {
             noGaps={this.state.noGaps}
             allStrings={this.state.allStrings}
             changeSettings={this.changeSettings}
+            defaultRange={this.state.fretRange}
         />}
 
       </Col>
