@@ -1,6 +1,23 @@
 import { fretMatrixForChord } from '../fretboard'
 import { Chord, midi } from '/src/lib/tonal.min.js'
 
+const compareSpan = (aVals, bVals) => {
+  let aRange = Math.max(...aVals) - Math.min(...aVals)
+  let bRange = Math.max(...bVals) - Math.min(...bVals)
+  if (aRange === bRange ) return 0
+  return aRange < bRange ? -1 : 1
+}
+
+const compareMax = (a,b) => {
+  let aVals = a.map(f=>f.loc.pos)
+  let bVals = b.map(f=>f.loc.pos)
+  let aMax = Math.max(...aVals)
+  let bMax = Math.max(...bVals)
+  if (aMax === bMax ) return compareSpan(aVals,bVals)
+  return aMax < bMax ? -1 : 1
+}
+
+
 const getChordShapes = (activeFretMatrix, midis, fretRange = 7) => {
   let chordShapes = []
   // let inclNullStrings = activeFretMatrix.map(string=>string.concat({}))
@@ -18,7 +35,9 @@ const getChordShapes = (activeFretMatrix, midis, fretRange = 7) => {
         && chordShapes.push(c)
     }
   }
-  return chordShapes
+  let ret = chordShapes.sort(compareMax)
+  console.log('sorted', ret.map(frets => Math.max(...frets.map(fret=>fret.loc.pos)) - Math.min(...frets.map(fret=>fret.loc.pos))))
+  return ret
 }
 
 function stringCombos(arr) {
