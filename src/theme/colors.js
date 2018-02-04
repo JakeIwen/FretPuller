@@ -1,5 +1,5 @@
-import { Interval, Note } from '/src/lib/tonal.min.js'
-import {arrayRotate} from '/src/utils'
+import { Interval, Note } from 'src/lib/tonal.min.js'
+import {arrayRotate} from 'src/utils'
 let ivls = Interval.names()
 export const colors = [
   '#e6194b',

@@ -6,8 +6,8 @@ import {tokenize} from '../../utils/tokenize'
 import {arrayRotate} from '../../utils'
 import {chordIntervals} from '../../utils/chordIntervals'
 import { range, compose, curry, update, merge } from 'lodash/fp'
-import { Distance, Interval, Note, Chord, Scale } from '/src/lib/tonal.min.js'
-import {ivlColors, colors} from '/src/theme/colors'
+import { Distance, Interval, Note, Chord, Scale } from 'src/lib/tonal.min.js'
+import {ivlColors, colors} from 'src/theme/colors'
 
 const transpose = curry(Distance.transpose)
 

@@ -2,7 +2,7 @@ import React, {Component} from 'react'
 import styled from "styled-components/native"
 import {TouchableOpacity, Text, Button} from 'react-native'
 import { Picker } from 'react-native-wheel-datepicker'
-import { Row } from '/src/styled'
+import { Row } from 'src/styled'
 import {range} from 'lodash'
 
 const allNotes = ["C", "C#", "D", "Eb", "E", "F", "F#", "G", "Ab", "A", "B"]

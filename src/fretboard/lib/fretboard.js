@@ -1,5 +1,5 @@
 import { range, compose, curry, zip } from 'lodash/fp'
-import { Distance, Interval, Note, Chord, Scale } from '/src/lib/tonal.min.js'
+import { Distance, Interval, Note, Chord, Scale } from 'src/lib/tonal.min.js'
 import { compare } from '../lib/notes'
 
 const transpose = curry(Distance.transpose)

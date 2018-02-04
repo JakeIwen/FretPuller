@@ -7,17 +7,17 @@ import Fretboard, {
   fretMatrixForNote,
   fretMatrixForInterval,
   fretMatrixForChord,
-  fretMatrixForScale, } from '/src/fretboard'
-import Options from '/src/Options'
-import {initChord} from '/src/utils/chordShapes'
+  fretMatrixForScale, } from 'src/fretboard'
+import Options from 'src/Options'
+import {initChord} from 'src/utils/chordShapes'
 import { isEmpty, cloneDeep, range, reverse } from 'lodash/fp'
-import { Col } from '/src/styled'
-import { Note, Chord, Interval } from 'tonal'
-import {tokenize} from '/src/utils/tokenize'
-import {fretTruth} from '/src/utils/frets'
-import {fretFilter} from '/src/utils/fretFilter'
-import {indexLoop} from '/src/utils/indexLoop'
-import {ivlColors, tonicColors} from '/src/theme/colors'
+import { Col } from 'src/styled'
+import { Note, Chord, Interval } from 'src/lib/tonal.min.js'
+import {tokenize} from 'src/utils/tokenize'
+import {fretTruth} from 'src/utils/frets'
+import {fretFilter} from 'src/utils/fretFilter'
+import {indexLoop} from 'src/utils/indexLoop'
+import {ivlColors, tonicColors} from 'src/theme/colors'
 
 const maxFretSpan = 7
 const defaultWidth  = 13

@@ -4,7 +4,7 @@ import {Animated, Easing, TouchableOpacity, Text, View} from 'react-native'
 import styled from 'styled-components/native'
 import {keyframes} from 'styled-components'
 // import { fadeIn } from 'react-animations'
-import {animateLoop, interpolateFade, hexToRGBGray} from '/src/utils/bgFade'
+import {animateLoop, interpolateFade, hexToRGBGray} from 'src/utils/bgFade'
 
 const Outer = styled(TouchableOpacity)`
   flex: ${props => props.flex};

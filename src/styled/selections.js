@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import styled from "styled-components/native"
 import {TouchableHighlight, TouchableOpacity, Text, View} from 'react-native'
-import {Row, Col} from '/src/styled'
+import {Row, Col} from 'src/styled'
 import { Button } from 'react-native-elements'
 
 export const ResetButton = styled(Button)`

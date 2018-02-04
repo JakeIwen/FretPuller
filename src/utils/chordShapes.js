@@ -1,5 +1,5 @@
 import { fretMatrixForChord } from '../fretboard'
-import { Chord, midi } from '/src/lib/tonal.min.js'
+import { Chord, midi } from 'src/lib/tonal.min.js'
 
 const getChordShapes = (activeFretMatrix, midis, fretRange = 7) => {
   let chordShapes = []
