@@ -53,7 +53,6 @@ export default class FretPuller extends Component {
   }
 
   componentDidMount() {
-    console.log('state', this.state);
     fretFilter({
       state: this.state,
       callback: (newState) => this.getCombo(newState)
@@ -99,8 +98,6 @@ export default class FretPuller extends Component {
 
   getCombo = ({reverse, reset, newState}) => {
     let chordShapes = newState ? newState.chordShapes : this.state.chordShapes
-    console.log('comboshapes', chordShapes);
-    console.log('combonewst', newState);
     let increment = reverse ? -1 : 1
     reset = reset || !!newState
     let index = reset ? 0 : this.state.variationIndex + increment
@@ -121,9 +118,7 @@ export default class FretPuller extends Component {
     tuning = tuning || this.state.tuning
     width = width || this.state.width
     chord = chord || this.state.chord
-    console.log('cfb', {tuning, width, chord});
     this.setState(...initChord(tuning, width, chord))
-    console.log('CFB STATE', this.state.tuning);
   }
 
   showAll = () => {
@@ -132,7 +127,7 @@ export default class FretPuller extends Component {
   }
 
   render() {
-    console.log('allShapes:', this.state.allShapes);
+    // console.log('allShapes:', this.state.allShapes);
     let colorArr = tonicColors(tokenize(this.state.chord)[0])
     return (
       <Col flex>

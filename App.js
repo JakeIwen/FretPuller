@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import {initChord} from './src/utils/chordShapes'
 import { range, reverse } from 'lodash/fp'
-import FretPuller from '/src/FretPuller'
+import FretPuller from 'src/FretPuller'
 
 let tuning = reverse(['E2', 'A2', 'D3', 'G3'])
 let width = 13
