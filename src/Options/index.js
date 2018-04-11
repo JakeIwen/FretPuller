@@ -108,11 +108,11 @@ export default class Options extends Component {
                 </Row>
               </Col>
             </OptionSection>
-            <CheckBox
+            {/* <CheckBox
               label='Allow Open Strings'
               onChange={val => this.props.fretFilter({incZeroFret: !val})}
               checked={this.props.incZeroFret}
-            />
+            /> */}
             {/* <CheckBox
               label='Select Octaves'
               onChange={val => this.props.changeSettings({incOctaves: !val})}
@@ -123,12 +123,12 @@ export default class Options extends Component {
               onChange={val => this.props.changeSettings({keepAllFrets: !val})}
               checked={this.props.keepAllFrets}
             />
-            <CheckBox
+            {/* <CheckBox
               label='No Inner Muted Strings'
               onChange={val => this.props.fretFilter({noGaps: !val})}
               checked={this.props.noGaps}
-            />
-            <CheckBox
+            /> */}
+            {/* <CheckBox
               label='Require All Strings'
               onChange={val => this.props.fretFilter({
                 allStrings: !val,
@@ -136,7 +136,7 @@ export default class Options extends Component {
                 noGaps: true
               })}
               checked={this.props.allStrings}
-            />
+            /> */}
             {/* <CheckBox
               label='Choose Strings'
               onChange={this.props.editStrings}
