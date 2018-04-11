@@ -108,40 +108,11 @@ export default class Options extends Component {
                 </Row>
               </Col>
             </OptionSection>
-            {/* <CheckBox
-              label='Allow Open Strings'
-              onChange={val => this.props.fretFilter({incZeroFret: !val})}
-              checked={this.props.incZeroFret}
-            /> */}
-            {/* <CheckBox
-              label='Select Octaves'
-              onChange={val => this.props.changeSettings({incOctaves: !val})}
-              checked={this.props.incOctaves}
-            /> */}
             <CheckBox
               label='Show All Included Frets'
               onChange={val => this.props.changeSettings({keepAllFrets: !val})}
               checked={this.props.keepAllFrets}
             />
-            {/* <CheckBox
-              label='No Inner Muted Strings'
-              onChange={val => this.props.fretFilter({noGaps: !val})}
-              checked={this.props.noGaps}
-            /> */}
-            {/* <CheckBox
-              label='Require All Strings'
-              onChange={val => this.props.fretFilter({
-                allStrings: !val,
-                activeStrings: range(0,this.props.tuning.length).map(s=>true),
-                noGaps: true
-              })}
-              checked={this.props.allStrings}
-            /> */}
-            {/* <CheckBox
-              label='Choose Strings'
-              onChange={this.props.editStrings}
-              checked={this.props.chooseStrings}
-            /> */}
             <ChangeTuning
               title='CHANGE TUNING'
               onPress={()=>this.setState({showTuningModal: true})}
