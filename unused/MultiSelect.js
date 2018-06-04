@@ -30,7 +30,7 @@ export default class MultiSelect extends Component {
     let newSelected = unselect
       ? this.props.selectedOptions.filter(option => option!==selectedOption)
       : this.props.selectedOptions.concat(selectedOption)
-      console.log(this.props.selectedOptions, {newSelected})
+      // console.log(this.props.selectedOptions, {newSelected})
     this.props.onValueChange(newSelected)
   }
 

@@ -1,9 +1,11 @@
 import React, {Component} from 'react'
 import styled from "styled-components/native"
 import {TouchableOpacity, Text, Button} from 'react-native'
+import { SelectionButton, ResetButton, Txt } from '/src/styled/selections'
 import { Picker } from 'react-native-wheel-datepicker'
-import { Row } from '/src/styled'
+import { Row, Col } from '/src/styled'
 import {range} from 'lodash'
+import {tuningsNested} from '/src/lib/tunings.js'
 
 const allNotes = ["C", "C#", "D", "Eb", "E", "F", "F#", "G", "Ab", "A", "B"]
 
@@ -34,6 +36,9 @@ const Label = styled.Text`
   font-size: 16;
   font-family: Menlo;
 `
+console.log('tinings', tuningsNested);
+
+const instruments = Object.keys(tuningsNested)
 
 export default class Tuning extends Component {
   state = {
@@ -46,6 +51,7 @@ export default class Tuning extends Component {
     this.setState({ tuning })
   }
 
+
   render() {
     // this.props.active && this.popupDialog.show()
     let {tuning} = this.state
@@ -53,7 +59,7 @@ export default class Tuning extends Component {
     console.log('tuning component', {tuning});
     return (
         <Wrapper>
-          <Row dial={5}>
+          {/* <Row dial={5}>
             {tuning.map( (note, picker) =>
               <TPicker
                 key={picker}
@@ -62,6 +68,24 @@ export default class Tuning extends Component {
                 onValueChange={(val) => this.update(val, picker)}
               />
             )}
+          </Row> */}
+          <Row flex spaceAround dial={2}>
+            {instruments.map(inst => {
+              const names = Object.keys(tuningsNested[inst])
+              return <Col key={inst}>
+                  <Txt>{inst}</Txt>
+                  {names.map(name =>
+                    <SelectionButton key={name}
+                      activated={
+                        this.state.tuning.join('')==tuningsNested[inst][name].join('')
+                      }
+                      onPress={()=>this.setState({
+                        tuning: tuningsNested[inst][name]
+                      })}
+                    ><Txt>{name}</Txt></SelectionButton>)}
+                </Col>
+            })
+            }
           </Row>
           <AddRemove flex dial={5} spaceBetween>
             <TouchableOpacity

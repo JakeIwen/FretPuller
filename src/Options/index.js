@@ -87,32 +87,8 @@ export default class Options extends Component {
               </Row>
               <Col spaceBetween>
                 <Text>Max Fret Span</Text>
-                <Row>
-                  <TouchableOpacity
-                    disabled={this.props.maxFretSpan < 3}
-                    onPress={ ()=>this.props.fretFilter({
-                      maxFretSpan: this.props.maxFretSpan-1,
-                      incZeroFret: true
-                    })}>
-                    <NavText>&larr;</NavText>
-                  </TouchableOpacity>
-                  <NavText>{this.props.maxFretSpan}</NavText>
-                  <TouchableOpacity
-                    disabled={this.props.maxFretSpan > 6}
-                    onPress={()=>this.props.fretFilter({
-                      maxFretSpan: this.props.maxFretSpan+1,
-                      incZeroFret: true
-                    })} >
-                    <NavText>&rarr;</NavText>
-                  </TouchableOpacity>
-                </Row>
               </Col>
             </OptionSection>
-            <CheckBox
-              label='Show All Included Frets'
-              onChange={val => this.props.changeSettings({keepAllFrets: !val})}
-              checked={this.props.keepAllFrets}
-            />
             <ChangeTuning
               title='CHANGE TUNING'
               onPress={()=>this.setState({showTuningModal: true})}
