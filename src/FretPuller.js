@@ -19,10 +19,6 @@ import {fretFilter} from '/src/utils/fretFilter'
 import {indexLoop} from '/src/utils/indexLoop'
 import {ivlColors, tonicColors} from '/src/theme/colors'
 
-const maxFretSpan = 7
-const defaultWidth  = 13
-const tuning = reverse(['E2', 'A2', 'D3', 'G3'])
-
 export default class FretPuller extends Component {
   constructor(props) {
     super(props)
@@ -122,7 +118,11 @@ export default class FretPuller extends Component {
     width = width || this.state.width
     chord = chord || this.state.chord
     console.log('cfb', {tuning, width, chord});
-    this.setState(initChord(tuning, width, chord))
+    // this.setState(initChord(tuning, width, chord))
+    fretFilter({
+      state: Object.assign(this.state, initChord(tuning, width, chord)),
+      callback: (newState) => this.getCombo(newState)
+    })
     console.log('initchord', initChord(tuning, width, chord));
     console.log('CFB STATE', this.state);
   }
@@ -133,7 +133,6 @@ export default class FretPuller extends Component {
   }
 
   render() {
-    // console.log('allShapes:', this.state.allShapes);
     let colorArr = tonicColors(tokenize(this.state.chord)[0])
     return (
       <Col flex>
@@ -154,12 +153,8 @@ export default class FretPuller extends Component {
         {!!this.state.fbHeight &&
           <Options
             setChord={newChord => {
-              console.log('INIt',this.initNewChord(newChord), 'NEXT');
               let state = Object.assign(this.state, this.initNewChord(newChord))
-              fretFilter({
-                state,
-                callback: this.getCombo
-              })
+              fretFilter({state, callback: this.getCombo})
             }
             }
             fbHeight={this.state.fbHeight}

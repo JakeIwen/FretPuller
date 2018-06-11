@@ -36,6 +36,7 @@ const Label = styled.Text`
   font-size: 16;
   font-family: Menlo;
 `
+console.log('tinings', tuningsNested);
 
 const instruments = Object.keys(tuningsNested)
 
@@ -58,24 +59,49 @@ export default class Tuning extends Component {
     console.log('tuning component', {tuning});
     return (
       <Wrapper>
+        {/* <Row dial={5}>
+          {tuning.map( (note, picker) =>
+            <TPicker
+              key={picker}
+              selectedValue={note.slice(0,-1)}
+              pickerData={allNotes}
+              onValueChange={(val) => this.update(val, picker)}
+            />
+          )}
+        </Row> */}
         <Row flex spaceAround dial={2}>
           {instruments.map(inst => {
             const names = Object.keys(tuningsNested[inst])
             return <Col key={inst}>
               <Txt>{inst}</Txt>
-              {names.map(name =>{
-                if (inst=='Mandolin' && name=='Standard') {
-                  console.log(this.state.tuning.join(''), tuningsNested[inst][name].join(''))
-                }
-                return <SelectionButton key={name}
+              {names.map(name =>
+                <SelectionButton key={name}
                   activated={
-                    this.state.tuning.join('')==tuningsNested[inst][name].join('')}
-                  onPress={()=>this.props.onSave(tuningsNested[inst][name])}
-                ><Label>{name}</Label></SelectionButton>})}
+                    this.state.tuning.join('')==tuningsNested[inst][name].join('')
+                  }
+                  onPress={()=>this.setState({
+                    tuning: tuningsNested[inst][name]
+                  })}
+                ><Txt>{name}</Txt></SelectionButton>)}
               </Col>
           })
           }
         </Row>
+        <AddRemove flex dial={5} spaceBetween>
+          {/* <TouchableOpacity
+            onPress={()=>this.setState({tuning: tuning.slice(0, tuning.length-1)})}>
+            <Label>Remove</Label>
+          </TouchableOpacity> */}
+          <TouchableOpacity
+            onPress={()=>
+              this.props.onSave(this.state.tuning)}>
+            <Label>Save</Label>
+          </TouchableOpacity>
+          {/* <TouchableOpacity
+            onPress={()=>this.setState({tuning: tuning.concat("E")})}>
+            <Label>Add</Label>
+          </TouchableOpacity> */}
+        </AddRemove>
       </Wrapper>
 
     )

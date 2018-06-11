@@ -3,6 +3,7 @@ import { Chord, midi } from '/src/lib/tonal.min.js'
 import { range } from 'lodash/fp'
 
 const getChordShapes = (activeFretMatrix, midis, fretRange = 7) => {
+  console.log({fretRange});
   let chordShapes = []
   // let inclNullStrings = activeFretMatrix.map(string=>string.concat({}))
   let stringGroups = stringCombos(activeFretMatrix)
