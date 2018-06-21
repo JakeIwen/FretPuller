@@ -25,8 +25,8 @@ const closest = (arr, val) => arr.reduce((prev, curr) =>
 export default class Options extends Component {
 
   constructor(props) {
-    super(props)
-    let sliderStops = [0, widthCalc(numFrets, numFrets)]
+    super(props)//the +2 below is a deterministic offset. Can't figute out why its
+    let sliderStops = [0, widthCalc(numFrets, numFrets)+2]
     let sum = sliderStops[1]
     sliderStops.push(...range(0, numFrets-1).map( n => {
       sum += widthCalc(n, numFrets)

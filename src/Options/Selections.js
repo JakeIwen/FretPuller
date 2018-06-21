@@ -32,8 +32,12 @@ export default class Selections extends Component {
     if (tonic) {
       newChord = tonic
       activeSelector = 'extensions0'
-    } else {
+    } else if ((extensions || []).length){
       tonic = this.state.tonic
+    } else {
+      console.log('ELSE');
+      tonic = this.state.tonic
+      activeSelector = 'tonic'
     }
     let extArr = extensions || this.state.extensions
     newChord = tonic + extArr.join('')
