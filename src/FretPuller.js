@@ -27,18 +27,14 @@ export default class FretPuller extends Component {
           chordShapes,
           variationIndex,
           viewMode,
-          width,
           selectionMatrix,
           fullSelectionMatrix,
           allShapes,
           defaultSettings } = this.props
-
     this.state = {
       ...defaultSettings,
       fbHeight: 0,
-      nutWidth: 0,
       fretMatrix,
-      chord,
       allShapes,
       variationIndex,
       chordShapes,
@@ -46,18 +42,13 @@ export default class FretPuller extends Component {
       selectionMatrix,
       fullSelectionMatrix,
     }
+    console.log('constructor default state', this.state);
+    console.log('constructor default props', this.props);
   }
 
   componentDidMount() {
-    console.log('state', this.state);
-    fretFilter({
-      state: this.state,
-      callback: (newState) => this.getCombo(newState)
-    })
+    this.changeSettings({})
   }
-
-  initNewChord = (chord) =>
-    initChord(this.state.tuning, this.state.width, chord || 'CM')
 
   onFretClick = (fret) => {
     // this.selectPitch(midi)
@@ -77,9 +68,12 @@ export default class FretPuller extends Component {
     })
   }
 
-  changeSettings = ({incOctaves, keepAllFrets}) => {
-    incOctaves!==undefined && this.setState({incOctaves})
-    keepAllFrets!==undefined && this.setState({keepAllFrets}) && console.log({keepAllFrets});
+  changeSettings = (args) => {
+    console.log('new settign args', args);
+    fretFilter({
+      state: {...this.state, ...args},
+      callback: (newState) => this.getCombo(newState)
+    })
   }
 
   fretMatch = (fret1, fret2) =>
@@ -93,10 +87,8 @@ export default class FretPuller extends Component {
     })
   }
 
-  getCombo = ({reverse, reset, newState}) => {
+  getCombo = ({reverse, reset, ...newState}) => {
     let chordShapes = newState ? newState.chordShapes : this.state.chordShapes
-    // console.log('comboshapes', chordShapes);
-    // console.log('combonewst', newState);
     let increment = reverse ? -1 : 1
     reset = reset || !!newState
     let index = reset ? 0 : this.state.variationIndex + increment
@@ -113,17 +105,17 @@ export default class FretPuller extends Component {
     }))
   }
 
+  stateWithNewChord = ({tuning, width, chord}) => Object.assign(this.state, initChord({
+      tuning: tuning || this.state.tuning,
+      width: width || this.state.width,
+      chord: chord || this.state.chord
+    }))
+
   changeFretboard = ({tuning, width, chord}) => {
-    tuning = tuning || this.state.tuning
-    width = width || this.state.width
-    chord = chord || this.state.chord
-    console.log('cfb', {tuning, width, chord});
-    // this.setState(initChord(tuning, width, chord))
     fretFilter({
-      state: Object.assign(this.state, initChord(tuning, width, chord)),
+      state: this.stateWithNewChord({tuning, width, chord}),
       callback: (newState) => this.getCombo(newState)
     })
-    console.log('initchord', initChord(tuning, width, chord));
     console.log('CFB STATE', this.state);
   }
 
@@ -138,47 +130,28 @@ export default class FretPuller extends Component {
       <Col flex>
         <Fretboard
           isClickable
-          activeStrings={this.state.activeStrings}
-          selectionMatrix={this.state.selectionMatrix}
           defaultMatrix={this.state.keepAllFrets && this.state.fullSelectionMatrix}
-          fretMatrix={this.state.fretMatrix}
           colorArr={colorArr}
           onFretClick={(loc, midi) => this.onFretClick(loc, midi)}
-          fretFilter={ args => fretFilter(Object.assign(args, {
-            state: this.state,
-            callback: this.getCombo
-          }))}
+          fretFilter={this.changeSettings}
           setFretboardDims={dims => {this.setState(dims)}}
+          {...this.state}
         />
         {!!this.state.fbHeight &&
           <Options
-            setChord={newChord => {
-              let state = Object.assign(this.state, this.initNewChord(newChord))
+            {...this.state}
+            setChord={chord => {
+              let state = this.stateWithNewChord({chord})
               fretFilter({state, callback: this.getCombo})
-            }
-            }
-            fbHeight={this.state.fbHeight}
-            numVariations={this.state.chordShapes.length}
-            variationIndex={this.state.variationIndex}
-            fretFilter={ args => fretFilter(Object.assign(args, {
-              state: this.state,
-              callback: this.getCombo
-            }))}
-            maxFretSpan={this.state.maxFretSpan}
+            }}
             newVariation={(reverse)=>this.getCombo({reverse})}
             changeFretboard={this.changeFretboard}
             editTuning={this.editTuning}
-            tuning={this.state.tuning}
             showAll={this.showAll}
             colorArr={colorArr}
-            viewMode={this.state.viewMode}
-            incOctaves={this.state.incOctaves}
-            incZeroFret={this.state.incZeroFret}
-            keepAllFrets={this.state.keepAllFrets}
-            noGaps={this.state.noGaps}
-            allStrings={this.state.allStrings}
             changeSettings={this.changeSettings}
-            defaultRange={this.state.fretRange}
+            keepAllFrets={this.state.keepAllFrets}
+
         />}
 
       </Col>

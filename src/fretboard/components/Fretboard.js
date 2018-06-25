@@ -38,7 +38,6 @@ export default class Fretboard extends Component {
       widthCalc(numFrets, numFrets),
       ...range(0, numFrets-1).map( n => widthCalc(n, numFrets) )
     ]
-
     const cuerda = reverse(fretMatrix).map((crd,i) =>
       <String
         key={`string-${i}`}

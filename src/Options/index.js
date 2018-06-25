@@ -13,7 +13,7 @@ import Slider from '@ptomasroos/react-native-multi-slider'
 import {accFormat} from '/src/utils/format'
 import { range } from 'lodash/fp'
 import Dimensions from 'Dimensions'
-
+import { CheckBoxOptions } from './CheckBoxOptions'
 const widthCalc = (pos, fbWidth) =>
   ((Math.pow(2,(1/fbWidth)) - 1) / Math.pow(2,((pos+1)/fbWidth))) * 100 * 2
 
@@ -35,23 +35,34 @@ export default class Options extends Component {
     this.state = {
       sliderStops,
       showTuningModal: false,
-      sliderValue: this.props.defaultRange.map(fretNum => Math.floor(closest(sliderStops, 100*fretNum/numFrets))),
+      sliderValue: this.props.fretRange.map(fretNum => Math.floor(closest(sliderStops, 100*fretNum/numFrets))),
       tuningName: (tunings.find( tuning =>
         tuning.value.join('')===this.props.tuning.join('')
       ) || {}).name || 'Custom'
     }
+    console.log('constructor props', props);
+
   }
 
   sliderValuesChange = (vals) => {
     let snappedVals = vals.map(val => closest(this.state.sliderStops, val))
     console.log({snappedVals})
-    this.props.fretFilter({
+    this.props.changeSettings({
       fretRange: snappedVals.map( (val) => this.state.sliderStops.indexOf(val))
     })
     this.setState({
       sliderValue: vals.map(val=>Math.floor(closest(this.state.sliderStops, val))),
     });
   }
+
+  variationNums = () => this.props.chordShapes.length
+    ? (<Text>
+        Variation <Br/>
+        {this.props.variationIndex+1} of {this.props.chordShapes.length}
+      </Text>)
+    : (<Text> No Chord <Br/> Shapes! </Text>)
+
+  // openStringCheckbox = () =>
 
   render() {
     let { type, extensions, chord, tonic } = this.state
@@ -77,10 +88,7 @@ export default class Options extends Component {
                 <TouchableOpacity onPress={()=>this.props.newVariation(true)} >
                   <NavText>&larr;</NavText>
                 </TouchableOpacity>
-                <Text>
-                  Variation <Br/>
-                  {this.props.variationIndex+1} of {this.props.numVariations}
-                </Text>
+                {this.variationNums()}
                 <TouchableOpacity onPress={()=>this.props.newVariation()} >
                   <NavText>&rarr;</NavText>
                 </TouchableOpacity>
@@ -89,6 +97,7 @@ export default class Options extends Component {
                 <Text>Max Fret Span</Text>
               </Col>
             </OptionSection>
+            <CheckBoxOptions {...this.props} />
             <ChangeTuning
               title='CHANGE TUNING'
               onPress={()=>this.setState({showTuningModal: true})}

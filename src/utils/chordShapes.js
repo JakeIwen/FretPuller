@@ -40,8 +40,11 @@ function stringCombos(arr) {
 const fretFilter = (matrix) =>
   matrix.map(string=>string.filter(fret=>fret.state.status==='selected'))
 
-export const initChord = (tuning, width, chord) => {
+export const initChord = ({tuning, width, chord}) => {
   let fretMatrix = fretMatrixForChord(tuning, width, chord)
+  console.log('INIT CHORD:');
+  console.log({tuning, width, chord});
+  console.log({fretMatrix});
   let midiNotes = Chord.notes(chord).map(note => midi(note + '0') % 12)
   let chordShapes = getChordShapes(fretFilter(fretMatrix), midiNotes)
   let selectionMatrix = fretMatrix.map(stg => stg.map(fret => fret.state.status==='selected'))

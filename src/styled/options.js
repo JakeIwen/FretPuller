@@ -36,7 +36,7 @@ export const SelectionButton = styled.TouchableHighlight`
 
 `
 
-export const sButton = (props) =>
+const sButton = (props) =>
   <Button
     {...props}
     raised

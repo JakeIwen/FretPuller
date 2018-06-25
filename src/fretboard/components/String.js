@@ -13,6 +13,7 @@ export default class String extends Component {
 
   render() {
     let {fretFilter, activeStrings, stringNum, selectionArr, frets} = this.props
+
     let openNote = Note.fromMidi(frets[0].midi).slice(0,-1)
     const makeFrets = (active) => frets.map( (fret, j) =>
       <Fret

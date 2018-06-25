@@ -13,9 +13,11 @@ let defaultSettings = {
   activeStrings: range(0, tuning.length).map(s=>true),
   noGaps: true,
   allStrings: true,
+  allowZeroes: true,
   maxFretSpan: 7,
   fretRange: [0, 7],
-  width: 13
+  width: 13,
+  chord: 'C'
 }
 
 export default class App extends Component {
@@ -23,7 +25,7 @@ export default class App extends Component {
   constructor(props) {
     super()
     this.fretPullerProps = {
-      ...initChord(defaultSettings.tuning, defaultSettings.width, 'C'),
+      ...initChord(defaultSettings),
       defaultSettings
     }
   }
