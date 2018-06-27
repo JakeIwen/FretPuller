@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import styled from "styled-components/native"
-import Fretboard, {
+import {Fretboard,
   updateFretMatrix,
   fretMatrixForPc,
   locationsForPc,
@@ -22,8 +22,7 @@ import {ivlColors, tonicColors} from '/src/theme/colors'
 export default class FretPuller extends Component {
   constructor(props) {
     super(props)
-    let { chord,
-          fretMatrix,
+    let { fretMatrix,
           chordShapes,
           variationIndex,
           viewMode,
@@ -31,6 +30,7 @@ export default class FretPuller extends Component {
           fullSelectionMatrix,
           allShapes,
           defaultSettings } = this.props
+
     this.state = {
       ...defaultSettings,
       fbHeight: 0,
@@ -42,8 +42,6 @@ export default class FretPuller extends Component {
       selectionMatrix,
       fullSelectionMatrix,
     }
-    console.log('constructor default state', this.state);
-    console.log('constructor default props', this.props);
   }
 
   componentDidMount() {
@@ -87,19 +85,17 @@ export default class FretPuller extends Component {
     })
   }
 
-  getCombo = ({reverse, reset, ...newState}) => {
-    let chordShapes = newState ? newState.chordShapes : this.state.chordShapes
-    let increment = reverse ? -1 : 1
+  getCombo = ({reset, ...newState}) => {
+    let state = Object.assign(this.state, newState)
     reset = reset || !!newState
-    let index = reset ? 0 : this.state.variationIndex + increment
-    index = indexLoop(index, chordShapes)
-    let thisShape = chordShapes[index]
-    let newSelect = this.state.fretMatrix.map((stg, i) =>
+    let index = indexLoop(state.variationIndex, state.chordShapes)
+    let thisShape = state.chordShapes[index]
+    let newSelect = state.fretMatrix.map((stg, i) =>
       stg.map( (fret,j) =>
         (thisShape || []).some( chord => chord.loc.crd===i && chord.loc.pos===j)
       )
     )
-    this.setState(Object.assign(newState || {}, {
+    this.setState(Object.assign(state, {
       selectionMatrix: newSelect,
       variationIndex: index
     }))
@@ -144,7 +140,9 @@ export default class FretPuller extends Component {
               let state = this.stateWithNewChord({chord})
               fretFilter({state, callback: this.getCombo})
             }}
-            newVariation={(reverse)=>this.getCombo({reverse})}
+            newVariation={(reverse)=>this.getCombo({
+              variationIndex: this.state.variationIndex + (reverse ? -1 : 1)}
+            )}
             changeFretboard={this.changeFretboard}
             editTuning={this.editTuning}
             showAll={this.showAll}

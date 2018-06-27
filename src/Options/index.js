@@ -14,6 +14,7 @@ import {accFormat} from '/src/utils/format'
 import { range } from 'lodash/fp'
 import Dimensions from 'Dimensions'
 import { CheckBoxOptions } from './CheckBoxOptions'
+
 const widthCalc = (pos, fbWidth) =>
   ((Math.pow(2,(1/fbWidth)) - 1) / Math.pow(2,((pos+1)/fbWidth))) * 100 * 2
 
@@ -32,26 +33,23 @@ export default class Options extends Component {
       sum += widthCalc(n, numFrets)
       return sum
     } ))
+    this.sliderStops = sliderStops
     this.state = {
-      sliderStops,
       showTuningModal: false,
       sliderValue: this.props.fretRange.map(fretNum => Math.floor(closest(sliderStops, 100*fretNum/numFrets))),
-      tuningName: (tunings.find( tuning =>
-        tuning.value.join('')===this.props.tuning.join('')
-      ) || {}).name || 'Custom'
     }
     console.log('constructor props', props);
 
   }
 
   sliderValuesChange = (vals) => {
-    let snappedVals = vals.map(val => closest(this.state.sliderStops, val))
+    let snappedVals = vals.map(val => closest(this.sliderStops, val))
     console.log({snappedVals})
     this.props.changeSettings({
-      fretRange: snappedVals.map( (val) => this.state.sliderStops.indexOf(val))
+      fretRange: snappedVals.map( (val) => this.sliderStops.indexOf(val))
     })
     this.setState({
-      sliderValue: vals.map(val=>Math.floor(closest(this.state.sliderStops, val))),
+      sliderValue: vals.map(val=>Math.floor(closest(this.sliderStops, val))),
     });
   }
 
@@ -111,7 +109,6 @@ export default class Options extends Component {
             initialTuning={this.props.tuning}
             onSave={ tuning => {
               this.setState({showTuningModal: false})
-              console.log('tuning onsave', tuning)
               this.props.changeFretboard({tuning})}
             } />
         </Modal>
