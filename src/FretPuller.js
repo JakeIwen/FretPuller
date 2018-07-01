@@ -7,17 +7,17 @@ import {Fretboard,
   fretMatrixForNote,
   fretMatrixForInterval,
   fretMatrixForChord,
-  fretMatrixForScale, } from '/src/fretboard'
-import Options from '/src/Options'
-import {initChord} from '/src/utils/chordShapes'
+  fretMatrixForScale, } from './fretboard'
+import Options from './Options'
+import {initChord} from './utils/chordShapes'
 import { isEmpty, cloneDeep, range, reverse } from 'lodash/fp'
-import { Col } from '/src/styled'
+import { Col } from './styled'
 import { Note, Chord, Interval } from 'tonal'
-import {tokenize} from '/src/utils/tokenize'
-import {fretTruth} from '/src/utils/frets'
-import {fretFilter} from '/src/utils/fretFilter'
-import {indexLoop} from '/src/utils/indexLoop'
-import {ivlColors, tonicColors} from '/src/theme/colors'
+import {tokenize} from './utils/tokenize'
+import {fretTruth} from './utils/frets'
+import {fretFilter} from './utils/fretFilter'
+import {indexLoop} from './utils/indexLoop'
+import {ivlColors, tonicColors} from './theme/colors'
 
 export default class FretPuller extends Component {
   constructor(props) {
