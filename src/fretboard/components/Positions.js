@@ -26,8 +26,6 @@ const Positions = ({ flexArr }) =>
     )}
   </Row>
 
-Positions.propTypes = {
-  flexArr: PropTypes.arrayOf(PropTypes.number).isRequired,
-}
+Positions.propTypes = {flexArr: PropTypes.arrayOf(PropTypes.number).isRequired}
 
 export default Positions

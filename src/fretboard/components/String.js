@@ -1,10 +1,10 @@
 import React, {Component} from 'react'
 import PropTypes from 'prop-types'
-import { Row } from '/src/styled'
-import { Note } from '/src/lib/tonal.min.js'
+import { Row } from '../../../src/styled'
+import { Note } from '../../../src/lib/tonal.min.js'
 import Fret from './Fret'
 import { Switch } from 'react-native-switch'
-import {ivlColors} from '/src/theme/colors'
+import {ivlColors} from '../../../src/theme/colors'
 // import Swiper from 'react-native-swiper';
 import { Text} from 'react-native'
 import { reverse, merge, range } from 'lodash/fp'
@@ -13,6 +13,7 @@ export default class String extends Component {
 
   render() {
     let {fretFilter, activeStrings, stringNum, selectionArr, frets} = this.props
+
     let openNote = Note.fromMidi(frets[0].midi).slice(0,-1)
     const makeFrets = (active) => frets.map( (fret, j) =>
       <Fret

@@ -1,33 +1,37 @@
 {
-  "name": "fretpuller",
+  "name": "MyApp",
   "version": "0.1.0",
   "private": true,
   "devDependencies": {
     "babel-core": "^6.17.0",
     "babel-eslint": "^8.2.1",
-    "babel-preset-react-native-stage-0": "^1.0.1",
     "babel-root-slash-import": "^1.1.0",
     "eslint": "^4.15.0",
     "eslint-plugin-react": "^7.5.1",
     "eslint-plugin-react-native": "^3.2.0",
     "jest-expo": "23.0.0",
     "react-devtools": "^3.0.0",
+    "react-native-scripts": "1.8.1",
     "react-test-renderer": "16.0.0"
   },
+  "main": "./node_modules/react-native-scripts/build/bin/crna-entry.js",
   "scripts": {
-    "start": "react-native start",
-    "android": "react-native run-android",
-    "ios": "react-native run-ios",
+    "start": "react-native-scripts start",
+    "eject": "react-native-scripts eject",
+    "android": "react-native-scripts android",
+    "ios": "react-native-scripts ios",
     "test": "node node_modules/jest/bin/jest.js --watch",
-    "react-devtools": "react-devtools",
-    "build": "react-native bundle --entry-file='index.js' --bundle-output='./ios/fretpuller/main.jsbundle' --dev=false --platform='ios' --assets-dest='./ios'"
+    "react-devtools": "react-devtools"
   },
   "jest": {
     "preset": "jest-expo"
   },
   "dependencies": {
     "@ptomasroos/react-native-multi-slider": "^0.0.11",
+    "babel-plugin-transform-decorators-legacy": "^1.3.5",
+    "babel-preset-react-native-stage-0": "^1.0.1",
     "enzyme": "^3.2.0",
+    "expo": "^23.0.4",
     "lodash": "^4.17.4",
     "prop-types": "^15.6.0",
     "react": "16.0.0",

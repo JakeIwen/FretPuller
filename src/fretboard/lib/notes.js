@@ -1,4 +1,4 @@
-import { Note } from '/src/lib/tonal.min.js'
+import { Note } from '../../../src/lib/tonal.min.js'
 
 export const isPc = note => !Note.props(note).oct
 export const chromaFromMidi = midi => Note.props(Note.fromMidi(midi)).chroma

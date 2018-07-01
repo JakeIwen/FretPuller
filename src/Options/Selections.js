@@ -1,13 +1,13 @@
 import React, {Component} from 'react'
 import styled from "styled-components/native"
 import RadioSelect from './RadioSelect'
-import {Row, Col} from '/src/styled'
-import { Chord } from '/src/lib/tonal.min.js'
+import {Row, Col} from '../../src/styled'
+import { Chord } from '../../src/lib/tonal.min.js'
 import {TouchableOpacity, Text} from 'react-native'
-import { SelectionButton, ResetButton, Txt } from '/src/styled/selections'
+import { SelectionButton, ResetButton, Txt } from '../../src/styled/selections'
 import ChordInfo from './ChordInfo'
 import {ScrollView} from 'react-native'
-import {indexLoop} from '/src/utils/indexLoop'
+import {indexLoop} from '../../src/utils/indexLoop'
 
 const tonicList = ["C", "D", "E", "F", "G", "A", "B"]
 const preferredList = ["C", "C#", "D", "Eb", "E", "F", "F#", "G", "Ab", "A", "Bb", "B"]
@@ -32,8 +32,12 @@ export default class Selections extends Component {
     if (tonic) {
       newChord = tonic
       activeSelector = 'extensions0'
-    } else {
+    } else if ((extensions || []).length){
       tonic = this.state.tonic
+    } else {
+      console.log('ELSE');
+      tonic = this.state.tonic
+      activeSelector = 'tonic'
     }
     let extArr = extensions || this.state.extensions
     newChord = tonic + extArr.join('')

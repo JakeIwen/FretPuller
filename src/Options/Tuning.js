@@ -1,9 +1,11 @@
 import React, {Component} from 'react'
 import styled from "styled-components/native"
 import {TouchableOpacity, Text, Button} from 'react-native'
+import { SelectionButton, ResetButton, Txt } from '../../src/styled/selections'
 import { Picker } from 'react-native-wheel-datepicker'
-import { Row } from '/src/styled'
+import { Row, Col } from '../../src/styled'
 import {range} from 'lodash'
+import {tuningsNested} from '../../src/lib/tunings.js'
 
 const allNotes = ["C", "C#", "D", "Eb", "E", "F", "F#", "G", "Ab", "A", "B"]
 
@@ -35,6 +37,8 @@ const Label = styled.Text`
   font-family: Menlo;
 `
 
+const instruments = Object.keys(tuningsNested)
+
 export default class Tuning extends Component {
   state = {
     tuning: this.props.initialTuning,
@@ -46,39 +50,33 @@ export default class Tuning extends Component {
     this.setState({ tuning })
   }
 
+
   render() {
     // this.props.active && this.popupDialog.show()
     let {tuning} = this.state
 
     console.log('tuning component', {tuning});
     return (
-        <Wrapper>
-          <Row dial={5}>
-            {tuning.map( (note, picker) =>
-              <TPicker
-                key={picker}
-                selectedValue={note.slice(0,-1)}
-                pickerData={allNotes}
-                onValueChange={(val) => this.update(val, picker)}
-              />
-            )}
-          </Row>
-          <AddRemove flex dial={5} spaceBetween>
-            <TouchableOpacity
-              onPress={()=>this.setState({tuning: tuning.slice(0, tuning.length-1)})}>
-              <Label>Remove</Label>
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={()=>
-                this.props.onSave(this.state.tuning)}>
-              <Label>Save</Label>
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={()=>this.setState({tuning: tuning.concat("E")})}>
-              <Label>Add</Label>
-            </TouchableOpacity>
-          </AddRemove>
-        </Wrapper>
+      <Wrapper>
+        <Row flex spaceAround dial={2}>
+          {instruments.map(inst => {
+            const names = Object.keys(tuningsNested[inst])
+            return <Col key={inst}>
+              <Txt>{inst}</Txt>
+              {names.map(name =>{
+                if (inst=='Mandolin' && name=='Standard') {
+                  console.log(this.state.tuning.join(''), tuningsNested[inst][name].join(''))
+                }
+                return <SelectionButton key={name}
+                  activated={
+                    this.state.tuning.join('')==tuningsNested[inst][name].join('')}
+                  onPress={()=>this.props.onSave(tuningsNested[inst][name])}
+                ><Label>{name}</Label></SelectionButton>})}
+              </Col>
+          })
+          }
+        </Row>
+      </Wrapper>
 
     )
   }

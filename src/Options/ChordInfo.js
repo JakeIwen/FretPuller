@@ -1,10 +1,10 @@
 import React from 'react'
 import styled from "styled-components/native"
-import { Chord, Note } from '/src/lib/tonal.min.js'
-import {ivlColors} from '/src/theme/colors'
-import {romanIvls, accFormat} from '/src/utils/format'
-import {tokenize} from '/src/utils/tokenize'
-import {chordIntervals} from '/src/utils/chordIntervals'
+import { Chord, Note } from '../../src/lib/tonal.min.js'
+import {ivlColors} from '../../src/theme/colors'
+import {romanIvls, accFormat} from '../../src/utils/format'
+import {tokenize} from '../../src/utils/tokenize'
+import {chordIntervals} from '../../src/utils/chordIntervals'
 
 const Wrapper = styled.View`
   display: flex;

@@ -2,9 +2,9 @@ import React, { Component } from 'react'
 import styled from "styled-components/native"
 import { RadioButtons } from 'react-native-radio-buttons'
 import { TouchableHighlight, Text, View } from 'react-native'
-import { Row } from '/src/styled'
-import {accFormat} from '/src/utils/format'
-import { SelectionOption, Txt } from '/src/styled/options'
+import { Row } from '../../src/styled'
+import {accFormat} from '../../src/utils/format'
+import { SelectionOption, Txt } from '../../src/styled/options'
 
 const RenderContainer = styled.View`
   display: flex;

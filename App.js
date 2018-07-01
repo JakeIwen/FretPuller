@@ -1,21 +1,23 @@
 import React, {Component} from 'react'
-import {initChord} from './src/utils/chordShapes'
 import { range, reverse } from 'lodash/fp'
-import FretPuller from 'src/FretPuller'
+import {initChord} from './src/utils/chordShapes'
+import {tuningsNested} from './src/lib/tunings.js'
+import FretPuller from './src/FretPuller'
 
-let tuning = reverse(['E2', 'A2', 'D3', 'G3'])
-let width = 13
+let tuning = tuningsNested['Mandolin']['Standard']
 let defaultSettings = {
+  tuning,
   incOctaves: true,
   incZeroFret: true,
   keepAllFrets: true,
-  activeStrings: range(0,tuning.length).map(s=>true),
+  activeStrings: range(0, tuning.length).map(s=>true),
   noGaps: true,
   allStrings: true,
+  allowZeroes: true,
   maxFretSpan: 7,
   fretRange: [0, 7],
-  tuning,
-  width
+  width: 13,
+  chord: 'C'
 }
 
 export default class App extends Component {
@@ -23,7 +25,7 @@ export default class App extends Component {
   constructor(props) {
     super()
     this.fretPullerProps = {
-      ...initChord(defaultSettings.tuning, defaultSettings.width, 'C'),
+      ...initChord(defaultSettings),
       defaultSettings
     }
   }

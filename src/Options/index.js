@@ -1,18 +1,19 @@
 import React, {Component} from 'react'
 import styled from "styled-components/native"
-import { Chord } from '/src/lib/tonal.min.js'
+import { Chord } from '../../src/lib/tonal.min.js'
 import { TouchableOpacity, Text} from 'react-native'
 import CheckBox from 'react-native-checkbox'
 import Tuning from './Tuning'
 import Modal from 'react-native-modal'
-import { tunings, stringsOnly } from '/src/lib/tunings'
-import { Row, Col, Br } from '/src/styled'
-import {Container, RightOptions, NavText, OptionSection, OptionSectionCol, Txt, ChordOpts, ChangeTuning} from '/src/styled/options'
+import { tunings, stringsOnly } from '../../src/lib/tunings'
+import { Row, Col, Br } from '../../src/styled'
+import {Container, RightOptions, NavText, OptionSection, OptionSectionCol, Txt, ChordOpts, ChangeTuning} from '../../src/styled/options'
 import Selections from './Selections'
 import Slider from '@ptomasroos/react-native-multi-slider'
-import {accFormat} from '/src/utils/format'
+import {accFormat} from '../../src/utils/format'
 import { range } from 'lodash/fp'
 import Dimensions from 'Dimensions'
+import { CheckBoxOptions } from './CheckBoxOptions'
 
 const widthCalc = (pos, fbWidth) =>
   ((Math.pow(2,(1/fbWidth)) - 1) / Math.pow(2,((pos+1)/fbWidth))) * 100 * 2
@@ -25,33 +26,41 @@ const closest = (arr, val) => arr.reduce((prev, curr) =>
 export default class Options extends Component {
 
   constructor(props) {
-    super(props)
-    let sliderStops = [0, widthCalc(numFrets, numFrets)]
+    super(props)//the +2 below is a deterministic offset. Can't figute out why its
+    let sliderStops = [0, widthCalc(numFrets, numFrets)+2]
     let sum = sliderStops[1]
     sliderStops.push(...range(0, numFrets-1).map( n => {
       sum += widthCalc(n, numFrets)
       return sum
     } ))
+    this.sliderStops = sliderStops
     this.state = {
-      sliderStops,
       showTuningModal: false,
-      sliderValue: this.props.defaultRange.map(fretNum => Math.floor(closest(sliderStops, 100*fretNum/numFrets))),
-      tuningName: (tunings.find( tuning =>
-        tuning.value.join('')===this.props.tuning.join('')
-      ) || {}).name || 'Custom'
+      sliderValue: this.props.fretRange.map(fretNum => Math.floor(closest(sliderStops, 100*fretNum/numFrets))),
     }
+    console.log('constructor props', props);
+
   }
 
   sliderValuesChange = (vals) => {
-    let snappedVals = vals.map(val => closest(this.state.sliderStops, val))
+    let snappedVals = vals.map(val => closest(this.sliderStops, val))
     console.log({snappedVals})
-    this.props.fretFilter({
-      fretRange: snappedVals.map( (val) => this.state.sliderStops.indexOf(val))
+    this.props.changeSettings({
+      fretRange: snappedVals.map( (val) => this.sliderStops.indexOf(val))
     })
     this.setState({
-      sliderValue: vals.map(val=>Math.floor(closest(this.state.sliderStops, val))),
+      sliderValue: vals.map(val=>Math.floor(closest(this.sliderStops, val))),
     });
   }
+
+  variationNums = () => this.props.chordShapes.length
+    ? (<Text>
+        Variation <Br/>
+        {this.props.variationIndex+1} of {this.props.chordShapes.length}
+      </Text>)
+    : (<Text> No Chord <Br/> Shapes! </Text>)
+
+  // openStringCheckbox = () =>
 
   render() {
     let { type, extensions, chord, tonic } = this.state
@@ -77,71 +86,16 @@ export default class Options extends Component {
                 <TouchableOpacity onPress={()=>this.props.newVariation(true)} >
                   <NavText>&larr;</NavText>
                 </TouchableOpacity>
-                <Text>
-                  Variation <Br/>
-                  {this.props.variationIndex+1} of {this.props.numVariations}
-                </Text>
+                {this.variationNums()}
                 <TouchableOpacity onPress={()=>this.props.newVariation()} >
                   <NavText>&rarr;</NavText>
                 </TouchableOpacity>
               </Row>
               <Col spaceBetween>
                 <Text>Max Fret Span</Text>
-                <Row>
-                  <TouchableOpacity
-                    disabled={this.props.maxFretSpan < 3}
-                    onPress={ ()=>this.props.fretFilter({
-                      maxFretSpan: this.props.maxFretSpan-1,
-                      incZeroFret: true
-                    })}>
-                    <NavText>&larr;</NavText>
-                  </TouchableOpacity>
-                  <NavText>{this.props.maxFretSpan}</NavText>
-                  <TouchableOpacity
-                    disabled={this.props.maxFretSpan > 6}
-                    onPress={()=>this.props.fretFilter({
-                      maxFretSpan: this.props.maxFretSpan+1,
-                      incZeroFret: true
-                    })} >
-                    <NavText>&rarr;</NavText>
-                  </TouchableOpacity>
-                </Row>
               </Col>
             </OptionSection>
-            <CheckBox
-              label='Allow Open Strings'
-              onChange={val => this.props.fretFilter({incZeroFret: !val})}
-              checked={this.props.incZeroFret}
-            />
-            {/* <CheckBox
-              label='Select Octaves'
-              onChange={val => this.props.changeSettings({incOctaves: !val})}
-              checked={this.props.incOctaves}
-            /> */}
-            <CheckBox
-              label='Show All Included Frets'
-              onChange={val => this.props.changeSettings({keepAllFrets: !val})}
-              checked={this.props.keepAllFrets}
-            />
-            <CheckBox
-              label='No Inner Muted Strings'
-              onChange={val => this.props.fretFilter({noGaps: !val})}
-              checked={this.props.noGaps}
-            />
-            <CheckBox
-              label='Require All Strings'
-              onChange={val => this.props.fretFilter({
-                allStrings: !val,
-                activeStrings: range(0,this.props.tuning.length).map(s=>true),
-                noGaps: true
-              })}
-              checked={this.props.allStrings}
-            />
-            {/* <CheckBox
-              label='Choose Strings'
-              onChange={this.props.editStrings}
-              checked={this.props.chooseStrings}
-            /> */}
+            <CheckBoxOptions {...this.props} />
             <ChangeTuning
               title='CHANGE TUNING'
               onPress={()=>this.setState({showTuningModal: true})}
@@ -155,7 +109,6 @@ export default class Options extends Component {
             initialTuning={this.props.tuning}
             onSave={ tuning => {
               this.setState({showTuningModal: false})
-              console.log('tuning onsave', tuning)
               this.props.changeFretboard({tuning})}
             } />
         </Modal>
