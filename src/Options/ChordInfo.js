@@ -16,7 +16,7 @@ const SelectedChord = styled.Text`
   font-size: 30;
   ${'' /* align-self: center; */}
 `
-const MockFret = styled.View`
+export const MockFret = styled.View`
   display: flex;
   align-items: center;
   justify-content: center;

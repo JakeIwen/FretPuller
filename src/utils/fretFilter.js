@@ -2,7 +2,6 @@
 export const fretFilter = ({state, callback}) => {
   let {incZeroFret, noGaps, allStrings, keepAllFrets, fretRange, activeStrings} = state
   console.log({state, callback});
-  debugger;
   let chordShapes = state.allShapes.filter( fretsInChord => {
 
     const positions = fretsInChord.map(fret => fret.loc.pos)

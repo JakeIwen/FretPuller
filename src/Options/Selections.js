@@ -4,10 +4,12 @@ import RadioSelect from './RadioSelect'
 import {Row, Col} from '../../src/styled'
 import { Chord } from '../../src/lib/tonal.min.js'
 import {TouchableOpacity, Text} from 'react-native'
-import { SelectionButton, ResetButton, Txt } from '../../src/styled/selections'
+import { SelectionButton, ResetButton, Txt, ChordElementBtn } from '../../src/styled/selections'
 import ChordInfo from './ChordInfo'
 import {ScrollView} from 'react-native'
 import {indexLoop} from '../../src/utils/indexLoop'
+import { range } from 'lodash/fp'
+
 
 const tonicList = ["C", "D", "E", "F", "G", "A", "B"]
 const preferredList = ["C", "C#", "D", "Eb", "E", "F", "F#", "G", "Ab", "A", "Bb", "B"]
@@ -57,7 +59,9 @@ export default class Selections extends Component {
     let {tonic, activeSelector, extensions} = this.state
     // let option, selectedOption
     let sIndex = activeSelector.slice(-1)
+    console.log('extensions length', (extensions || []).length);
     return (
+
       <Col>
         <ScrollView>
         {activeSelector==='tonic' && <RadioSelect
@@ -144,9 +148,9 @@ export default class Selections extends Component {
           <ChordInfo colorArr={this.props.colorArr} chord={fullChord} />
           <ResetButton title='RESET' onPress={this.reset} />
         </Col>
-        <Col>
+        {/* <Col>
           {this.chordElements()}
-        </Col>
+        </Col> */}
         <Col flex>
           <Row spaceAround>
             <TouchableOpacity onPress={() => this.cycleTonic(tonic, -1)}>

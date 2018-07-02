@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import styled from "styled-components/native"
 import { RadioButtons } from 'react-native-radio-buttons'
 import { TouchableHighlight, Text, View } from 'react-native'
+// import { SegmentedControlIOS } from 'react-native/Libraries/Components/SegmentedControlIOS'
 import { Row } from '../../src/styled'
 import {accFormat} from '../../src/utils/format'
 import { SelectionOption, Txt } from '../../src/styled/options'
@@ -13,6 +14,7 @@ const RenderContainer = styled.View`
   ${'' /* flex: 1; */}
 `
 
+
 export default class RadioSelect extends Component {
 
   setSelectedOption = (newSelectedOption) => {
@@ -22,11 +24,6 @@ export default class RadioSelect extends Component {
   }
 
   renderOption = (option, selected, onSelect, index) => (
-    // <SelectionOption onPress={()=>this.setSelectedOption(option)} key={index}>
-    //   <Txt selected={selected}>
-    //     {accFormat(option)}
-    //   </Txt>
-    // </SelectionOption>
     <SelectionOption
       onPress={()=>this.setSelectedOption(option)}
       key={index}
@@ -40,7 +37,6 @@ export default class RadioSelect extends Component {
     return (
       <RadioButtons
         options={ this.props.options }
-        // onSelection={ this.setSelectedOption }
         selectedOption={ this.props.selectedOption }
         renderOption={ this.renderOption }
         renderContainer={ this.renderContainer }
