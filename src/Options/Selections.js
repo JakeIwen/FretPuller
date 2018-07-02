@@ -4,9 +4,8 @@ import RadioSelect from './RadioSelect'
 import {Row, Col} from '../../src/styled'
 import { Chord } from '../../src/lib/tonal.min.js'
 import {TouchableOpacity, Text} from 'react-native'
-import { SelectionButton, ResetButton, Txt, ChordElementBtn } from '../../src/styled/selections'
+import { SelectionButton, ResetButton, Txt } from '../../src/styled/selections'
 import ChordInfo from './ChordInfo'
-import {ScrollView} from 'react-native'
 import {indexLoop} from '../../src/utils/indexLoop'
 import { range } from 'lodash/fp'
 
@@ -59,36 +58,44 @@ export default class Selections extends Component {
     let {tonic, activeSelector, extensions} = this.state
     // let option, selectedOption
     let sIndex = activeSelector.slice(-1)
+    console.log({activeSelector});
     console.log('extensions length', (extensions || []).length);
+    console.log('tonic', tonic);
+    let exts = [...extensions]
     return (
+      <Row>
+        <Col>
+          <RadioSelect
+            preventUnselect
+            options={tonicList}
+            selectedOption={tonic}
+            onValueChange={newTonic => this.setChord({tonic: newTonic})}/>
+        </Col>
+        {range(0, extensions.length+1).map(sIndex => {
+          return (
+            <Col key={sIndex}>
+              <RadioSelect
+                options={this.extOptions(extensions.slice(0,sIndex).join(''))}
+                selectedOption={extensions[sIndex]}
+                onValueChange={newExt => {
+                  if (sIndex == extensions.length) {
+                    return this.setChord({extensions: extensions.slice(0,sIndex).concat(newExt)})
+                  }
+                  return newExt
+                    ? this.setChord({
+                      extensions: extensions.map((ext,i)=>i==sIndex ? newExt : ext)
+                    })
+                    : this.setChord({extensions: extensions.slice(0,sIndex)})
+                }}/>
+            </Col>
+          )
+        })}
 
-      <Col>
-        <ScrollView>
-        {activeSelector==='tonic' && <RadioSelect
-          preventUnselect
-          options={tonicList}
-          selectedOption={tonic}
-          onValueChange={newTonic => newTonic===this.state.tonic
-            ? this.setState({activeSelector : 'extensions0'})
-            : this.setChord({tonic: newTonic})}/>
-        }
-        {activeSelector.startsWith('extensions') && <RadioSelect
-          options={this.extOptions(extensions.slice(0,sIndex).join(''))}
-          selectedOption={extensions[sIndex]}
-          onValueChange={newExt => newExt
-            ? this.setChord({
-              extensions: extensions.slice(0,sIndex).concat(newExt)
-            })
-            : this.setChord({extensions: extensions.slice(0,sIndex)})
-          }/>
-        }
-        </ScrollView>
-      </Col>
+      </Row>
     )
   }
   extOptions = (currentName) => {
     let {extensions} = this.state
-    // let alias = type && typeAlias[typeList.indexOf(type)]
     let possibilities = currentName
       ? allNames.filter(name => name.startsWith(currentName))
         .map(name => name.replace(currentName, ''))
@@ -145,13 +152,6 @@ export default class Selections extends Component {
     return (
       <Row flex>
         <Col>
-          <ChordInfo colorArr={this.props.colorArr} chord={fullChord} />
-          <ResetButton title='RESET' onPress={this.reset} />
-        </Col>
-        {/* <Col>
-          {this.chordElements()}
-        </Col> */}
-        <Col flex>
           <Row spaceAround>
             <TouchableOpacity onPress={() => this.cycleTonic(tonic, -1)}>
               <Txt>{'\u266D'}</Txt>
@@ -160,6 +160,14 @@ export default class Selections extends Component {
               <Txt>{'\u266F'}</Txt>
             </TouchableOpacity>
           </Row>
+          <ChordInfo colorArr={this.props.colorArr} chord={fullChord} />
+          <ResetButton title='RESET' onPress={this.reset} />
+        </Col>
+        {/* <Col>
+          {this.chordElements()}
+        </Col> */}
+        <Col flex>
+
           {this.optionList()}
         </Col>
       </Row>

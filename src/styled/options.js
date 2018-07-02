@@ -35,27 +35,30 @@ export const SelectionButton = styled.TouchableHighlight`
   ${'' /* padding: 0 10px; */}
 
 `
+const OptionText = styled.Text`
+  font-size: ${props => (props.len > 5) ? 10 : 12};
+
+`
 
 const sButton = (props) =>
   <TouchableOpacity
     {...props}
-  ><Text>{props.title}</Text>
+  ><OptionText len={props.title.length}>{props.title}</OptionText>
 </TouchableOpacity>
 
 export const SelectionOption = styled(sButton)`
   ${'' /* display: flex; */}
   ${'' /* align-items: center; */}
-  border: ${props => props.activated ? '2px solid red' : '0'}
+  border: ${props => props.activated ? '2px solid red' : '2px solid black'}
   ${'' /* padding: 0 10px; */}
   display: flex;
   align-items: center;
   justify-content: center;
   background-color: transparent;
-  border: 2px solid black;
   border-radius: 5px;
   margin: 1px;
   height: 20px;
-  width: 40px;
+  width: 45px;
 `
 export const Txt = styled.Text`
   font-size: 24;
