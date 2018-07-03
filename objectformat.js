@@ -76,10 +76,3 @@ let third = [
     }
   }
 ]
-
-
-I'm trying to build chord names with sets of substrings. Basically a tonic and some subnames are selected form a list, and combine a tonic with each of the string permutations of the subname array
-
-For example, selecting `tonic = A` and `['M', '7', 'add4', '#'] will eventually hit on `A#M7add4`
-
-I want to use existing selections to generate options for additional selection via

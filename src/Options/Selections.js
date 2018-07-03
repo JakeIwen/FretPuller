@@ -26,6 +26,9 @@ export default class Selections extends Component {
       fullChord: 'C',
       activeSelector: 'tonic',
     }
+    console.log({Chord});
+    console.log(Chord.notes('CM'));
+    console.log(this);
   }
 
   setChord = ({tonic, extensions}) => {
@@ -95,7 +98,6 @@ export default class Selections extends Component {
     )
   }
   extOptions = (currentName) => {
-    let {extensions} = this.state
     let possibilities = currentName
       ? allNames.filter(name => name.startsWith(currentName))
         .map(name => name.replace(currentName, ''))
@@ -116,7 +118,10 @@ export default class Selections extends Component {
         lastPoss = poss
       })
     }
-    return res.filter(item=>!!item)
+    return res.filter(item=>{
+      console.log('item', item, currentName + item);
+      return !!item
+    })
   }
 
   reset = () => this.setChord({extensions: []})
