@@ -130,15 +130,17 @@ export const fretMatrixForChord = (tuning, width, chord, showName = true) => {
   return updateFretMatrix(updates)(fretMatrix({ tuning, width }))
 }
 
-export const fretMatrixForScale = (tuning, width, tonic, scale, showName = false) => {
+export const fretMatrixForScale = (tuning, width, tonic, scale, showName = true) => {
   const intervals = Scale.intervals(scale)
   const updates = Scale.notes(tonic, scale).reduce(
     (acc, pc, i) => {
       const locs = locationsForPc(tuning, width, pc)
-      const name = intervals[i]
+      const name = pc
+      // const name = intervals[i]
       return [...acc, ...updatesForLocsAndName(locs, name, showName)]
     },
     [],
   )
+  console.log({intervals, updates, tuning, width, tonic, scale});
   return updateFretMatrix(updates)(fretMatrix({ tuning, width }))
 }

@@ -41,11 +41,13 @@ export default class FretPuller extends Component {
       viewMode,
       selectionMatrix,
       fullSelectionMatrix,
+      appMode: 'chord'
     }
   }
 
   componentDidMount() {
-    this.changeSettings({})
+
+    this.appMode == 'chord' && this.changeSettings({})
   }
 
   onFretClick = (fret) => {
@@ -68,6 +70,7 @@ export default class FretPuller extends Component {
 
   changeSettings = (args) => {
     console.log('new settign args', args);
+
     fretFilter({
       state: {...this.state, ...args},
       callback: (newState) => this.getCombo(newState)
@@ -101,27 +104,47 @@ export default class FretPuller extends Component {
     }))
   }
 
-  stateWithNewChord = ({tuning, width, chord}) => Object.assign(this.state, initChord({
+  stateWithNewChord = ({tuning, width, chord, tonic, scale, appMode}) =>
+    Object.assign(this.state, initChord({
+      appMode: appMode || this.state.appMode,
       tuning: tuning || this.state.tuning,
       width: width || this.state.width,
-      chord: chord || this.state.chord
+      chord: chord || this.state.chord,
+      tonic: tonic || this.state.tonic,
+      scale: scale || this.state.scale,
     }))
 
-  changeFretboard = ({tuning, width, chord}) => {
+  changeFretboard = ({tuning, width, chord, tonic}) => {
     fretFilter({
-      state: this.stateWithNewChord({tuning, width, chord}),
+      state: this.stateWithNewChord({tuning, width, tonic, chord}),
       callback: (newState) => this.getCombo(newState)
     })
     console.log('CFB STATE', this.state);
   }
 
   showAll = () => {
-    let {tuning, width, chord} = this.state
-    this.setState({ fretMatrix: fretMatrixForChord(tuning, width, chord) })
+    let {tuning, width, chord, tonic} = this.state
+    this.setState({ fretMatrix: fretMatrixForChord(tuning, width, tonic+chord) })
+  }
+
+  setMode = (mode) => {
+    console.log('setting mode', mode);
+    switch (mode) {
+      case 'chord':
+        this.changeSettings({})
+        this.setState({appMode: 'chord'})
+        break;
+      case 'scale':
+        this.setState({appMode: 'scale'})
+
+        break;
+      default:
+
+    }
   }
 
   render() {
-    let colorArr = tonicColors(tokenize(this.state.chord)[0])
+    let colorArr = tonicColors(this.state.tonic)
     return (
       <Col flex>
         <Fretboard
@@ -136,8 +159,8 @@ export default class FretPuller extends Component {
         {!!this.state.fbHeight &&
           <Options
             {...this.state}
-            setChord={chord => {
-              let state = this.stateWithNewChord({chord})
+            setChord={(tonic, chord, scale) => {
+              let state = this.stateWithNewChord({tonic, chord, scale})
               fretFilter({state, callback: this.getCombo})
             }}
             newVariation={(reverse)=>this.getCombo({
@@ -149,6 +172,7 @@ export default class FretPuller extends Component {
             colorArr={colorArr}
             changeSettings={this.changeSettings}
             keepAllFrets={this.state.keepAllFrets}
+            setMode={this.setMode}
 
         />}
 

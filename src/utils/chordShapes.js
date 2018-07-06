@@ -1,5 +1,5 @@
-import { fretMatrixForChord } from '../fretboard'
-import { Chord, midi } from '../../src/lib/tonal.min.js'
+import { fretMatrixForChord, fretMatrixForScale } from '../fretboard'
+import { Chord, Scale, midi } from '../../src/lib/tonal.min.js'
 import { range } from 'lodash/fp'
 
 const getChordShapes = (activeFretMatrix, midis, fretRange = 7) => {
@@ -40,26 +40,34 @@ function stringCombos(arr) {
 const fretFilter = (matrix) =>
   matrix.map(string=>string.filter(fret=>fret.state.status==='selected'))
 
-export const initChord = ({tuning, width, chord}) => {
-  let fretMatrix = fretMatrixForChord(tuning, width, chord)
-  console.log('INIT CHORD:');
-  console.log({tuning, width, chord});
+export const initChord = ({tuning, width, chord, tonic, scale, appMode}) => {
+  let fretMatrix, midiNotes, chordShapes
+  if (appMode=='chord') {
+    fretMatrix = fretMatrixForChord(tuning, width, tonic+chord)
+    midiNotes = Chord.notes(tonic+chord).map(note => midi(note + '0') % 12)
+    chordShapes = getChordShapes(fretFilter(fretMatrix), midiNotes)
+  } else if (appMode=='scale') {
+    fretMatrix = fretMatrixForScale(tuning, width, tonic, scale)
+    midiNotes = Scale.notes(tonic, scale).map(note => midi(note + '0') % 12)
+    chordShapes = []
+  }
+  console.log({tuning, width, tonic, chord, scale, appMode});
   console.log({fretMatrix});
-  let midiNotes = Chord.notes(chord).map(note => midi(note + '0') % 12)
-  let chordShapes = getChordShapes(fretFilter(fretMatrix), midiNotes)
   let selectionMatrix = fretMatrix.map(stg => stg.map(fret => fret.state.status==='selected'))
+
   return {
     tuning,
     chord,
+    scale,
+    tonic,
     width,
+    appMode,
     fretMatrix,
     chordShapes,
     allShapes: chordShapes,
-    viewMode: 'chord',
     selectionMatrix,
     fullSelectionMatrix: selectionMatrix,
     variationIndex: 0,
-    activeStrings: range(0,tuning.length).map(s=>true),
   }
 }
 

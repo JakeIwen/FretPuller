@@ -1,9 +1,7 @@
 import React, {Component} from 'react'
 import PropTypes from 'prop-types'
-import {Animated, Easing, TouchableOpacity, Text, View} from 'react-native'
+import {TouchableOpacity, Text, View} from 'react-native'
 import styled from 'styled-components/native'
-import {keyframes} from 'styled-components'
-// import { fadeIn } from 'react-animations'
 import {animateLoop, interpolateFade, hexToRGBGray} from '../../../src/utils/bgFade'
 
 const Outer = styled(TouchableOpacity)`
@@ -20,24 +18,12 @@ export default class Fret extends Component {
 
   constructor(props) {
     super()
-    this.state = {
-      animation: new Animated.Value(0)
-    }
-  }
 
-  componentDidMount() {
-    this.props.highlighted && animateLoop(this.state.animation)
-  }
-
-  componentWillReceiveProps(newProps) {
-    newProps.highlighted && animateLoop(this.state.animation)
   }
 
   render() {
     let { fret, text, onFretClick, flex, bgColor, highlighted, selected } = this.props
-    let color = highlighted
-      ? bgColor
-      : hexToRGBGray(bgColor)
+    let color = highlighted ? bgColor : hexToRGBGray(bgColor)
 
     return (
       <Outer
@@ -45,10 +31,10 @@ export default class Fret extends Component {
         onPress={()=>onFretClick(fret)}
         isNut={fret.loc.pos===0}
         >
-        <Animated.View
+        <View
           style={{backgroundColor: (selected && color) || `transparent`}} >
           <Content>{text}</Content>
-        </Animated.View>
+        </View>
       </Outer>
     )
   }

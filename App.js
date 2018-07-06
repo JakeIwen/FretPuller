@@ -17,12 +17,15 @@ let defaultSettings = {
   maxFretSpan: 7,
   fretRange: [0, 7],
   width: 13,
-  chord: 'C'
+  tonic: 'C',
+  chord: '',
+  scale: 'minor',
+  appMode: 'scale'
 }
 
 export default class App extends Component {
 
-  constructor(props) {
+  constructor() {
     super()
     this.fretPullerProps = {
       ...initChord(defaultSettings),

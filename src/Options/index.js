@@ -7,7 +7,7 @@ import Tuning from './Tuning'
 import Modal from 'react-native-modal'
 import { tunings, stringsOnly } from '../../src/lib/tunings'
 import { Row, Col, Br } from '../../src/styled'
-import {Container, RightOptions, NavText, OptionSection, OptionSectionCol, Txt, ChordOpts, ChangeTuning} from '../../src/styled/options'
+import {FpButton, Container, RightOptions, NavText, OptionSection, OptionSectionCol, Txt, ChordOpts, ChangeTuning} from '../../src/styled/options'
 import Selections from './Selections'
 import Slider from '@ptomasroos/react-native-multi-slider'
 import {accFormat} from '../../src/utils/format'
@@ -61,6 +61,23 @@ export default class Options extends Component {
     : (<Text> No Chord <Br/> Shapes! </Text>)
 
   // openStringCheckbox = () =>
+  chordOptions = () =>
+    <OptionSection spaceAround>
+      <Row>
+        <TouchableOpacity onPress={()=>this.props.newVariation(true)} >
+          <NavText>&larr;</NavText>
+        </TouchableOpacity>
+        {this.variationNums()}
+        <TouchableOpacity onPress={()=>this.props.newVariation()} >
+          <NavText>&rarr;</NavText>
+        </TouchableOpacity>
+      </Row>
+      <Row>
+        <Col spaceBetween>
+          <Text>Max Fret Span</Text>
+        </Col>
+      </Row>
+    </OptionSection>
 
   render() {
     let { type, extensions, chord, tonic } = this.state
@@ -81,25 +98,17 @@ export default class Options extends Component {
             setChord={this.props.setChord}
           />
           <RightOptions>
-            <OptionSection spaceAround>
-              <Row>
-                <TouchableOpacity onPress={()=>this.props.newVariation(true)} >
-                  <NavText>&larr;</NavText>
-                </TouchableOpacity>
-                {this.variationNums()}
-                <TouchableOpacity onPress={()=>this.props.newVariation()} >
-                  <NavText>&rarr;</NavText>
-                </TouchableOpacity>
-              </Row>
-              <Col spaceBetween>
-                <Text>Max Fret Span</Text>
-              </Col>
-            </OptionSection>
+            {this.props.appMode=='chord' && this.chordOptions()}
             <CheckBoxOptions {...this.props} />
-            <ChangeTuning
-              title='CHANGE TUNING'
-              onPress={()=>this.setState({showTuningModal: true})}
-            />
+            <Row>
+              <FpButton
+                title='CHANGE TUNING'
+                onPress={()=>this.setState({showTuningModal: true})}/>
+              <FpButton
+                title={this.props.appMode=='scale' ? 'SCALE MODE' : 'CHORD MODE'}
+                onPress={()=>this.props.setMode(this.props.appMode=='scale' ? 'chord' : 'scale')}/>
+            </Row>
+
           </RightOptions>
         </Row>
         <Modal

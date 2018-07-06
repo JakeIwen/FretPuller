@@ -22,9 +22,6 @@ export const NavText = styled.Text`
 export const OptionSection = styled(Row)`
   border: 1px solid black;
 `
-export const OptionSectionCol = styled(Col)`
-  ${'' /* border: 1px solid black; */}
-`
 export const ChangeTuning = styled(Button)`
   align-self: flex-end;
 `
@@ -37,28 +34,40 @@ export const SelectionButton = styled.TouchableHighlight`
 `
 const OptionText = styled.Text`
   font-size: ${props => (props.len > 5) ? 10 : 12};
-
 `
 
+
 const sButton = (props) =>
-  <TouchableOpacity
-    {...props}
-  ><OptionText len={props.title.length}>{props.title}</OptionText>
-</TouchableOpacity>
+  <TouchableOpacity {...props} >
+    <OptionText len={props.title.length}>{props.title}</OptionText>
+  </TouchableOpacity>
+
+const fpButton = (props) =>
+  <TouchableOpacity {...props} >
+    <Text>{props.title}</Text>
+  </TouchableOpacity>
+
 
 export const SelectionOption = styled(sButton)`
-  ${'' /* display: flex; */}
-  ${'' /* align-items: center; */}
-  border: ${props => props.activated ? '2px solid red' : '2px solid black'}
-  ${'' /* padding: 0 10px; */}
+  border: ${props => props.activated ? '2px solid red' : '2px solid black'};
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: transparent;
   border-radius: 5px;
   margin: 1px;
   height: 20px;
   width: 45px;
+`
+
+export const FpButton = styled(fpButton)`
+  border: 2px solid black;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 5px;
+  margin: 1px;
+  height: ${props => props.height || '40px'};
+  width: ${props => props.width || '80px'};
 `
 export const Txt = styled.Text`
   font-size: 24;

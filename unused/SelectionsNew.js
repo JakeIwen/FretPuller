@@ -41,6 +41,7 @@ export default class Selections extends Component {
       : allNames
     let res = ['']
     if (possibilities.length) {
+      debugger;
       let lastPoss = possibilities[0]
       possibilities.forEach((poss,i)=> {
         if (i===0) return

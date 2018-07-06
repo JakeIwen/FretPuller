@@ -62,11 +62,11 @@ const chordDetails = (chord, colorArr) => {
   )
 }
 
-export default ChordInfo = ({chord, colorArr}) => (
+export default ChordInfo = ({name, colorArr}) => (
   <Wrapper>
     <SelectedChord>
-      {accFormat(chord)}
+      {accFormat(name)}
     </SelectedChord>
-    {chordDetails(chord, colorArr)}
+    {chordDetails(name, colorArr)}
   </Wrapper>
 )

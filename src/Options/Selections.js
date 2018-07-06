@@ -2,14 +2,15 @@ import React, {Component} from 'react'
 import styled from "styled-components/native"
 import RadioSelect from './RadioSelect'
 import {Row, Col} from '../../src/styled'
-import { Chord } from '../../src/lib/tonal.min.js'
+import { Chord, Scale } from '../../src/lib/tonal.min.js'
 import {TouchableOpacity, Text} from 'react-native'
 import { SelectionButton, ResetButton, Txt } from '../../src/styled/selections'
 import ChordInfo from './ChordInfo'
 import {indexLoop} from '../../src/utils/indexLoop'
 import { range } from 'lodash/fp'
+// require('../../src/lib/tonal.min.js')
 
-
+console.log({Scale});
 const tonicList = ["C", "D", "E", "F", "G", "A", "B"]
 const preferredList = ["C", "C#", "D", "Eb", "E", "F", "F#", "G", "Ab", "A", "Bb", "B"]
 const typeList = ['M', 'm', 'o', 'aug']
@@ -22,39 +23,38 @@ export default class Selections extends Component {
     this.state = {
       tonic: 'C',
       extensions: [],
-      chord: 'C',
-      fullChord: 'C',
+      name: 'C',
+      fullName: 'C',
       activeSelector: 'tonic',
     }
-    console.log({Chord});
+    console.log({Chord, Scale});
+
     console.log(Chord.notes('CM'));
     console.log(this);
   }
 
   setChord = ({tonic, extensions}) => {
-    let newChord, activeSelector
+    let chord, activeSelector
     if (tonic) {
-      newChord = tonic
       activeSelector = 'extensions0'
     } else if ((extensions || []).length){
       tonic = this.state.tonic
     } else {
-      console.log('ELSE');
       tonic = this.state.tonic
       activeSelector = 'tonic'
     }
     let extArr = extensions || this.state.extensions
-    newChord = tonic + extArr.join('')
+    chord = extArr.join('')
     tonic = tonic || this.state.tonic
-    let exists = Chord.exists(extArr.join(''))
+    let exists = Chord.exists(chord)
     this.setState({
       tonic,
-      fullChord: exists ? newChord : this.state.fullChord,
-      chord: exists ? newChord : this.state.chord,
+      fullName: exists ? (tonic + chord) : this.state.fullName,
+      name: exists ? (tonic + chord) : this.state.name,
       extensions: extArr,
       activeSelector: activeSelector || 'extensions' + extArr.length
     })
-    exists && this.props.setChord(newChord)
+    exists && this.props.setChord(tonic, chord)
   }
 
   optionList = () => {
@@ -98,6 +98,7 @@ export default class Selections extends Component {
     )
   }
   extOptions = (currentName) => {
+    //must begin with currentName to be a possible chord/
     let possibilities = currentName
       ? allNames.filter(name => name.startsWith(currentName))
         .map(name => name.replace(currentName, ''))
@@ -110,8 +111,9 @@ export default class Selections extends Component {
         let j = 0
         while(poss[j]===lastPoss[j]) j++
         if (j) {
-            res.pop()
-            res.push(poss.slice(0,j))
+          if(j==poss.length-1) j++
+          res.pop()
+          res.push(poss.slice(0,j))
         } else {
           res.push(poss)
         }
@@ -119,7 +121,6 @@ export default class Selections extends Component {
       })
     }
     return res.filter(item=>{
-      console.log('item', item, currentName + item);
       return !!item
     })
   }
@@ -153,7 +154,7 @@ export default class Selections extends Component {
   )
 
   render(){
-    let {tonic, fullChord} = this.state
+    let {tonic, fullName} = this.state
     return (
       <Row flex>
         <Col>
@@ -165,7 +166,7 @@ export default class Selections extends Component {
               <Txt>{'\u266F'}</Txt>
             </TouchableOpacity>
           </Row>
-          <ChordInfo colorArr={this.props.colorArr} chord={fullChord} />
+          <ChordInfo colorArr={this.props.colorArr} name={fullName} />
           <ResetButton title='RESET' onPress={this.reset} />
         </Col>
         {/* <Col>
