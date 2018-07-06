@@ -12,7 +12,7 @@ const Wrapper = styled.View`
   flex: 1;
   margin: 5px;
 `
-const SelectedChord = styled.Text`
+const SelectionName = styled.Text`
   font-size: 30;
   ${'' /* align-self: center; */}
 `
@@ -64,9 +64,9 @@ const chordDetails = (chord, colorArr) => {
 
 export default ChordInfo = ({chord, colorArr}) => (
   <Wrapper>
-    <SelectedChord>
+    <SelectionName>
       {accFormat(chord)}
-    </SelectedChord>
+    </SelectionName>
     {chordDetails(chord, colorArr)}
   </Wrapper>
 )

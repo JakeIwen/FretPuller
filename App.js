@@ -29,10 +29,11 @@ export default class App extends Component {
     super()
     this.fretPullerProps = {
       ...initChord(defaultSettings),
-      defaultSettings
+      ...defaultSettings
     }
   }
   render() {
+    console.log('fpp', this.fretPullerProps);
     return <FretPuller  {...this.fretPullerProps}/>
   }
 }

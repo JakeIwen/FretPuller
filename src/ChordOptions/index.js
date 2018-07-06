@@ -1,16 +1,13 @@
 import React, {Component} from 'react'
 import styled from "styled-components/native"
-import { Chord } from '../../src/lib/tonal.min.js'
+import { Chord } from '../lib/tonal.min.js'
 import { TouchableOpacity, Text} from 'react-native'
 import CheckBox from 'react-native-checkbox'
-import Tuning from './Tuning'
-import Modal from 'react-native-modal'
-import { tunings, stringsOnly } from '../../src/lib/tunings'
-import { Row, Col, Br } from '../../src/styled'
-import {FpButton, Container, RightOptions, NavText, OptionSection, OptionSectionCol, Txt, ChordOpts, ChangeTuning} from '../../src/styled/options'
+import { tunings, stringsOnly } from '../lib/tunings'
+import { Row, Col, Br } from '../styled'
+import {Container, RightOptions, NavText, OptionSection, OptionSectionCol, Txt, ChordOpts, ChangeTuning} from '../styled/options'
 import Selections from './Selections'
 import Slider from '@ptomasroos/react-native-multi-slider'
-import {accFormat} from '../../src/utils/format'
 import { range } from 'lodash/fp'
 import Dimensions from 'Dimensions'
 import { CheckBoxOptions } from './CheckBoxOptions'
@@ -23,7 +20,7 @@ const numFrets = 13
 const closest = (arr, val) => arr.reduce((prev, curr) =>
   Math.abs(curr - val) < Math.abs(prev - val) ? curr : prev)
 
-export default class Options extends Component {
+export default class ChordOptions extends Component {
 
   constructor(props) {
     super(props)//the +2 below is a deterministic offset. Can't figute out why its
@@ -35,7 +32,6 @@ export default class Options extends Component {
     } ))
     this.sliderStops = sliderStops
     this.state = {
-      showTuningModal: false,
       sliderValue: this.props.fretRange.map(fretNum => Math.floor(closest(sliderStops, 100*fretNum/numFrets))),
     }
     console.log('constructor props', props);
@@ -93,34 +89,14 @@ export default class Options extends Component {
           containerStyle={{ height: 15, paddingLeft: 30 }}
         />
         <Row flex>
-          <Selections
-            colorArr={this.props.colorArr}
-            setChord={this.props.setChord}
-          />
+          <Selections setChord={this.props.setChord} />
           <RightOptions>
-            {this.props.appMode=='chord' && this.chordOptions()}
+            {this.chordOptions()}
             <CheckBoxOptions {...this.props} />
-            <Row>
-              <FpButton
-                title='CHANGE TUNING'
-                onPress={()=>this.setState({showTuningModal: true})}/>
-              <FpButton
-                title={this.props.appMode=='scale' ? 'SCALE MODE' : 'CHORD MODE'}
-                onPress={()=>this.props.setMode(this.props.appMode=='scale' ? 'chord' : 'scale')}/>
-            </Row>
-
+            {this.props.settingsButtons}
           </RightOptions>
         </Row>
-        <Modal
-          isVisible={this.state.showTuningModal}
-          supportedOrientations={['portrait', 'landscape']} >
-          <Tuning
-            initialTuning={this.props.tuning}
-            onSave={ tuning => {
-              this.setState({showTuningModal: false})
-              this.props.changeFretboard({tuning})}
-            } />
-        </Modal>
+        {this.props.tuningModal}
       </Container>
     )
   }

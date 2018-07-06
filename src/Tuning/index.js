@@ -1,11 +1,11 @@
 import React, {Component} from 'react'
 import styled from "styled-components/native"
-import {TouchableOpacity, Text, Button} from 'react-native'
-import { SelectionButton, ResetButton, Txt } from '../../src/styled/selections'
+import {Text} from 'react-native'
 import { Picker } from 'react-native-wheel-datepicker'
-import { Row, Col } from '../../src/styled'
 import {range} from 'lodash'
-import {tuningsNested} from '../../src/lib/tunings.js'
+import { SelectionButton, ResetButton, Txt } from '../styled/selections'
+import { Row, Col } from '../styled'
+import {tuningsNested} from '../lib/tunings.js'
 
 const allNotes = ["C", "C#", "D", "Eb", "E", "F", "F#", "G", "Ab", "A", "B"]
 

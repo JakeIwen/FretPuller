@@ -18,3 +18,14 @@ export const Txt = styled.Text`
   font-size: 24;
   font-weight: ${props => props.selected ? 'bold' : 'normal' };
 `
+export const MockFret = styled.View`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: ${props => props.color || 'transparent'};
+  border: 1px solid black;
+  border-radius: 5px;
+  margin: 2px;
+  height: 20px;
+  width: 50px;
+`
