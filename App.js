@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import { range, reverse } from 'lodash/fp'
+import { range } from 'lodash/fp'
 import {tuningsNested} from './src/lib/tunings.js'
 import FretPuller from './src/FretPuller'
 
@@ -19,7 +19,7 @@ const defaultSettings = {
   tonic: 'C',
   chord: '',
   scale: 'minor',
-  appMode: 'scale'
+  appMode: 'chord'
 }
 
 export default class App extends Component {

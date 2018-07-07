@@ -5,7 +5,6 @@ import { Note } from '../../../src/lib/tonal.min.js'
 import Fret from './Fret'
 import { Switch } from 'react-native-switch'
 import {tonicColors} from '../../../src/theme/colors'
-// import Swiper from 'react-native-swiper';
 import { reverse } from 'lodash/fp'
 
 export default class String extends Component {
@@ -49,7 +48,6 @@ export default class String extends Component {
         />
         {makeFrets()}
       </Row>
-
     )
   }
 }

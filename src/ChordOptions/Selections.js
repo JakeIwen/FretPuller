@@ -12,8 +12,6 @@ import { range } from 'lodash/fp'
 
 const tonicList = ["C", "D", "E", "F", "G", "A", "B"]
 const preferredList = ["C", "C#", "D", "Eb", "E", "F", "F#", "G", "Ab", "A", "Bb", "B"]
-const typeList = ['M', 'm', 'o', 'aug']
-const typeAlias = ['M', 'm', 'o', 'aug']
 const allNames = Chord.names().sort().reverse()
 
 export default class Selections extends Component {
@@ -53,7 +51,7 @@ export default class Selections extends Component {
       extensions: extArr,
       activeSelector: activeSelector || 'extensions' + extArr.length
     })
-    exists && this.props.setChord(tonic, chord)
+    exists && this.props.setChord({tonic, chord})
   }
 
   optionList = () => {

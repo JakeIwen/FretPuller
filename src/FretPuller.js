@@ -11,7 +11,6 @@ import { Note } from 'tonal'
 import {fretTruth} from './utils/frets'
 import {fretFilter} from './utils/fretFilter'
 import {indexLoop} from './utils/indexLoop'
-import { tonicColors} from './theme/colors'
 import Tuning from './Tuning'
 import Modal from 'react-native-modal'
 import {FpButton} from './styled/options'
@@ -31,9 +30,9 @@ export default class FretPuller extends Component {
     // this.setAppMode(appMode)
   }
 
-  componentDidMount() {
-    this.appMode == 'chord' && this.changeSettings({})
-  }
+  // componentDidMount() {
+  //   this.appMode == 'chord' && this.updateFilter({})
+  // }
 
   onFretClick = (fret) => {
     // this.selectPitch(midi)
@@ -44,7 +43,6 @@ export default class FretPuller extends Component {
   showThisNote = (clickedFret) => {
     const {incOctaves, viewMode, selectionMatrix} = this.state
     this.setState({
-      viewMode: 'select',
       selectionMatrix: this.state.fretMatrix.map( (stg, i) =>
         stg.map( (fret,j) =>
           fretTruth(fret, clickedFret, incOctaves, viewMode, selectionMatrix[i][j])
@@ -53,8 +51,7 @@ export default class FretPuller extends Component {
     })
   }
 
-  changeSettings = (args) => {
-    console.log('new settign args', args);
+  updateFilter = (args) => {
     fretFilter({
       state: {...this.state, ...args},
       callback: (newState) => this.getCombo(newState)
@@ -69,13 +66,15 @@ export default class FretPuller extends Component {
     })
   }
 
-  getCombo = ({...newState}) => {
+  getCombo = (newState) => {
     const state = Object.assign(this.state, newState)
     const index = indexLoop(state.variationIndex, state.chordShapes)
     const thisShape = state.chordShapes[index]
-    const newSelect = state.fretMatrix.map((stg, i) =>
+    const newSelect = state.fretMatrix.map( (stg, i) =>
       stg.map( (fret,j) =>
-        (thisShape || []).some( chord => chord.loc.crd===i && chord.loc.pos===j)
+        (thisShape || []).some( chord =>
+          chord.loc.crd===i && chord.loc.pos===j
+        )
       )
     )
     this.setState(Object.assign(state, {
@@ -83,15 +82,6 @@ export default class FretPuller extends Component {
       variationIndex: index
     }))
   }
-
-  stateWithNewChord = ({tuning, width, chord, tonic}) =>
-    Object.assign(this.state, initChord({
-      tuning: tuning || this.state.tuning,
-      width: width || this.state.width,
-      chord: chord || this.state.chord,
-      tonic: tonic || this.state.tonic,
-      appMode: 'chord'
-    }))
 
   updateScaleFretMatrix = ( settings ) => {
     const keys = ['tuning', 'width', 'tonic', 'scale']
@@ -101,6 +91,7 @@ export default class FretPuller extends Component {
     }, {})
     const fretMatrix = fretMatrixForScale( state )
     const blackOut = fretMatrix.map(stg => stg.map(fret => fret.state.status==='selected'))
+
     this.setState( {
       fretMatrix,
       selectionMatrix: blackOut,
@@ -109,12 +100,16 @@ export default class FretPuller extends Component {
     });
   }
 
-  changeFretboard = ({tuning, width, chord, tonic}) => {
-    fretFilter({
-      state: this.stateWithNewChord({tuning, width, tonic, chord}),
-      callback: (newState) => this.getCombo(newState)
-    })
-    console.log('CFB STATE', this.state);
+  changeFretboard = ( settings ) => {
+    const keys = ['tuning', 'width', 'chord', 'tonic', 'scale', 'appMode']
+    let state = keys.reduce( (acc, key) => {
+      acc[key] = settings[key] || this.state[key]
+      return acc
+    }, {})
+    if (settings.chord || settings.tonic) {
+      state = Object.assign(state, initChord(state))
+    }
+    this.updateFilter(Object.assign(this.state, state))
   }
 
   showAll = () => {
@@ -167,34 +162,31 @@ export default class FretPuller extends Component {
   chordOptions = () =>
     <ChordOptions
       {...this.state}
-      setChord={(tonic, chord, scale) => {
-        const state = this.stateWithNewChord({tonic, chord, scale})
-        fretFilter({state, callback: this.getCombo})
-      }}
       newVariation={(reverse)=>this.getCombo({
         variationIndex: this.state.variationIndex + (reverse ? -1 : 1)}
       )}
       changeFretboard={this.changeFretboard}
       showAll={this.showAll}
-      changeSettings={this.changeSettings}
+      updateFilter={this.updateFilter}
       setAppMode={this.setAppMode}
-      tuningModal={this.tuningModal()}
-      settingsButtons={this.settingsButtons()}
-    />
+    >
+      {this.tuningModal()}
+      {this.settingsButtons()}
+    </ChordOptions>
 
   render() {
-    const colorArr = tonicColors(this.state.tonic)
     return (
       <Col flex>
         <Fretboard
           isClickable
           defaultMatrix={this.state.keepAllFrets && this.state.possibilitiesMatrix}
-          onFretClick={(loc, midi) => this.onFretClick(loc, midi)}
-          fretFilter={this.changeSettings}
+          onFretClick={this.onFretClick}
+          fretFilter={this.updateFilter}
           setFretboardDims={dims => this.setState(dims)}
+
           {...this.state}
         />
-        {!!this.state.fbHeight && this.scaleOptions()}
+        {!!this.state.fbHeight && this.chordOptions()}
       </Col>
     )
   }

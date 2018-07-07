@@ -39,8 +39,7 @@ export default class ChordOptions extends Component {
   }
 
   sliderValuesChange = (vals) => {
-    let snappedVals = vals.map(val => closest(this.sliderStops, val))
-    console.log({snappedVals})
+    const snappedVals = vals.map(val => closest(this.sliderStops, val))
     this.props.changeSettings({
       fretRange: snappedVals.map( (val) => this.sliderStops.indexOf(val))
     })
@@ -76,7 +75,6 @@ export default class ChordOptions extends Component {
     </OptionSection>
 
   render() {
-    let { type, extensions, chord, tonic } = this.state
     return (
       <Container height={Dimensions.get('window').height - this.props.fbHeight}>
         <Slider
@@ -89,14 +87,13 @@ export default class ChordOptions extends Component {
           containerStyle={{ height: 15, paddingLeft: 30 }}
         />
         <Row flex>
-          <Selections setChord={this.props.setChord} />
+          <Selections setChord={this.props.changeFretboard} />
           <RightOptions>
             {this.chordOptions()}
             <CheckBoxOptions {...this.props} />
-            {this.props.settingsButtons}
           </RightOptions>
         </Row>
-        {this.props.tuningModal}
+        {this.props.children}
       </Container>
     )
   }
