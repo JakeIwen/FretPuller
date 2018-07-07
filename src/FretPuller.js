@@ -6,7 +6,7 @@ import {  Fretboard,
 import ScaleOptions from './ScaleOptions'
 import ChordOptions from './ChordOptions'
 import {initChord} from './utils/chordShapes'
-import { Col, Row } from './styled'
+import { Col, SettingsWrapper } from './styled'
 import { Note } from 'tonal'
 import {fretTruth} from './utils/frets'
 import {fretFilter} from './utils/fretFilter'
@@ -71,7 +71,6 @@ export default class FretPuller extends Component {
 
   getCombo = ({...newState}) => {
     const state = Object.assign(this.state, newState)
-    reset = reset || !!newState
     const index = indexLoop(state.variationIndex, state.chordShapes)
     const thisShape = state.chordShapes[index]
     const newSelect = state.fretMatrix.map((stg, i) =>
@@ -94,23 +93,21 @@ export default class FretPuller extends Component {
       appMode: 'chord'
     }))
 
-  updateScaleFretMatrix = ({tuning, width, tonic, scale}) => {
-    tuning = tuning || this.state.tuning
-    width = width || this.state.width
-    tonic = tonic || this.state.tonic
-    scale = scale || this.state.scale
-    const fretMatrix = fretMatrixForScale( tuning, width, tonic, scale )
+  updateScaleFretMatrix = ( settings ) => {
+    const keys = ['tuning', 'width', 'tonic', 'scale']
+    const state = keys.reduce( (acc, key) => {
+      acc[key] = settings[key] || this.state[key]
+      return acc
+    }, {})
+    const fretMatrix = fretMatrixForScale( state )
     const blackOut = fretMatrix.map(stg => stg.map(fret => fret.state.status==='selected'))
-    this.setState({
+    this.setState( {
       fretMatrix,
-      tuning,
-      width,
-      tonic,
-      scale,
       selectionMatrix: blackOut,
-      fullSelectionMatrix: blackOut,
-    })
-}
+      possibilitiesMatrix: blackOut,
+      ...state
+    });
+  }
 
   changeFretboard = ({tuning, width, chord, tonic}) => {
     fretFilter({
@@ -133,14 +130,14 @@ export default class FretPuller extends Component {
   }
 
   settingsButtons = () =>
-    <Row>
+    <SettingsWrapper>
       <FpButton
         title='CHANGE TUNING'
         onPress={()=>this.setState({showTuningModal: true})}/>
       <FpButton
-        title={(this.state.appMode)=='scale' ? 'SCALE MODE' : 'CHORD MODE'}
+        title={(this.state.appMode)=='chord' ? 'SCALE MODE' : 'CHORD MODE'}
         onPress={()=>this.setAppMode((this.state.appMode)=='scale' ? 'chord' : 'scale')}/>
-    </Row>
+    </SettingsWrapper>
 
   tuningModal = () =>
     <Modal
@@ -149,15 +146,17 @@ export default class FretPuller extends Component {
       <Tuning
         initialTuning={this.state.tuning}
         onSave={ tuning => {
+          console.log('save');
           this.setState({showTuningModal: false})
-          this.changeFretboard({tuning})}
+          this.changeFretboard({tuning})
+        }
         } />
     </Modal>
 
   scaleOptions = () =>
     <ScaleOptions
       {...this.state}
-      setScale={( {tonic, scale} ) => this.updateScaleFretMatrix( {tonic, scale } )}
+      setScale={this.updateScaleFretMatrix}
       changeFretboard={this.changeFretboard}
       setAppMode={this.setAppMode}
       >
@@ -189,8 +188,7 @@ export default class FretPuller extends Component {
       <Col flex>
         <Fretboard
           isClickable
-          defaultMatrix={this.state.keepAllFrets && this.state.fullSelectionMatrix}
-          colorArr={colorArr}
+          defaultMatrix={this.state.keepAllFrets && this.state.possibilitiesMatrix}
           onFretClick={(loc, midi) => this.onFretClick(loc, midi)}
           fretFilter={this.changeSettings}
           setFretboardDims={dims => this.setState(dims)}

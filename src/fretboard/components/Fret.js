@@ -16,11 +16,6 @@ const Content = styled.Text`
 `
 export default class Fret extends Component {
 
-  constructor(props) {
-    super()
-
-  }
-
   render() {
     let { fret, text, onFretClick, flex, bgColor, highlighted, selected } = this.props
     let color = highlighted ? bgColor : hexToRGBGray(bgColor)

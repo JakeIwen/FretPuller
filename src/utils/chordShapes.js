@@ -46,7 +46,7 @@ export const initChord = ({tuning, width, chord, tonic, scale, appMode}) => {
     midiNotes = Chord.notes(tonic+chord).map(note => midi(note + '0') % 12)
     chordShapes = getChordShapes(fretFilter(fretMatrix), midiNotes)
   } else if (appMode=='scale') {
-    fretMatrix = fretMatrixForScale(tuning, width, tonic, scale)
+    fretMatrix = fretMatrixForScale({tuning, width, tonic, scale})
     midiNotes = Scale.notes(tonic, scale).map(note => midi(note + '0') % 12)
     chordShapes = []
   }
@@ -65,7 +65,7 @@ export const initChord = ({tuning, width, chord, tonic, scale, appMode}) => {
     chordShapes,
     allShapes: chordShapes,
     selectionMatrix,
-    fullSelectionMatrix: selectionMatrix,
+    possibilitiesMatrix: selectionMatrix,
     variationIndex: 0,
   }
 }

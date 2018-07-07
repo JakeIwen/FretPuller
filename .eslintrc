@@ -22,7 +22,7 @@
     "no-duplicate-imports": 1,
     "no-var": 2,
     "prefer-const": 1,
-    "curly": ["error", "multi-or-nest"],
+    # "curly": ["error", "multi-or-nest"],
     "no-console": 0,
     "no-debugger": 0,
     "no-undef": 0,

@@ -13,25 +13,20 @@ const Board = styled.View`
   width: 100%;
 `
 const cuerda = (fretMatrix, flexArr, otherProps) =>
-  reverse(fretMatrix).map((crd,i) =>
+  reverse(fretMatrix.map((crd,i) =>
     <String
+      {...otherProps}
       key={`string-${i}`}
       stringNum={i}
       frets={crd}
       flexArr={flexArr}
-      selectionArr={reverse(otherProps.selectionMatrix)[i]}
-      colorArr={otherProps.colorArr}
-      onFretClick={otherProps.onFretClick}
-      activeStrings={reverse(otherProps.activeStrings)}
-      defaultMatrix={reverse(otherProps.defaultMatrix)[i] || []}
-      fretFilter={otherProps.fretFilter}
     />
-  )
+  ))
 
 export const Fretboard = (props) => {
-  let {fretMatrix, ...otherProps} =  props
+  const {fretMatrix, ...otherProps} =  props
   const numFrets = fretMatrix[0].length
-  let flexArr = [
+  const flexArr = [
     widthCalc(numFrets, numFrets),
     ...range(0, numFrets-1).map( n => widthCalc(n, numFrets) )
   ]

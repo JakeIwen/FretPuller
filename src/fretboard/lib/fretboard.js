@@ -71,5 +71,5 @@ export const fretMatrixForInterval = (tuning, width, tonic, ivl, showName) =>
 export const fretMatrixForChord = (tuning, width, chord, showName) =>
   fretMatrix(tuning, width, entities.chord(chord), showName)
 
-export const fretMatrixForScale = (tuning, width, tonic, scale, showName) =>
+export const fretMatrixForScale = ({tuning, width, tonic, scale, showName}) =>
   fretMatrix(tuning, width, entities.scale(tonic, scale), showName)

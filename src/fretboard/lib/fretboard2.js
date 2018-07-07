@@ -5,7 +5,7 @@
 import {tokenize} from '../../utils/tokenize'
 import {arrayRotate} from '../../utils'
 import {chordIntervals} from '../../utils/chordIntervals'
-import { range, compose, curry, update, merge } from 'lodash/fp'
+import { range, compose, curry, update, merge, reverse } from 'lodash/fp'
 import { Distance, Interval, Note, Chord, Scale } from '../../../src/lib/tonal.min.js'
 import {ivlColors, colors} from '../../../src/theme/colors'
 
@@ -39,13 +39,13 @@ export const createFret = ({ midi, loc }) =>
   ({midi, loc, state: fretState('unselected', Note.pc(Note.fromMidi(midi)))})
 
 export const fretMatrix = ({ tuning, width }) =>
-  range(0, tuning.length).map((crd, i) =>
-    range(0, width).map((pos, j) =>
+  range(0, tuning.length).map((crd) =>
+    (range(0, width).map((pos) =>
       createFret({
         midi: midiForLocation(tuning, { crd, pos }),
         loc: { crd, pos } }
       )
-    )
+    ))
   )
 
 export const locationsForNote = (tuning, width, note) =>
@@ -116,7 +116,6 @@ export const fretMatrixForInterval = (tuning, width, tonic, ivl, showName = fals
 
 export const fretMatrixForChord = (tuning, width, chord, showName = true) => {
   let tokens = tokenize(chord)
-  let intervals = chordIntervals(chord)
   if (tokens.length === 2)
     intervals = chordIntervals(tokens[1])
   const updates = Chord.notes(...tokens).reduce(
@@ -130,7 +129,7 @@ export const fretMatrixForChord = (tuning, width, chord, showName = true) => {
   return updateFretMatrix(updates)(fretMatrix({ tuning, width }))
 }
 
-export const fretMatrixForScale = (tuning, width, tonic, scale, showName = true) => {
+export const fretMatrixForScale = ({tuning, width, tonic, scale, showName = true}) => {
   const intervals = Scale.intervals(scale)
   const updates = Scale.notes(tonic, scale).reduce(
     (acc, pc, i) => {
