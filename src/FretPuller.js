@@ -1,13 +1,8 @@
 import React, {Component} from 'react'
-import styled from "styled-components/native"
-import {Fretboard,
-  updateFretMatrix,
-  fretMatrixForPc,
-  locationsForPc,
-  fretMatrixForNote,
-  fretMatrixForInterval,
-  fretMatrixForChord,
-  fretMatrixForScale, } from './fretboard'
+import {  Fretboard,
+          fretMatrixForNote,
+          fretMatrixForChord,
+          fretMatrixForScale } from './fretboard'
 import ScaleOptions from './ScaleOptions'
 import ChordOptions from './ChordOptions'
 import {initChord} from './utils/chordShapes'
@@ -66,9 +61,6 @@ export default class FretPuller extends Component {
     })
   }
 
-  fretMatch = (fret1, fret2) =>
-    fret1.loc.crd===fret2.loc.crd && fret1.loc.pos===fret2.loc.pos
-
   selectPitch = (midi) => {
     let pitch = Note.fromMidi(midi)
     pitch = pitch.slice( 0, pitch.length - 1 )
@@ -78,11 +70,11 @@ export default class FretPuller extends Component {
   }
 
   getCombo = ({...newState}) => {
-    let state = Object.assign(this.state, newState)
+    const state = Object.assign(this.state, newState)
     reset = reset || !!newState
-    let index = indexLoop(state.variationIndex, state.chordShapes)
-    let thisShape = state.chordShapes[index]
-    let newSelect = state.fretMatrix.map((stg, i) =>
+    const index = indexLoop(state.variationIndex, state.chordShapes)
+    const thisShape = state.chordShapes[index]
+    const newSelect = state.fretMatrix.map((stg, i) =>
       stg.map( (fret,j) =>
         (thisShape || []).some( chord => chord.loc.crd===i && chord.loc.pos===j)
       )
@@ -103,18 +95,20 @@ export default class FretPuller extends Component {
     }))
 
   updateScaleFretMatrix = ({tuning, width, tonic, scale}) => {
-
-    tuning = tuning || this.state.tuning,
-    width = width || this.state.width,
-    tonic = tonic || this.state.tonic,
+    tuning = tuning || this.state.tuning
+    width = width || this.state.width
+    tonic = tonic || this.state.tonic
     scale = scale || this.state.scale
+    const fretMatrix = fretMatrixForScale( tuning, width, tonic, scale )
+    const blackOut = fretMatrix.map(stg => stg.map(fret => fret.state.status==='selected'))
     this.setState({
-      fretMatrix: fretMatrixForScale( tuning, width, tonic, scale ),
-      ...{tuning, width, tonic, scale}
-    })
-    this.setState({
-      selectionMatrix: this.state.fretMatrix.map(stg => stg.map(fret => fret.state.status==='selected')),
-      fullSelectionMatrix: this.state.fretMatrix.map(stg => stg.map(fret => fret.state.status==='selected')),
+      fretMatrix,
+      tuning,
+      width,
+      tonic,
+      scale,
+      selectionMatrix: blackOut,
+      fullSelectionMatrix: blackOut,
     })
 }
 
@@ -133,20 +127,9 @@ export default class FretPuller extends Component {
 
   setAppMode = (mode) => {
     console.log('setting mode', mode);
-    switch (mode) {
-      case 'chord':
-        this.changeSettings({})
-        this.setState({appMode: 'chord'})
-        break;
-      case 'scale':
-        this.setState({
-          ...initChord(...this.state, appMode: mode)
-        })
-
-        break;
-      default:
-
-    }
+    this.setState({
+      ...initChord({...this.state, appMode: mode})
+    })
   }
 
   settingsButtons = () =>
@@ -176,7 +159,6 @@ export default class FretPuller extends Component {
       {...this.state}
       setScale={( {tonic, scale} ) => this.updateScaleFretMatrix( {tonic, scale } )}
       changeFretboard={this.changeFretboard}
-      // setScale={this.editTuning}
       setAppMode={this.setAppMode}
       >
         {this.tuningModal()}
@@ -187,7 +169,7 @@ export default class FretPuller extends Component {
     <ChordOptions
       {...this.state}
       setChord={(tonic, chord, scale) => {
-        let state = this.stateWithNewChord({tonic, chord, scale})
+        const state = this.stateWithNewChord({tonic, chord, scale})
         fretFilter({state, callback: this.getCombo})
       }}
       newVariation={(reverse)=>this.getCombo({
@@ -202,7 +184,7 @@ export default class FretPuller extends Component {
     />
 
   render() {
-    let colorArr = tonicColors(this.state.tonic)
+    const colorArr = tonicColors(this.state.tonic)
     return (
       <Col flex>
         <Fretboard

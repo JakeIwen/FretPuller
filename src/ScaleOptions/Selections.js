@@ -1,13 +1,10 @@
-import {TouchableOpacity, Text} from 'react-native'
+import {TouchableOpacity} from 'react-native'
 import React, {Component} from 'react'
-import styled from "styled-components/native"
 import RadioSelect from './RadioSelect'
 import {Row, Col} from '../styled'
-import { Chord, Scale } from '../lib/tonal.min.js'
 import { SelectionButton, Txt } from '../styled/selections'
 import ScaleInfo from './ScaleInfo'
 import {indexLoop} from '../utils/indexLoop'
-import { range } from 'lodash/fp'
 import {basicScales, modeNames} from '../lib/scaleNames'
 
 const columns = [basicScales, modeNames]

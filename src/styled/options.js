@@ -36,7 +36,6 @@ const OptionText = styled.Text`
   font-size: ${props => (props.len > 5) ? 10 : 12};
 `
 
-
 const sButton = (props) =>
   <TouchableOpacity {...props} >
     <OptionText len={props.title.length}>{props.title}</OptionText>
@@ -60,7 +59,7 @@ export const SelectionOption = styled(sButton)`
 `
 
 export const ScaleSelectionOption = styled(SelectionOption)`
-  height: 30px;
+  height: 23px;
   width: 70px;
 `
 
