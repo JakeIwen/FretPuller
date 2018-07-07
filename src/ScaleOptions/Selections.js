@@ -4,32 +4,34 @@ import styled from "styled-components/native"
 import RadioSelect from './RadioSelect'
 import {Row, Col} from '../styled'
 import { Chord, Scale } from '../lib/tonal.min.js'
-import { SelectionButton, ResetButton, Txt } from '../styled/selections'
-import ChordInfo from './ChordInfo'
+import { SelectionButton, Txt } from '../styled/selections'
+import ScaleInfo from './ScaleInfo'
 import {indexLoop} from '../utils/indexLoop'
 import { range } from 'lodash/fp'
-const allScaleNames = Scale.names().sort().reverse()
+const allScaleNames = Scale.names(false).sort()
 
 const tokens = allScaleNames.map(name => name.split(' '))
-const columns =
-console.log({tokens});
+const columns = range(0,3).map(num =>
+  [...new Set(
+    allScaleNames.map(name => name.split(' ')[num]))
+  ]
+)
+console.log({columns, tokens});
 const tonicList = ["C", "D", "E", "F", "G", "A", "B"]
 const preferredList = ["C", "C#", "D", "Eb", "E", "F", "F#", "G", "Ab", "A", "Bb", "B"]
-const typeList = ['M', 'm', 'o', 'aug']
-const typeAlias = ['M', 'm', 'o', 'aug']
+
 console.log('allScaleNames', allScaleNames);
 export default class Selections extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      tonic: 'C',
-      scale: 'minor',
       name: 'C',
       fullName: 'C',
       cursor: 0
     }
   }
   optionList = () => {
+    console.log('props', this.props);
     return (
       <Row>
         <Col>
@@ -39,51 +41,17 @@ export default class Selections extends Component {
             selectedOption={this.props.tonic}
             onValueChange={tonic => this.props.setScale({tonic})}/>
         </Col>
-          {range(1, this.state.cursor).map(num => {
             <Col>
 
             <RadioSelect
-              options={[...new Set(
-                allScaleNames.map(name => name.split(' ')[num]))
-              ]}
+              options={columns[0]}
               selectedOption={this.props.scale}
               onValueChange={scale => this.props.setScale({scale})}/>
             </Col>
-              
-          })}
 
       </Row>
     )
   }
-  extOptions = (currentName) => {
-    //must begin with currentName to be a possible chord/
-    let possibilities = currentName
-      ? allScaleNames.filter(name => name.startsWith(currentName))
-        .map(name => name.replace(currentName, ''))
-      : allScaleNames
-    let res = ['']
-    if (possibilities.length) {
-      let lastPoss = possibilities[0]
-      possibilities.forEach((poss,i)=> {
-        if (i===0) return
-        let j = 0
-        while(poss[j]===lastPoss[j]) j++
-        if (j) {
-          if(j==poss.length-1) j++
-          res.pop()
-          res.push(poss.slice(0,j))
-        } else {
-          res.push(poss)
-        }
-        lastPoss = poss
-      })
-    }
-    return res.filter(item=>{
-      return !!item
-    })
-  }
-
-  reset = () => this.setAcale({scale: ''})
 
   cycleTonic(tonic, diff) {
     let index = preferredList.indexOf(tonic)
@@ -112,7 +80,7 @@ export default class Selections extends Component {
   )
 
   render(){
-    let {tonic, fullName} = this.state
+    const {tonic, scale} = this.props
     return (
       <Row flex>
         <Col>
@@ -124,8 +92,7 @@ export default class Selections extends Component {
               <Txt>{'\u266F'}</Txt>
             </TouchableOpacity>
           </Row>
-          <ChordInfo name={fullName} />
-          <ResetButton title='RESET' onPress={this.reset} />
+          <ScaleInfo name={tonic + scale}/>
         </Col>
         {/* <Col>
           {this.chordElements()}

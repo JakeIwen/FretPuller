@@ -1,7 +1,7 @@
 import {Note} from '../../src/lib/tonal.min.js'
 
 export const tokenize = (name) => {
-  var p = Note.tokenize(name);
+  let p = Note.tokenize(name);
   if (p[0] === "") { return ["", name]; }
 
   // 6 and 7 and 9 11 13 are consider part of the chord

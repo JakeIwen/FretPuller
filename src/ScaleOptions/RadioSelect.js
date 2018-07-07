@@ -5,9 +5,9 @@ import { TouchableHighlight, Text, View} from 'react-native'
 // import { SegmentedControlIOS } from 'react-native/split-p
 // const { SegmentedControlIOS } = require('react-native/Libraries/Components')
 import { Row } from '../styled'
-import {accFormat} from '../utils/format'
 import { SelectionOption, Txt } from '../styled/options'
 import { SegmentedControl } from 'react-native-ios-kit';
+
 const RenderContainer = styled.View`
   display: flex;
   flexWrap: wrap;
@@ -18,8 +18,8 @@ const RenderContainer = styled.View`
 export default class RadioSelect extends Component {
 
   setSelectedOption = (newSelectedOption) => {
-    let {preventUnselect, selectedOption, onValueChange} = this.props
-    let unselect = !preventUnselect && selectedOption===newSelectedOption
+    const {preventUnselect, selectedOption, onValueChange} = this.props
+    const unselect = !preventUnselect && selectedOption===newSelectedOption
     onValueChange(unselect ? '' : newSelectedOption)
   }
 
@@ -27,7 +27,7 @@ export default class RadioSelect extends Component {
     <SelectionOption
       onPress={()=>this.setSelectedOption(option)}
       key={index}
-      title={accFormat(option)}
+      title={option}
       activated={option == this.props.selectedOption}
     />
   )

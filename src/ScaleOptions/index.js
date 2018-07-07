@@ -19,7 +19,7 @@ export default class ScaleOptions extends Component {
     return (
       <Container height={Dimensions.get('window').height - this.props.fbHeight}>
         <Row flex>
-          <Selections setScale={this.props.setScale} />
+          <Selections {...this.props} />
           <RightOptions>
             {/* {this.props.children} */}
           </RightOptions>

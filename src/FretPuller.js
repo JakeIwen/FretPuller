@@ -23,31 +23,19 @@ import Tuning from './Tuning'
 import Modal from 'react-native-modal'
 import {FpButton} from './styled/options'
 
+
 export default class FretPuller extends Component {
   constructor(props) {
     super(props)
-    let { fretMatrix,
-          chordShapes,
-          variationIndex,
-          viewMode,
-          selectionMatrix,
-          fullSelectionMatrix,
-          allShapes,
-          defaultSettings } = this.props
 
     this.state = {
-      ...defaultSettings,
+      ...this.props,
+      ...initChord(this.props),
       fbHeight: 0,
-      fretMatrix,
-      allShapes,
-      variationIndex,
-      chordShapes,
-      viewMode,
-      selectionMatrix,
-      fullSelectionMatrix,
-      appMode: 'chord',
       showTuningModal: false
     }
+    console.log(this.state);
+    // this.setAppMode(appMode)
   }
 
   componentDidMount() {
@@ -62,7 +50,7 @@ export default class FretPuller extends Component {
   }
 
   showThisNote = (clickedFret) => {
-    let {incOctaves, viewMode, selectionMatrix} = this.state
+    const {incOctaves, viewMode, selectionMatrix} = this.state
     this.setState({
       viewMode: 'select',
       selectionMatrix: this.state.fretMatrix.map( (stg, i) =>
@@ -72,6 +60,11 @@ export default class FretPuller extends Component {
       )
     })
   }
+
+  blackoutBoard = () =>
+    this.state.tuning.map(()=>range(0,this.state.width).map(()=>true))
+
+
 
   changeSettings = (args) => {
     console.log('new settign args', args);
@@ -93,7 +86,7 @@ export default class FretPuller extends Component {
     })
   }
 
-  getCombo = ({reset, ...newState}) => {
+  getCombo = ({...newState}) => {
     let state = Object.assign(this.state, newState)
     reset = reset || !!newState
     let index = indexLoop(state.variationIndex, state.chordShapes)
@@ -115,15 +108,24 @@ export default class FretPuller extends Component {
       width: width || this.state.width,
       chord: chord || this.state.chord,
       tonic: tonic || this.state.tonic,
+      appMode: 'chord'
     }))
 
-  stateWithNewScale = ({tuning, width, tonic, scale}) =>
-    Object.assign(this.state, initChord({
-      tuning: tuning || this.state.tuning,
-      width: width || this.state.width,
-      tonic: tonic || this.state.tonic,
-      scale: scale || this.state.scale,
-    }))
+  updateScaleFretMatrix = ({tuning, width, tonic, scale}) => {
+
+    tuning = tuning || this.state.tuning,
+    width = width || this.state.width,
+    tonic = tonic || this.state.tonic,
+    scale = scale || this.state.scale
+    this.setState({
+      fretMatrix: fretMatrixForScale( tuning, width, tonic, scale ),
+      ...{tuning, width, tonic, scale}
+    })
+    this.setState({
+      selectionMatrix: this.state.fretMatrix.map(stg => stg.map(fret => fret.state.status==='selected')),
+      fullSelectionMatrix: this.state.fretMatrix.map(stg => stg.map(fret => fret.state.status==='selected')),
+    })
+}
 
   changeFretboard = ({tuning, width, chord, tonic}) => {
     fretFilter({
@@ -134,11 +136,11 @@ export default class FretPuller extends Component {
   }
 
   showAll = () => {
-    let {tuning, width, chord, tonic} = this.state
+    const {tuning, width, chord, tonic} = this.state
     this.setState({ fretMatrix: fretMatrixForChord(tuning, width, tonic+chord) })
   }
 
-  setMode = (mode) => {
+  setAppMode = (mode) => {
     console.log('setting mode', mode);
     switch (mode) {
       case 'chord':
@@ -146,7 +148,10 @@ export default class FretPuller extends Component {
         this.setState({appMode: 'chord'})
         break;
       case 'scale':
-        this.setState({appMode: 'scale'})
+
+        this.setState({
+          ...initChord(...this.state, appMode: mode)
+        })
 
         break;
       default:
@@ -161,7 +166,7 @@ export default class FretPuller extends Component {
         onPress={()=>this.setState({showTuningModal: true})}/>
       <FpButton
         title={(this.state.appMode)=='scale' ? 'SCALE MODE' : 'CHORD MODE'}
-        onPress={()=>this.setMode((this.state.appMode)=='scale' ? 'chord' : 'scale')}/>
+        onPress={()=>this.setAppMode((this.state.appMode)=='scale' ? 'chord' : 'scale')}/>
     </Row>
 
   tuningModal = () =>
@@ -179,12 +184,10 @@ export default class FretPuller extends Component {
   scaleOptions = () =>
     <ScaleOptions
       {...this.state}
-      setScale={( {tonic, scale} ) =>
-        this.setState({...this.stateWithNewScale({tonic, scale})})
-      }
+      setScale={( {tonic, scale} ) => this.updateScaleFretMatrix( {tonic, scale } )}
       changeFretboard={this.changeFretboard}
-      setScale={this.editTuning}
-      setMode={this.setMode}
+      // setScale={this.editTuning}
+      setAppMode={this.setAppMode}
       >
         {this.tuningModal}
         {this.settingsButtons}
@@ -203,8 +206,7 @@ export default class FretPuller extends Component {
       changeFretboard={this.changeFretboard}
       showAll={this.showAll}
       changeSettings={this.changeSettings}
-      keepAllFrets={this.state.keepAllFrets}
-      setMode={this.setMode}
+      setAppMode={this.setAppMode}
       tuningModal={this.tuningModal()}
       settingsButtons={this.settingsButtons()}
     />

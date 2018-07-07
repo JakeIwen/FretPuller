@@ -27,13 +27,9 @@ export default class App extends Component {
 
   constructor() {
     super()
-    this.fretPullerProps = {
-      ...initChord(defaultSettings),
-      ...defaultSettings
-    }
   }
   render() {
     console.log('fpp', this.fretPullerProps);
-    return <FretPuller  {...this.fretPullerProps}/>
+    return <FretPuller  {...defaultSettings}/>
   }
 }
