@@ -1,14 +1,16 @@
 import React, { Component } from 'react'
 import styled from "styled-components/native"
 import { RadioButtons } from 'react-native-radio-buttons'
-import { TouchableHighlight, Text, View } from 'react-native'
-// import { SegmentedControlIOS } from 'react-native/Libraries/Components/SegmentedControlIOS.ios'
+import { TouchableHighlight, Text, View} from 'react-native'
+// import { SegmentedControlIOS } from 'react-native/split-p
+// const { SegmentedControlIOS } = require('react-native/Libraries/Components')
 import { Row } from '../styled'
 import {accFormat} from '../utils/format'
 import { SelectionOption, Txt } from '../styled/options'
-
+import { SegmentedControl } from 'react-native-ios-kit';
 const RenderContainer = styled.View`
   display: flex;
+  flexWrap: wrap;
   flex-direction: ${props => props.row ? 'row' : 'column'};
   justify-content: space-around;
 `

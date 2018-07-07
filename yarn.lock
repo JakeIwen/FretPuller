@@ -5692,6 +5692,14 @@ react-native-gesture-responder@^0.1.1:
   dependencies:
     react-timer-mixin "^0.13.3"
 
+react-native-ios-kit@^0.0.6:
+  version "0.0.6"
+  resolved "https://registry.yarnpkg.com/react-native-ios-kit/-/react-native-ios-kit-0.0.6.tgz#2af3084c09f7ee354d2660b7fb619e992033a140"
+  dependencies:
+    color "^2.0.1"
+    lodash "^4.17.4"
+    prop-types "^15.6.0"
+
 react-native-maps@0.17.1:
   version "0.17.1"
   resolved "https://registry.yarnpkg.com/react-native-maps/-/react-native-maps-0.17.1.tgz#ab2236341fd984dac8864202ae55331bc262f60c"

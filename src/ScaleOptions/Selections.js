@@ -8,27 +8,26 @@ import { SelectionButton, ResetButton, Txt } from '../styled/selections'
 import ChordInfo from './ChordInfo'
 import {indexLoop} from '../utils/indexLoop'
 import { range } from 'lodash/fp'
+const allScaleNames = Scale.names().sort().reverse()
 
-console.log({Scale});
+const tokens = allScaleNames.map(name => name.split(' '))
+const columns =
+console.log({tokens});
 const tonicList = ["C", "D", "E", "F", "G", "A", "B"]
 const preferredList = ["C", "C#", "D", "Eb", "E", "F", "F#", "G", "Ab", "A", "Bb", "B"]
 const typeList = ['M', 'm', 'o', 'aug']
 const typeAlias = ['M', 'm', 'o', 'aug']
-const allScaleNames = Scale.names().sort().reverse()
 console.log('allScaleNames', allScaleNames);
 export default class Selections extends Component {
   constructor(props) {
     super(props)
     this.state = {
       tonic: 'C',
-      scale: 'mine',
+      scale: 'minor',
       name: 'C',
       fullName: 'C',
+      cursor: 0
     }
-    console.log({Chord, Scale});
-
-    console.log('scale notes', Scale.notes(props.tonic));
-    console.log(this);
   }
   optionList = () => {
     return (
@@ -40,12 +39,18 @@ export default class Selections extends Component {
             selectedOption={this.props.tonic}
             onValueChange={tonic => this.props.setScale({tonic})}/>
         </Col>
-        <Col>
-          <RadioSelect
-            options={allScaleNames}
-            selectedOption={this.props.scale}
-            onValueChange={scale => this.props.setScale({scale})}/>
-        </Col>
+          {range(1, this.state.cursor).map(num => {
+            <Col>
+
+            <RadioSelect
+              options={[...new Set(
+                allScaleNames.map(name => name.split(' ')[num]))
+              ]}
+              selectedOption={this.props.scale}
+              onValueChange={scale => this.props.setScale({scale})}/>
+            </Col>
+              
+          })}
 
       </Row>
     )

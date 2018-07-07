@@ -10,11 +10,17 @@
     },
   },
   "plugins": [ "react", "react-native" ],
+  "extends": "eslint:recommended",
   "rules": {
     # "react/no-unused-state": 1
     "react-native/no-unused-styles": 1,
     "react-native/split-platform-components": 2,
     "react-native/no-inline-styles": 0,
     "react-native/no-color-literals": 0,
+    "no-duplicate-imports": 1,
+    "no-var": 2,
+    "prefer-const": 1,
+    "curly": "multi-line",
+
   }
 }
