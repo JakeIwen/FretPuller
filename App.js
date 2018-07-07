@@ -1,16 +1,15 @@
 import React, {Component} from 'react'
 import { range, reverse } from 'lodash/fp'
-import {initChord} from './src/utils/chordShapes'
 import {tuningsNested} from './src/lib/tunings.js'
 import FretPuller from './src/FretPuller'
 
-let tuning = tuningsNested['Mandolin']['Standard']
-let defaultSettings = {
+const tuning = tuningsNested['Mandolin']['Standard']
+const defaultSettings = {
   tuning,
   incOctaves: true,
   incZeroFret: true,
   keepAllFrets: true,
-  activeStrings: range(0, tuning.length).map(s=>true),
+  activeStrings: range(0, tuning.length).map(()=>true),
   noGaps: true,
   allStrings: true,
   allowZeroes: true,

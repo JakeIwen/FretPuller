@@ -1,19 +1,18 @@
 import React from 'react'
-import styled from "styled-components/native"
 import { Scale, Note } from '../lib/tonal.min.js'
-import {ivlColors, tonicColors} from '../theme/colors'
-import {romanIvls, accFormat} from '../utils/format'
+import { tonicColors} from '../theme/colors'
+import {romanIvls} from '../utils/format'
 import {tokenize} from '../utils/tokenize'
 import {Wrapper, SelectionName, MapKey, Ivl, Name} from '../styled/selectionInfo'
 import {MockFret} from '../styled/selections'
 
 const notesDetails = (name) => {
-  let tokens = tokenize(name)
-  let colorArr = tonicColors(tokens[0])
-  let intervals = (tokens.length === 2)
+  const tokens = tokenize(name)
+  const colorArr = tonicColors(tokens[0])
+  const intervals = (tokens.length === 2)
     ? Scale.intervals(tokens[1])
     : Scale.intervals(tokens)
-  let notes = Scale.notes(...tokens).map( n => Note.simplify(n) )
+  const notes = Scale.notes(...tokens).map( n => Note.simplify(n) )
 
   return intervals.map( (ivl, i) =>
     <MapKey key={i}>
@@ -25,11 +24,11 @@ const notesDetails = (name) => {
   )
 }
 
-export default ScaleInfo = ({name}) => (
+export default ScaleInfo = ({tonic, scale}) => (
   <Wrapper>
     <SelectionName>
-      {name}
+      {scale}
     </SelectionName>
-    {notesDetails(name)}
+    {notesDetails(tonic + scale)}
   </Wrapper>
 )

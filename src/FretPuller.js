@@ -9,16 +9,14 @@ import {Fretboard,
   fretMatrixForChord,
   fretMatrixForScale, } from './fretboard'
 import ScaleOptions from './ScaleOptions'
-import Options from './ChordOptions'
+import ChordOptions from './ChordOptions'
 import {initChord} from './utils/chordShapes'
-import { isEmpty, cloneDeep, range, reverse } from 'lodash/fp'
 import { Col, Row } from './styled'
-import { Note, Chord, Interval } from 'tonal'
-import {tokenize} from './utils/tokenize'
+import { Note } from 'tonal'
 import {fretTruth} from './utils/frets'
 import {fretFilter} from './utils/fretFilter'
 import {indexLoop} from './utils/indexLoop'
-import {ivlColors, tonicColors} from './theme/colors'
+import { tonicColors} from './theme/colors'
 import Tuning from './Tuning'
 import Modal from 'react-native-modal'
 import {FpButton} from './styled/options'
@@ -39,7 +37,6 @@ export default class FretPuller extends Component {
   }
 
   componentDidMount() {
-
     this.appMode == 'chord' && this.changeSettings({})
   }
 
@@ -61,14 +58,8 @@ export default class FretPuller extends Component {
     })
   }
 
-  blackoutBoard = () =>
-    this.state.tuning.map(()=>range(0,this.state.width).map(()=>true))
-
-
-
   changeSettings = (args) => {
     console.log('new settign args', args);
-
     fretFilter({
       state: {...this.state, ...args},
       callback: (newState) => this.getCombo(newState)
@@ -148,7 +139,6 @@ export default class FretPuller extends Component {
         this.setState({appMode: 'chord'})
         break;
       case 'scale':
-
         this.setState({
           ...initChord(...this.state, appMode: mode)
         })
@@ -189,8 +179,8 @@ export default class FretPuller extends Component {
       // setScale={this.editTuning}
       setAppMode={this.setAppMode}
       >
-        {this.tuningModal}
-        {this.settingsButtons}
+        {this.tuningModal()}
+        {this.settingsButtons()}
     </ScaleOptions>
 
   chordOptions = () =>

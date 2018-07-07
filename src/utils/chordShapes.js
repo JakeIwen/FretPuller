@@ -1,16 +1,15 @@
 import { fretMatrixForChord, fretMatrixForScale } from '../fretboard'
 import { Chord, Scale, midi } from '../../src/lib/tonal.min.js'
-import { range } from 'lodash/fp'
 
 const getChordShapes = (activeFretMatrix, midis, fretRange = 7) => {
   console.log({fretRange});
-  let chordShapes = []
+  const chordShapes = []
   // let inclNullStrings = activeFretMatrix.map(string=>string.concat({}))
-  let stringGroups = stringCombos(activeFretMatrix)
-  for (var i = 0; i < stringGroups.length; i++) {
-    for (let c of combinations(stringGroups[i])) {
-      let chordMidis = []
-      let fretNums = []
+  const stringGroups = stringCombos(activeFretMatrix)
+  for (let i = 0; i < stringGroups.length; i++) {
+    for (const c of combinations(stringGroups[i])) {
+      const chordMidis = []
+      const fretNums = []
       c.forEach( fret => {
         chordMidis.push(fret.midi % 12)
         fretNums.push(fret.loc.pos)
@@ -25,10 +24,10 @@ const getChordShapes = (activeFretMatrix, midis, fretRange = 7) => {
 
 function stringCombos(arr) {
   let i, j, temp
-  let result = []
-  let arrLen = arr.length
-  let power = Math.pow
-  let combinations = power(2, arrLen)
+  const result = []
+  const arrLen = arr.length
+  const power = Math.pow
+  const combinations = power(2, arrLen)
   for (i = 0; i < combinations;  i++) {
     temp = []
     for (j = 0; j < arrLen; j++) (i & power(2, j)) && temp.push(arr[j])
@@ -53,7 +52,7 @@ export const initChord = ({tuning, width, chord, tonic, scale, appMode}) => {
   }
   console.log({tuning, width, tonic, chord, scale, appMode});
   console.log({fretMatrix});
-  let selectionMatrix = fretMatrix.map(stg => stg.map(fret => fret.state.status==='selected'))
+  const selectionMatrix = fretMatrix.map(stg => stg.map(fret => fret.state.status==='selected'))
 
   return {
     tuning,

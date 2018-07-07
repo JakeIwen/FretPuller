@@ -21,7 +21,7 @@ export default class ScaleOptions extends Component {
         <Row flex>
           <Selections {...this.props} />
           <RightOptions>
-            {/* {this.props.children} */}
+            {this.props.children}
           </RightOptions>
         </Row>
         {/* {this.props.children} */}

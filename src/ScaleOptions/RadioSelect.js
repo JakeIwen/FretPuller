@@ -1,19 +1,17 @@
 import React, { Component } from 'react'
 import styled from "styled-components/native"
 import { RadioButtons } from 'react-native-radio-buttons'
-import { TouchableHighlight, Text, View} from 'react-native'
-// import { SegmentedControlIOS } from 'react-native/split-p
-// const { SegmentedControlIOS } = require('react-native/Libraries/Components')
-import { Row } from '../styled'
-import { SelectionOption, Txt } from '../styled/options'
-import { SegmentedControl } from 'react-native-ios-kit';
+// import { SegmentedControlIOS } from 'react-native/Libraries/Components/SegmentedControlIOS'
+import {accFormat} from '../../src/utils/format'
+import { ScaleSelectionOption} from '../../src/styled/options'
 
 const RenderContainer = styled.View`
   display: flex;
-  flexWrap: wrap;
   flex-direction: ${props => props.row ? 'row' : 'column'};
   justify-content: space-around;
+  ${'' /* flex: 1; */}
 `
+
 
 export default class RadioSelect extends Component {
 
@@ -24,10 +22,10 @@ export default class RadioSelect extends Component {
   }
 
   renderOption = (option, selected, onSelect, index) => (
-    <SelectionOption
+    <ScaleSelectionOption
       onPress={()=>this.setSelectedOption(option)}
       key={index}
-      title={option}
+      title={accFormat(option)}
       activated={option == this.props.selectedOption}
     />
   )

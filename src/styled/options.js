@@ -1,6 +1,6 @@
-import React, {Component} from 'react'
+import React from 'react'
 import styled from "styled-components/native"
-import {TouchableHighlight, TouchableOpacity, Text, View} from 'react-native'
+import {TouchableOpacity, Text,} from 'react-native'
 import {Row, Col} from '../../src/styled'
 import { Button } from 'react-native-elements'
 
@@ -57,6 +57,11 @@ export const SelectionOption = styled(sButton)`
   margin: 1px;
   height: 20px;
   width: 45px;
+`
+
+export const ScaleSelectionOption = styled(SelectionOption)`
+  height: 30px;
+  width: 70px;
 `
 
 export const FpButton = styled(fpButton)`

@@ -28,7 +28,7 @@ export default class RadioSelect extends Component {
       onPress={()=>this.setSelectedOption(option)}
       key={index}
       title={accFormat(option)}
-      activated={option == this.props.selectedOption}
+      activated={accFormat(option) == this.props.selectedOption}
     />
   )
 

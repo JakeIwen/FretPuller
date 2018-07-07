@@ -9,10 +9,12 @@
       "experimentalObjectRestSpread": true
     },
   },
-  "plugins": [ "react", "react-native" ],
-  "extends": "eslint:recommended",
+  "plugins": [ "react", "react-native", "eslint-plugin-react" ],
+  "extends": ["eslint:recommended", "plugin:react/recommended"],
   "rules": {
     # "react/no-unused-state": 1
+    "react/display-name": 0,
+    "react/prop-types": 0,
     "react-native/no-unused-styles": 1,
     "react-native/split-platform-components": 2,
     "react-native/no-inline-styles": 0,

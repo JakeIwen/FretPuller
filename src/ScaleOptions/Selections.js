@@ -8,19 +8,14 @@ import { SelectionButton, Txt } from '../styled/selections'
 import ScaleInfo from './ScaleInfo'
 import {indexLoop} from '../utils/indexLoop'
 import { range } from 'lodash/fp'
-const allScaleNames = Scale.names(false).sort()
+import {basicScales, modeNames} from '../lib/scaleNames'
 
-const tokens = allScaleNames.map(name => name.split(' '))
-const columns = range(0,3).map(num =>
-  [...new Set(
-    allScaleNames.map(name => name.split(' ')[num]))
-  ]
-)
-console.log({columns, tokens});
+const columns = [basicScales, modeNames]
+
+console.log({columns});
 const tonicList = ["C", "D", "E", "F", "G", "A", "B"]
 const preferredList = ["C", "C#", "D", "Eb", "E", "F", "F#", "G", "Ab", "A", "Bb", "B"]
 
-console.log('allScaleNames', allScaleNames);
 export default class Selections extends Component {
   constructor(props) {
     super(props)
@@ -41,14 +36,14 @@ export default class Selections extends Component {
             selectedOption={this.props.tonic}
             onValueChange={tonic => this.props.setScale({tonic})}/>
         </Col>
-            <Col>
-
+        {columns.map((optionList, i) =>
+          <Col key={i}>
             <RadioSelect
-              options={columns[0]}
+              options={optionList}
               selectedOption={this.props.scale}
               onValueChange={scale => this.props.setScale({scale})}/>
-            </Col>
-
+          </Col>
+        )}
       </Row>
     )
   }
@@ -56,7 +51,7 @@ export default class Selections extends Component {
   cycleTonic(tonic, diff) {
     let index = preferredList.indexOf(tonic)
     index = indexLoop(index + diff, preferredList)
-    this.setChord({tonic: preferredList[index]})
+    this.props.setScale({tonic: preferredList[index]})
   }
 
   chordElements = () => (
@@ -88,17 +83,14 @@ export default class Selections extends Component {
             <TouchableOpacity onPress={() => this.cycleTonic(tonic, -1)}>
               <Txt>{'\u266D'}</Txt>
             </TouchableOpacity>
+            <Txt>{tonic}</Txt>
             <TouchableOpacity onPress={() => this.cycleTonic(tonic, 1)}>
               <Txt>{'\u266F'}</Txt>
             </TouchableOpacity>
           </Row>
-          <ScaleInfo name={tonic + scale}/>
+          <ScaleInfo tonic={tonic} scale={scale}/>
         </Col>
-        {/* <Col>
-          {this.chordElements()}
-        </Col> */}
         <Col flex>
-
           {this.optionList()}
         </Col>
       </Row>
