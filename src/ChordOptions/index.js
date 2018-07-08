@@ -1,11 +1,7 @@
 import React, {Component} from 'react'
-import styled from "styled-components/native"
-import { Chord } from '../lib/tonal.min.js'
 import { TouchableOpacity, Text} from 'react-native'
-import CheckBox from 'react-native-checkbox'
-import { tunings, stringsOnly } from '../lib/tunings'
 import { Row, Col, Br } from '../styled'
-import {Container, RightOptions, NavText, OptionSection, OptionSectionCol, Txt, ChordOpts, ChangeTuning} from '../styled/options'
+import {Container, RightOptions, NavText, OptionSection} from '../styled/options'
 import Selections from './Selections'
 import Slider from '@ptomasroos/react-native-multi-slider'
 import { range } from 'lodash/fp'
@@ -24,7 +20,7 @@ export default class ChordOptions extends Component {
 
   constructor(props) {
     super(props)//the +2 below is a deterministic offset. Can't figute out why its
-    let sliderStops = [0, widthCalc(numFrets, numFrets)+2]
+    const sliderStops = [0, widthCalc(numFrets, numFrets)+2]
     let sum = sliderStops[1]
     sliderStops.push(...range(0, numFrets-1).map( n => {
       sum += widthCalc(n, numFrets)
@@ -40,7 +36,7 @@ export default class ChordOptions extends Component {
 
   sliderValuesChange = (vals) => {
     const snappedVals = vals.map(val => closest(this.sliderStops, val))
-    this.props.changeSettings({
+    this.props.updateFilter({
       fretRange: snappedVals.map( (val) => this.sliderStops.indexOf(val))
     })
     this.setState({
@@ -59,11 +55,15 @@ export default class ChordOptions extends Component {
   chordOptions = () =>
     <OptionSection spaceAround>
       <Row>
-        <TouchableOpacity onPress={()=>this.props.newVariation(true)} >
+        <TouchableOpacity onPress={()=>this.props.updateFilter({
+          variationIndex: this.props.variationIndex - 1
+        })} >
           <NavText>&larr;</NavText>
         </TouchableOpacity>
         {this.variationNums()}
-        <TouchableOpacity onPress={()=>this.props.newVariation()} >
+        <TouchableOpacity onPress={()=>this.props.updateFilter({
+          variationIndex: this.props.variationIndex + 1
+        })} >
           <NavText>&rarr;</NavText>
         </TouchableOpacity>
       </Row>

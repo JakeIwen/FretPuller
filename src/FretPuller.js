@@ -9,11 +9,13 @@ import {initChord} from './utils/chordShapes'
 import { Col, SettingsWrapper } from './styled'
 import { Note } from 'tonal'
 import {fretTruth} from './utils/frets'
-import {fretFilter} from './utils/fretFilter'
+import {getFilteredShapes} from './utils/fretFilter'
 import {indexLoop} from './utils/indexLoop'
+import {getSelectionMatrix} from './utils/getSelectionMatrix'
 import Tuning from './Tuning'
 import Modal from 'react-native-modal'
 import {FpButton} from './styled/options'
+const chordShapeKeys = ['incZeroFret', 'noGaps', 'allStrings', 'fretRange', 'activeStrings', 'allShapes', 'tuning']
 
 
 export default class FretPuller extends Component {
@@ -27,12 +29,7 @@ export default class FretPuller extends Component {
       showTuningModal: false
     }
     console.log(this.state);
-    // this.setAppMode(appMode)
   }
-
-  // componentDidMount() {
-  //   this.appMode == 'chord' && this.updateFilter({})
-  // }
 
   onFretClick = (fret) => {
     // this.selectPitch(midi)
@@ -51,13 +48,6 @@ export default class FretPuller extends Component {
     })
   }
 
-  updateFilter = (args) => {
-    fretFilter({
-      state: {...this.state, ...args},
-      callback: (newState) => this.getCombo(newState)
-    })
-  }
-
   selectPitch = (midi) => {
     let pitch = Note.fromMidi(midi)
     pitch = pitch.slice( 0, pitch.length - 1 )
@@ -66,21 +56,26 @@ export default class FretPuller extends Component {
     })
   }
 
-  getCombo = (newState) => {
-    const state = Object.assign(this.state, newState)
-    const index = indexLoop(state.variationIndex, state.chordShapes)
-    const thisShape = state.chordShapes[index]
-    const newSelect = state.fretMatrix.map( (stg, i) =>
-      stg.map( (fret,j) =>
-        (thisShape || []).some( chord =>
-          chord.loc.crd===i && chord.loc.pos===j
-        )
-      )
-    )
-    this.setState(Object.assign(state, {
-      selectionMatrix: newSelect,
-      variationIndex: index
-    }))
+  updateSelection = () => {
+
+  }
+
+  updateFilter = (args) => {
+    const argKeys = Object.keys(args)
+    const newState = {...this.state, ...args}
+    const needsNewShapes = argKeys.some(key => chordShapeKeys.includes(key))
+
+    const chordShapes = needsNewShapes
+      ? getFilteredShapes(newState)
+      : newState.chordShapes
+    const variationIndex = indexLoop(newState.variationIndex, chordShapes)
+    const selectionMatrix = getSelectionMatrix({...newState, variationIndex, chordShapes})
+    this.setState({
+      ...newState,
+      chordShapes,
+      variationIndex,
+      selectionMatrix
+    })
   }
 
   updateScaleFretMatrix = ( settings ) => {
@@ -106,7 +101,7 @@ export default class FretPuller extends Component {
       acc[key] = settings[key] || this.state[key]
       return acc
     }, {})
-    if (settings.chord || settings.tonic) {
+    if (settings.chord || settings.tonic || settings.tuning) {
       state = Object.assign(state, initChord(state))
     }
     this.updateFilter(Object.assign(this.state, state))
@@ -140,12 +135,7 @@ export default class FretPuller extends Component {
       supportedOrientations={['landscape']} >
       <Tuning
         initialTuning={this.state.tuning}
-        onSave={ tuning => {
-          console.log('save');
-          this.setState({showTuningModal: false})
-          this.changeFretboard({tuning})
-        }
-        } />
+        onSave={ tuning => this.changeFretboard({tuning})} />
     </Modal>
 
   scaleOptions = () =>
@@ -155,24 +145,30 @@ export default class FretPuller extends Component {
       changeFretboard={this.changeFretboard}
       setAppMode={this.setAppMode}
       >
-        {this.tuningModal()}
         {this.settingsButtons()}
     </ScaleOptions>
 
   chordOptions = () =>
     <ChordOptions
       {...this.state}
-      newVariation={(reverse)=>this.getCombo({
-        variationIndex: this.state.variationIndex + (reverse ? -1 : 1)}
-      )}
       changeFretboard={this.changeFretboard}
       showAll={this.showAll}
       updateFilter={this.updateFilter}
       setAppMode={this.setAppMode}
     >
-      {this.tuningModal()}
       {this.settingsButtons()}
     </ChordOptions>
+
+  optionsElements = () => {
+    switch (!!this.state.fbHeight && this.state.appMode) {
+      case 'chord':
+        return this.chordOptions()
+      case 'scale':
+        return this.scaleOptions()
+      default:
+        return null
+    }
+  }
 
   render() {
     return (
@@ -183,10 +179,9 @@ export default class FretPuller extends Component {
           onFretClick={this.onFretClick}
           fretFilter={this.updateFilter}
           setFretboardDims={dims => this.setState(dims)}
-
           {...this.state}
         />
-        {!!this.state.fbHeight && this.chordOptions()}
+        {this.optionsElements()}
       </Col>
     )
   }

@@ -31,7 +31,7 @@ export default class Selections extends Component {
   }
 
   setChord = ({tonic, extensions}) => {
-    let chord, activeSelector
+    let activeSelector
     if (tonic) {
       activeSelector = 'extensions0'
     } else if ((extensions || []).length){
@@ -40,10 +40,10 @@ export default class Selections extends Component {
       tonic = this.state.tonic
       activeSelector = 'tonic'
     }
-    let extArr = extensions || this.state.extensions
-    chord = extArr.join('')
+    const extArr = extensions || this.state.extensions
+    const chord = extArr.join('')
     tonic = tonic || this.state.tonic
-    let exists = Chord.exists(chord)
+    const exists = Chord.exists(chord)
     this.setState({
       tonic,
       fullName: exists ? (tonic + chord) : this.state.fullName,
@@ -55,13 +55,9 @@ export default class Selections extends Component {
   }
 
   optionList = () => {
-    let {tonic, activeSelector, extensions} = this.state
+    const {tonic, activeSelector, extensions} = this.state
     // let option, selectedOption
-    let sIndex = activeSelector.slice(-1)
     console.log({activeSelector});
-    console.log('extensions length', (extensions || []).length);
-    console.log('tonic', tonic);
-    let exts = [...extensions]
     return (
       <Row>
         <Col>
@@ -96,11 +92,11 @@ export default class Selections extends Component {
   }
   extOptions = (currentName) => {
     //must begin with currentName to be a possible chord/
-    let possibilities = currentName
+    const possibilities = currentName
       ? allNames.filter(name => name.startsWith(currentName))
         .map(name => name.replace(currentName, ''))
       : allNames
-    let res = ['']
+    const res = ['']
     if (possibilities.length) {
       let lastPoss = possibilities[0]
       possibilities.forEach((poss,i)=> {
@@ -151,26 +147,21 @@ export default class Selections extends Component {
   )
 
   render(){
-    let {tonic, fullName} = this.state
     return (
       <Row flex>
         <Col>
           <Row spaceAround>
-            <TouchableOpacity onPress={() => this.cycleTonic(tonic, -1)}>
+            <TouchableOpacity onPress={()=>this.cycleTonic(this.state.tonic, -1)}>
               <Txt>{'\u266D'}</Txt>
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => this.cycleTonic(tonic, 1)}>
+            <TouchableOpacity onPress={()=>this.cycleTonic(this.state.tonic, 1)}>
               <Txt>{'\u266F'}</Txt>
             </TouchableOpacity>
           </Row>
-          <ChordInfo name={fullName} />
+          <ChordInfo name={this.state.fullName} />
           <ResetButton title='RESET' onPress={this.reset} />
         </Col>
-        {/* <Col>
-          {this.chordElements()}
-        </Col> */}
         <Col flex>
-
           {this.optionList()}
         </Col>
       </Row>

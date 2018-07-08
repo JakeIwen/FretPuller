@@ -67,13 +67,14 @@ export const initChord = ({tuning, width, chord, tonic, scale, appMode}) => {
     selectionMatrix,
     possibilitiesMatrix: selectionMatrix,
     variationIndex: 0,
+    showTuningModal: false
   }
 }
 
 function *combinations(arrOfArrs) {
-  let [head, ...tail] = arrOfArrs
-  let remainder = tail.length ? combinations(tail) : [[]];
-  for (let r of remainder)
-    for (let h of head)
+  const [head, ...tail] = arrOfArrs
+  const remainder = tail.length ? combinations(tail) : [[]];
+  for (const r of remainder)
+    for (const h of head)
       yield [h, ...r];
 }
