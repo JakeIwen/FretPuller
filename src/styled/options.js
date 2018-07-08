@@ -20,7 +20,7 @@ export const NavText = styled.Text`
   font-size: 32;
 `
 export const OptionSection = styled(Row)`
-  border: 1px solid black;
+  ${'' /* border: 1px solid black; */}
 `
 export const ChangeTuning = styled(Button)`
   align-self: flex-end;

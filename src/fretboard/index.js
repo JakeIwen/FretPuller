@@ -11,4 +11,4 @@ export {
   locationsForPc
 } from './lib/fretboard2'
 
-export {Fretboard} from './components/Fretboard'
+export Fretboard from './components/Fretboard'

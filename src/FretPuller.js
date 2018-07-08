@@ -169,7 +169,7 @@ export default class FretPuller extends Component {
           isClickable
           defaultMatrix={this.state.keepAllFrets && this.state.possibilitiesMatrix}
           onFretClick={this.onFretClick}
-          fretFilter={this.updateFilter}
+          updateFilter={this.updateFilter}
           setFretboardDims={dims => this.setState(dims)}
           {...this.state}
         />

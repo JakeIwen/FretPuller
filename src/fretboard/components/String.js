@@ -10,7 +10,7 @@ import {Text} from 'react-native'
 export default class String extends Component {
 
   render() {
-    const {fretFilter, activeStrings, stringNum, frets, tonic, selectionMatrix, defaultMatrix} = this.props
+    const {updateFilter, activeStrings, stringNum, frets, tonic, selectionMatrix, defaultMatrix} = this.props
     const selectionArr = selectionMatrix[stringNum]
     const defMatrix = defaultMatrix[stringNum] || []
     const colorArr = tonicColors(tonic)
@@ -30,16 +30,16 @@ export default class String extends Component {
     return (
       <Row dial={5} >
         <Switch
-          disabled={this.props.appMode=='scale'}
+          disabled={this.props.appMode==='scale'}
           barHeight={18}
           circleSize={20}
-          renderInsideCircle={()=><Text>{openNote}</Text>}
+          renderInsideCircle={()=><Text style={{fontWeight:'bold'}}>{openNote}</Text>}
           backgroundActive={'green'}
           backgroundInactive={'gray'}
           onValueChange={(val)=>{
             const newActive = [...activeStrings]
             newActive[stringNum] = val
-            fretFilter({activeStrings: newActive, allStrings: false})
+            updateFilter({activeStrings: newActive, allStrings: false})
           }}
           value={activeStrings[stringNum]}
         />
