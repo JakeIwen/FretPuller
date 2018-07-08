@@ -4,6 +4,7 @@ import {tuningsNested} from './src/lib/tunings.js'
 import FretPuller from './src/FretPuller'
 
 const tuning = tuningsNested['Mandolin']['Standard']
+
 const defaultSettings = {
   tuning,
   incOctaves: true,
@@ -23,12 +24,7 @@ const defaultSettings = {
 }
 
 export default class App extends Component {
-
-  constructor() {
-    super()
-  }
   render() {
-    console.log('fpp', this.fretPullerProps);
     return <FretPuller  {...defaultSettings}/>
   }
 }

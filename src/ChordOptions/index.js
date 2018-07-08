@@ -75,8 +75,9 @@ export default class ChordOptions extends Component {
     </OptionSection>
 
   render() {
+    const containerHeight = Dimensions.get('window').height - this.props.fbHeight;
     return (
-      <Container height={Dimensions.get('window').height - this.props.fbHeight}>
+      <Container height={containerHeight}>
         <Slider
           sliderLength={Dimensions.get('window').width-30}
           values={this.state.sliderValue}
@@ -87,7 +88,11 @@ export default class ChordOptions extends Component {
           containerStyle={{ height: 15, paddingLeft: 30 }}
         />
         <Row flex>
-          <Selections setChord={this.props.changeFretboard} />
+          <Selections
+            setChord={this.props.changeFretboard}
+            height={containerHeight}
+            tonic={this.props.tonic}
+          />
           <RightOptions>
             {this.chordOptions()}
             <CheckBoxOptions {...this.props} />

@@ -1,5 +1,6 @@
 import { fretMatrixForChord, fretMatrixForScale } from '../fretboard'
 import { Chord, Scale, midi } from '../../src/lib/tonal.min.js'
+import { range } from 'lodash/fp'
 
 const getChordShapes = (activeFretMatrix, midis, fretRange = 7) => {
   console.log({fretRange});
@@ -67,7 +68,8 @@ export const initChord = ({tuning, width, chord, tonic, scale, appMode}) => {
     selectionMatrix,
     possibilitiesMatrix: selectionMatrix,
     variationIndex: 0,
-    showTuningModal: false
+    showTuningModal: false,
+    activeStrings: range(0, tuning.length).map(()=>true),
   }
 }
 

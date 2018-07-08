@@ -1,11 +1,9 @@
 import React, { Component } from 'react'
 import styled from "styled-components/native"
 import { RadioButtons } from 'react-native-radio-buttons'
-import { TouchableHighlight, Text, View } from 'react-native'
 // import { SegmentedControlIOS } from 'react-native/Libraries/Components/SegmentedControlIOS'
-import { Row } from '../../src/styled'
 import {accFormat} from '../../src/utils/format'
-import { SelectionOption, Txt } from '../../src/styled/options'
+import { ScaleSelectionOption, SelectionOption} from '../../src/styled/options'
 
 const RenderContainer = styled.View`
   display: flex;
@@ -14,21 +12,23 @@ const RenderContainer = styled.View`
   ${'' /* flex: 1; */}
 `
 
+const SOption = (props) => props.scale ? <ScaleSelectionOption {...props}/> : <SelectionOption {...props}/>
 
 export default class RadioSelect extends Component {
 
   setSelectedOption = (newSelectedOption) => {
-    let {preventUnselect, selectedOption, onValueChange} = this.props
-    let unselect = !preventUnselect && selectedOption===newSelectedOption
+    const {preventUnselect, selectedOption, onValueChange} = this.props
+    const unselect = !preventUnselect && selectedOption===newSelectedOption
     onValueChange(unselect ? '' : newSelectedOption)
   }
-
   renderOption = (option, selected, onSelect, index) => (
-    <SelectionOption
+    <SOption
       onPress={()=>this.setSelectedOption(option)}
       key={index}
       title={accFormat(option)}
-      activated={accFormat(option) == this.props.selectedOption}
+      activated={option == this.props.selectedOption}
+      height={this.props.height}
+      scale={this.props.scale}
     />
   )
 

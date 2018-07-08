@@ -46,7 +46,6 @@ const fpButton = (props) =>
     <Text>{props.title}</Text>
   </TouchableOpacity>
 
-
 export const SelectionOption = styled(sButton)`
   border: ${props => props.activated ? '2px solid red' : '2px solid black'};
   display: flex;
@@ -54,12 +53,12 @@ export const SelectionOption = styled(sButton)`
   justify-content: center;
   border-radius: 5px;
   margin: 1px;
-  height: 20px;
+  height: ${props => (props.height ? props.height-2 : 20 ) + 'px'};
   width: 45px;
 `
 
 export const ScaleSelectionOption = styled(SelectionOption)`
-  height: 23px;
+  height: ${props => (props.height-2 || 23)}px;
   width: 70px;
 `
 

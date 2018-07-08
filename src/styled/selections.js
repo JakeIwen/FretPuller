@@ -12,7 +12,7 @@ export const SelectionButton = styled.TouchableHighlight`
 `
 
 export const Txt = styled.Text`
-  font-size: 24;
+  font-size: ${props => props.size || 24};
   font-weight: ${props => props.selected ? 'bold' : 'normal' };
 `
 export const MockFret = styled.View`

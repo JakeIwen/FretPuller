@@ -1,44 +1,41 @@
 import {TouchableOpacity} from 'react-native'
 import React, {Component} from 'react'
-import RadioSelect from './RadioSelect'
+import RadioSelect from '../Aux/RadioSelect'
 import {Row, Col} from '../styled'
-import { SelectionButton, Txt } from '../styled/selections'
+import {  Txt } from '../styled/selections'
 import ScaleInfo from './ScaleInfo'
 import {indexLoop} from '../utils/indexLoop'
-import {basicScales, modeNames} from '../lib/scaleNames'
+import { modeNames} from '../lib/scaleNames'
 
-const columns = [basicScales, modeNames]
+const columns = [modeNames]
 
 console.log({columns});
-const tonicList = ["C", "D", "E", "F", "G", "A", "B"]
+// const tonicList = ["C", "D", "E", "F", "G", "A", "B"]
 const preferredList = ["C", "C#", "D", "Eb", "E", "F", "F#", "G", "Ab", "A", "Bb", "B"]
 
 export default class Selections extends Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      name: 'C',
-      fullName: 'C',
-      cursor: 0
-    }
-  }
+
   optionList = () => {
-    console.log('props', this.props);
+    console.log('props', this.props)
     return (
       <Row>
         <Col>
-          <RadioSelect
+          <RadioSelect scale
             preventUnselect
-            options={tonicList}
+            height={(this.props.containerHeight - 5) / preferredList.length}
+            options={preferredList}
             selectedOption={this.props.tonic}
             onValueChange={tonic => this.props.setScale({tonic})}/>
         </Col>
         {columns.map((optionList, i) =>
           <Col key={i}>
-            <RadioSelect
+            <RadioSelect scale
               options={optionList}
+              height={(this.props.containerHeight - 5) / optionList.length}
               selectedOption={this.props.scale}
-              onValueChange={scale => this.props.setScale({scale})}/>
+              onValueChange={scale =>
+                this.props.setScale({scale: scale.split(' (')[0].toLowerCase()})
+              }/>
           </Col>
         )}
       </Row>
@@ -51,36 +48,16 @@ export default class Selections extends Component {
     this.props.setScale({tonic: preferredList[index]})
   }
 
-  chordElements = () => (
-    <Row style={{width: 120}}>
-      <SelectionButton
-        activated={this.state.activeSelector==='tonic'}
-        onPress={() => this.setState({activeSelector: 'tonic'}) }
-      >
-        <Txt>{this.state.tonic}</Txt>
-      </SelectionButton>
-      {this.state.extensions.concat('').map((ext,i) =>
-        <SelectionButton
-          key={i}
-          activated={this.state.activeSelector===('extensions' + i)}
-          onPress={() => this.setState({activeSelector: 'extensions' + i})}
-        >
-          <Txt>{ext}</Txt>
-        </SelectionButton>
-      )}
-    </Row>
-  )
-
   render(){
     const {tonic, scale} = this.props
     return (
-      <Row flex>
-        <Col>
+      <Row flex style={{marginBottom: -40}}>
+        <Col style={{width: 150}}>
           <Row spaceAround>
             <TouchableOpacity onPress={() => this.cycleTonic(tonic, -1)}>
               <Txt>{'\u266D'}</Txt>
             </TouchableOpacity>
-            <Txt>{tonic}</Txt>
+            <Txt size={32}>{tonic}</Txt>
             <TouchableOpacity onPress={() => this.cycleTonic(tonic, 1)}>
               <Txt>{'\u266F'}</Txt>
             </TouchableOpacity>

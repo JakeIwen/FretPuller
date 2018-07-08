@@ -3,11 +3,13 @@ import styled from "styled-components/native"
 export const Wrapper = styled.View`
   display: flex;
   flex-direction: column;
+  align-items: flex-start;
   flex: 1;
-  margin: 5px;
+  margin: -5px 5px 5px 5px;
 `
 export const SelectionName = styled.Text`
   font-size: 30;
+  align-self: center;
 `
 export const MapKey = styled.View`
   display: flex;

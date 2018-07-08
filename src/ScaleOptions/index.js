@@ -7,10 +7,14 @@ import Dimensions from 'Dimensions'
 
 export default class ScaleOptions extends Component {
   render() {
+    const containerHeight = Dimensions.get('window').height - this.props.fbHeight;
     return (
-      <Container height={Dimensions.get('window').height - this.props.fbHeight}>
+      <Container height={containerHeight}>
         <Row flex>
-          <Selections {...this.props} />
+          <Selections
+            {...this.props}
+            containerHeight={containerHeight}
+          />
           <RightOptions>
             {this.props.children}
           </RightOptions>

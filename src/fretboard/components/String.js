@@ -5,7 +5,7 @@ import { Note } from '../../../src/lib/tonal.min.js'
 import Fret from './Fret'
 import { Switch } from 'react-native-switch'
 import {tonicColors} from '../../../src/theme/colors'
-import { reverse } from 'lodash/fp'
+import {Text} from 'react-native'
 
 export default class String extends Component {
 
@@ -15,7 +15,6 @@ export default class String extends Component {
     const defMatrix = defaultMatrix[stringNum] || []
     const colorArr = tonicColors(tonic)
     const openNote = Note.fromMidi(frets[0].midi).slice(0,-1)
-
     const makeFrets = () => frets.map( (fret, j) =>
       <Fret
         fret={fret}
@@ -31,18 +30,16 @@ export default class String extends Component {
     return (
       <Row dial={5} >
         <Switch
+          disabled={this.props.appMode=='scale'}
           barHeight={18}
           circleSize={20}
-          activeTextStyle={{fontSize: 10, fontWeight: "600"}}
-          inactiveTextStyle={{fontSize: 10, fontWeight: "600"}}
-          activeText={openNote}
-          inActiveText={openNote}
+          renderInsideCircle={()=><Text>{openNote}</Text>}
           backgroundActive={'green'}
           backgroundInactive={'gray'}
           onValueChange={(val)=>{
             const newActive = [...activeStrings]
             newActive[stringNum] = val
-            fretFilter({activeStrings: reverse(newActive)})
+            fretFilter({activeStrings: newActive, allStrings: false})
           }}
           value={activeStrings[stringNum]}
         />

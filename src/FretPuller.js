@@ -12,8 +12,7 @@ import {fretTruth} from './utils/frets'
 import {getFilteredShapes} from './utils/fretFilter'
 import {indexLoop} from './utils/indexLoop'
 import {getSelectionMatrix} from './utils/getSelectionMatrix'
-import Tuning from './Tuning'
-import Modal from 'react-native-modal'
+import {TuningModal} from './Tuning/TuningModal'
 import {FpButton} from './styled/options'
 const chordShapeKeys = ['incZeroFret', 'noGaps', 'allStrings', 'fretRange', 'activeStrings', 'allShapes', 'tuning']
 
@@ -64,7 +63,6 @@ export default class FretPuller extends Component {
     const argKeys = Object.keys(args)
     const newState = {...this.state, ...args}
     const needsNewShapes = argKeys.some(key => chordShapeKeys.includes(key))
-
     const chordShapes = needsNewShapes
       ? getFilteredShapes(newState)
       : newState.chordShapes
@@ -123,20 +121,14 @@ export default class FretPuller extends Component {
     <SettingsWrapper>
       <FpButton
         title='CHANGE TUNING'
-        onPress={()=>this.setState({showTuningModal: true})}/>
+        onPress={()=>{
+          this.setState({showTuningModal: true})
+          console.log('modal up');
+        }}/>
       <FpButton
         title={(this.state.appMode)=='chord' ? 'SCALE MODE' : 'CHORD MODE'}
         onPress={()=>this.setAppMode((this.state.appMode)=='scale' ? 'chord' : 'scale')}/>
     </SettingsWrapper>
-
-  tuningModal = () =>
-    <Modal
-      isVisible={this.state.showTuningModal}
-      supportedOrientations={['landscape']} >
-      <Tuning
-        initialTuning={this.state.tuning}
-        onSave={ tuning => this.changeFretboard({tuning})} />
-    </Modal>
 
   scaleOptions = () =>
     <ScaleOptions
@@ -182,6 +174,7 @@ export default class FretPuller extends Component {
           {...this.state}
         />
         {this.optionsElements()}
+        <TuningModal {...this.state} onSave={this.changeFretboard} />
       </Col>
     )
   }

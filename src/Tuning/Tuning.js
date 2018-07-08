@@ -1,6 +1,5 @@
 import React, {Component} from 'react'
 import styled from "styled-components/native"
-import {Text} from 'react-native'
 import { Picker } from 'react-native-wheel-datepicker'
 import {range} from 'lodash'
 import { SelectionButton, ResetButton, Txt } from '../styled/selections'
@@ -40,22 +39,12 @@ const Label = styled.Text`
 const instruments = Object.keys(tuningsNested)
 
 export default class Tuning extends Component {
-  state = {
-    tuning: this.props.initialTuning,
-  }
-
-  update = (val, picker) => {
-    let tuning = this.state.tuning
-    tuning[picker] = val + '2'
-    this.setState({ tuning })
-  }
-
 
   render() {
     // this.props.active && this.popupDialog.show()
-    let {tuning} = this.state
-
+    let {tuning} = this.props
     console.log('tuning component', {tuning});
+
     return (
       <Wrapper>
         <Row flex spaceAround dial={2}>
@@ -64,12 +53,9 @@ export default class Tuning extends Component {
             return <Col key={inst}>
               <Txt>{inst}</Txt>
               {names.map(name =>{
-                if (inst=='Mandolin' && name=='Standard') {
-                  console.log(this.state.tuning.join(''), tuningsNested[inst][name].join(''))
-                }
                 return <SelectionButton key={name}
                   activated={
-                    this.state.tuning.join('')==tuningsNested[inst][name].join('')}
+                    tuning.join('')==tuningsNested[inst][name].join('')}
                   onPress={()=>this.props.onSave(tuningsNested[inst][name])}
                 ><Label>{name}</Label></SelectionButton>})}
               </Col>

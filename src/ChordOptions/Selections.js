@@ -1,9 +1,8 @@
 import React, {Component} from 'react'
-import styled from "styled-components/native"
-import RadioSelect from './RadioSelect'
+import RadioSelect from '../Aux/RadioSelect'
 import {Row, Col} from '../../src/styled'
 import { Chord } from '../../src/lib/tonal.min.js'
-import {TouchableOpacity, Text} from 'react-native'
+import {TouchableOpacity} from 'react-native'
 import { SelectionButton, ResetButton, Txt } from '../../src/styled/selections'
 import ChordInfo from './ChordInfo'
 import {indexLoop} from '../../src/utils/indexLoop'
@@ -18,16 +17,11 @@ export default class Selections extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      tonic: 'C',
+      tonic: props.tonic,
       extensions: [],
       name: 'C',
-      fullName: 'C',
       activeSelector: 'tonic',
     }
-    console.log({Chord});
-
-    console.log(Chord.notes('CM'));
-    console.log(this);
   }
 
   setChord = ({tonic, extensions}) => {
@@ -46,12 +40,25 @@ export default class Selections extends Component {
     const exists = Chord.exists(chord)
     this.setState({
       tonic,
-      fullName: exists ? (tonic + chord) : this.state.fullName,
       name: exists ? (tonic + chord) : this.state.name,
       extensions: extArr,
       activeSelector: activeSelector || 'extensions' + extArr.length
     })
     exists && this.props.setChord({tonic, chord})
+  }
+
+  changeExtValue = (newExt, sIndex) => {
+    let {extensions} = this.state
+    // debugger;
+    if (sIndex == extensions.length) {
+      return this.setChord({extensions: extensions.slice(0,sIndex).concat(newExt)})
+    }
+    extensions = extensions.slice(0,sIndex+1)
+    return newExt
+      ? this.setChord({
+        extensions: extensions.map((ext,i)=>i==sIndex ? newExt : ext)
+      })
+      : this.setChord({extensions: extensions.slice(0,sIndex)})
   }
 
   optionList = () => {
@@ -73,16 +80,7 @@ export default class Selections extends Component {
               <RadioSelect
                 options={this.extOptions(extensions.slice(0,sIndex).join(''))}
                 selectedOption={extensions[sIndex]}
-                onValueChange={newExt => {
-                  if (sIndex == extensions.length) {
-                    return this.setChord({extensions: extensions.slice(0,sIndex).concat(newExt)})
-                  }
-                  return newExt
-                    ? this.setChord({
-                      extensions: extensions.map((ext,i)=>i==sIndex ? newExt : ext)
-                    })
-                    : this.setChord({extensions: extensions.slice(0,sIndex)})
-                }}/>
+                onValueChange={newExt=>this.changeExtValue(newExt, sIndex)}/>
             </Col>
           )
         })}
@@ -148,8 +146,8 @@ export default class Selections extends Component {
 
   render(){
     return (
-      <Row flex>
-        <Col>
+      <Row flex style={{marginBottom: -40}}>
+        <Col style={{width: 140}}>
           <Row spaceAround>
             <TouchableOpacity onPress={()=>this.cycleTonic(this.state.tonic, -1)}>
               <Txt>{'\u266D'}</Txt>
@@ -158,7 +156,9 @@ export default class Selections extends Component {
               <Txt>{'\u266F'}</Txt>
             </TouchableOpacity>
           </Row>
-          <ChordInfo name={this.state.fullName} />
+          <ChordInfo
+            tonic={this.state.tonic}
+            chord={this.state.extensions.join('')} />
           <ResetButton title='RESET' onPress={this.reset} />
         </Col>
         <Col flex>
