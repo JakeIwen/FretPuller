@@ -8,8 +8,9 @@ export const Wrapper = styled.View`
   margin: -5px 5px 5px 5px;
 `
 export const SelectionName = styled.Text`
-  font-size: 30;
+  font-size: 24;
   align-self: center;
+  text-align: center;
 `
 export const MapKey = styled.View`
   display: flex;
@@ -20,7 +21,7 @@ export const MapKey = styled.View`
 export const Ivl = styled.Text`
   font-size: 12;
   width: 30px;
-  text-align:right;
+  text-align: right;
   font-family: Menlo;
 `
 export const Name = styled.Text`

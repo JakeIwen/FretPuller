@@ -36,10 +36,12 @@ export default class String extends Component {
           renderInsideCircle={()=><Text style={{fontWeight:'bold'}}>{openNote}</Text>}
           backgroundActive={'green'}
           backgroundInactive={'gray'}
-          onValueChange={(val)=>{
+          onValueChange={()=>{
             const newActive = [...activeStrings]
-            newActive[stringNum] = val
-            updateFilter({activeStrings: newActive, allStrings: false})
+            newActive[stringNum] = !activeStrings[stringNum]
+            // console.log(!activeStrings[stringNum])
+            // console.log({newActive, activeStrings, stringNum});
+            updateFilter({activeStrings: [newActive], allStrings: false})
           }}
           value={activeStrings[stringNum]}
         />

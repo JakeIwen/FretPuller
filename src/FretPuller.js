@@ -58,6 +58,8 @@ export default class FretPuller extends Component {
   }
 
   updateFilter = (args) => {
+    if (this.state.scale) return this.updateScaleFretMatrix()
+
     const argKeys = Object.keys(args)
     const newState = {...this.state, ...args}
     const needsNewShapes = argKeys.some(key => chordShapeKeys.includes(key))
@@ -77,7 +79,7 @@ export default class FretPuller extends Component {
   updateScaleFretMatrix = ( settings ) => {
     const keys = ['tuning', 'width', 'tonic', 'scale']
     const state = keys.reduce( (acc, key) => {
-      acc[key] = settings[key] || this.state[key]
+      acc[key] = (settings || [])[key] || this.state[key]
       return acc
     }, {})
     const fretMatrix = fretMatrixForScale( state )

@@ -17,18 +17,20 @@ const notesDetails = (name) => {
   return intervals.map( (ivl, i) =>
     <MapKey key={i}>
       <Ivl>{romanIvls(ivl)}: </Ivl>
-      <MockFret color={colorArr[Note.chroma(notes[i])]}>
+      <MockFret scale color={colorArr[Note.chroma(notes[i])]}>
         <Name>{notes[i]}</Name>
       </MockFret>
     </MapKey>
   )
 }
 
-export default ScaleInfo = ({tonic, scale}) => (
-  <Wrapper>
+export default ScaleInfo = ({tonic, scale}) => {
+  const split = scale.split(' ')
+  const addendum = split.length > 1 ? '-' + split[1][0] : ''
+  return <Wrapper>
     <SelectionName>
-      {scale}
+      {split[0] + addendum}
     </SelectionName>
     {notesDetails(tonic + scale)}
   </Wrapper>
-)
+}

@@ -1,8 +1,7 @@
 import React from 'react'
 import styled from "styled-components/native"
 import {TouchableOpacity, Text,} from 'react-native'
-import {Row, Col} from '../../src/styled'
-import { Button } from 'react-native-elements'
+import {Col} from '../../src/styled'
 
 export const Container = styled(Col)`
   width: 100%;
@@ -19,18 +18,10 @@ export const RightOptions = styled.View`
 export const NavText = styled.Text`
   font-size: 32;
 `
-export const OptionSection = styled(Row)`
-  ${'' /* border: 1px solid black; */}
-`
-export const ChangeTuning = styled(Button)`
-  align-self: flex-end;
-`
 export const SelectionButton = styled.TouchableHighlight`
   display: flex;
   align-items: center;
   border: ${props => props.activated ? '2px solid red' : '0'}
-  ${'' /* padding: 0 10px; */}
-
 `
 const OptionText = styled.Text`
   font-size: ${props => (props.len > 5) ? 10 : 12};
@@ -71,8 +62,4 @@ export const FpButton = styled(fpButton)`
   margin: 1px;
   height: ${props => props.height || '40px'};
   width: ${props => props.width || '80px'};
-`
-export const Txt = styled.Text`
-  font-size: 24;
-  font-weight: ${props => props.selected ? 'bold' : 'normal' };
 `

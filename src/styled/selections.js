@@ -10,11 +10,6 @@ export const SelectionButton = styled.TouchableHighlight`
   align-items: center;
   border: ${props => props.activated ? '2px solid red' : '0'}
 `
-
-export const Txt = styled.Text`
-  font-size: ${props => props.size || 24};
-  font-weight: ${props => props.selected ? 'bold' : 'normal' };
-`
 export const MockFret = styled.View`
   display: flex;
   align-items: center;
@@ -23,6 +18,7 @@ export const MockFret = styled.View`
   border: 1px solid black;
   border-radius: 5px;
   margin: 2px;
+  margin-top: ${props => props.scale ? '0' : '2px'};
   height: 20px;
   width: 50px;
 `

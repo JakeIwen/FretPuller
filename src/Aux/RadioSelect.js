@@ -15,7 +15,11 @@ const RenderContainer = styled.View`
 const SOption = (props) => props.scale ? <ScaleSelectionOption {...props}/> : <SelectionOption {...props}/>
 
 export default class RadioSelect extends Component {
-
+  isActivated = (option) => {
+    const {selectedOption, scale, tonic} = this.props
+    if (scale && !tonic) return option.includes(selectedOption.split(' ')[0])
+    else return option == selectedOption
+  }
   setSelectedOption = (newSelectedOption) => {
     const {preventUnselect, selectedOption, onValueChange} = this.props
     const unselect = !preventUnselect && selectedOption===newSelectedOption
@@ -26,7 +30,7 @@ export default class RadioSelect extends Component {
       onPress={()=>this.setSelectedOption(option)}
       key={index}
       title={accFormat(option)}
-      activated={option == this.props.selectedOption}
+      activated={this.isActivated(option)}
       height={this.props.height}
       scale={this.props.scale}
     />
