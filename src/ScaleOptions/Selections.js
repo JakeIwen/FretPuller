@@ -9,14 +9,12 @@ import { modeNames} from '../lib/scaleNames'
 
 const columns = [modeNames]
 
-console.log({columns});
 // const tonicList = ["C", "D", "E", "F", "G", "A", "B"]
 const preferredList = ["C", "C#", "D", "Eb", "E", "F", "F#", "G", "Ab", "A", "Bb", "B"]
 
 export default class Selections extends Component {
 
   optionList = () => {
-    console.log('props', this.props)
     return (
       <Row>
         <Col>

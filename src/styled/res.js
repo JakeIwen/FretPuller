@@ -1,7 +1,7 @@
 
 class User {
 
-  constructor(emailAddress, firstName, lastName, regDate) {
+  constructor(emailAddress, firstName, lastName, registrationDate) {
     this.userData = {
       emailAddress,
       firstName,

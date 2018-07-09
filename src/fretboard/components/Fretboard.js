@@ -41,14 +41,13 @@ export default class FretBoard extends Component {
       widthCalc(numFrets, numFrets),
       ...range(0, numFrets-1).map( n => widthCalc(n, numFrets) )
     ]
-    const sliderStops = this.flexArr.map((val,i) => sumArray(this.flexArr.slice(0,i+1)))
-    sliderStops.unshift(0)
-
+    const sliderStops = [0, ...this.flexArr.map((val,i) => sumArray(this.flexArr.slice(0,i+1)))]
     this.sliderStops = sliderStops
+
     this.state = {
-      sliderValue: this.props.fretRange.map(fretNum => Math.floor(closest(this.sliderStops, 100*fretNum/numFrets))),
+      sliderValue: this.props.fretRange.map(fretNum =>
+        Math.floor(closest(this.sliderStops, 100*fretNum/numFrets)))
     }
-    console.log('constructor props', props);
 
   }
 

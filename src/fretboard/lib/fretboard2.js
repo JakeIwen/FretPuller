@@ -140,6 +140,5 @@ export const fretMatrixForScale = ({tuning, width, tonic, scale, showName = true
     },
     [],
   )
-  console.log({intervals, updates, tuning, width, tonic, scale});
   return updateFretMatrix(updates)(fretMatrix({ tuning, width }))
 }

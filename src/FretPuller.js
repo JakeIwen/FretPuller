@@ -27,12 +27,10 @@ export default class FretPuller extends Component {
       fbHeight: 0,
       showTuningModal: false
     }
-    console.log(this.state);
   }
 
   onFretClick = (fret) => {
     // this.selectPitch(midi)
-    console.log(fret)
     this.showThisNote(fret)
   }
 
@@ -111,7 +109,6 @@ export default class FretPuller extends Component {
   }
 
   setAppMode = (mode) => {
-    console.log('setting mode', mode);
     this.setState({
       ...initChord({...this.state, appMode: mode})
     })
@@ -123,7 +120,6 @@ export default class FretPuller extends Component {
         title='CHANGE TUNING'
         onPress={()=>{
           this.setState({showTuningModal: true})
-          console.log('modal up');
         }}/>
       <FpButton
         title={(this.state.appMode)=='chord' ? 'SCALE MODE' : 'CHORD MODE'}

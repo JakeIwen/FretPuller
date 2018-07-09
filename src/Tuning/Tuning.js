@@ -1,19 +1,17 @@
 import React, {Component} from 'react'
 import styled from "styled-components/native"
-import { Picker } from 'react-native-wheel-datepicker'
 import {range} from 'lodash'
-import { SelectionButton, ResetButton, Txt } from '../styled/selections'
+import { SelectionButton, Txt } from '../styled/selections'
 import { Row, Col } from '../styled'
 import {tuningsNested} from '../lib/tunings.js'
 
 const allNotes = ["C", "C#", "D", "Eb", "E", "F", "F#", "G", "Ab", "A", "B"]
 
-let res = []
+const res = []
 range(2, 6).map(num=>{
   allNotes.forEach(note=>res.push(note+num))
   return res
 })
-const pickerData = res
 
 const Wrapper = styled.View`
   display: flex;
@@ -24,12 +22,7 @@ const Wrapper = styled.View`
   border-radius: 5px;
   background-color: #708090;
 `
-const TPicker = styled(Picker)`
-  flex: 1;
-`
-const AddRemove = styled(Row)`
-  margin: 5px;
-`
+
 
 const Label = styled.Text`
   font-size: 16;
@@ -42,8 +35,7 @@ export default class Tuning extends Component {
 
   render() {
     // this.props.active && this.popupDialog.show()
-    let {tuning} = this.props
-    console.log('tuning component', {tuning});
+    const {tuning} = this.props
 
     return (
       <Wrapper>

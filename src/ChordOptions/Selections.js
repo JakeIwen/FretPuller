@@ -62,9 +62,7 @@ export default class Selections extends Component {
   }
 
   optionList = () => {
-    const {tonic, activeSelector, extensions} = this.state
-    // let option, selectedOption
-    console.log({activeSelector});
+    const {tonic, extensions} = this.state
     return (
       <Row>
         <Col>
