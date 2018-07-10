@@ -12,9 +12,12 @@ export const getFilteredShapes = (settings) => {
 
     const crds = fretsInChord.map(fret => fret.loc.crd)
     const consecutive = crds.every((crd, i) => i==0 || crd-crds[i-1]==1)
-    const stringsActive = crds.every(crd => activeStrings[crd]==true)
+    const stringsActive = crds.every(crd => activeStrings[crd])
 
-    return inRange && allStringsReq && stringsActive && (consecutive || !noGaps)
+    return inRange &&
+      allStringsReq &&
+      stringsActive && 
+      (consecutive || !noGaps)
   })
 
 }

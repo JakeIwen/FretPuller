@@ -5,7 +5,7 @@ import { Note } from '../../../src/lib/tonal.min.js'
 import Fret from './Fret'
 import { Switch } from 'react-native-switch'
 import {tonicColors} from '../../../src/theme/colors'
-import {Text} from 'react-native'
+import {accFormat} from '../../../src/utils/format'
 
 export default class String extends Component {
 
@@ -32,18 +32,20 @@ export default class String extends Component {
         <Switch
           disabled={this.props.appMode==='scale'}
           barHeight={18}
-          activeText={openNote}
-          inActiveText={openNote}
+          activeText={accFormat(openNote)}
+          inActiveText={accFormat(openNote)}
           circleSize={20}
-          renderInsideCircle={<Text style={{fontWeight:'bold'}}>{openNote}</Text>}
           backgroundActive={'green'}
           backgroundInactive={'gray'}
           onValueChange={()=>{
             const newActive = activeStrings
             newActive[stringNum] = !activeStrings[stringNum]
-            // console.log(!activeStrings[stringNum])
-            // console.log({newActive, activeStrings, stringNum});
-            updateFilter({activeStrings: newActive, allStrings: false})
+            const updateObj = {activeStrings: newActive, allStrings: false}
+
+            if (!newActive.every(stg=>stg))
+              updateObj.noGaps = false
+
+            updateFilter(updateObj)
           }}
           value={activeStrings[stringNum]}
         />

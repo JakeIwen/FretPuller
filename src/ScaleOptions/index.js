@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import { Row, FpCheckBox } from '../styled'
+import { Row, Col, FpCheckBox } from '../styled'
 import { Scale } from '../lib/tonal.min.js'
 import { Container, RightOptions } from '../styled/options'
 import Selections from './Selections'
@@ -20,6 +20,7 @@ export default class ScaleOptions extends Component {
 
   render() {
     const containerHeight = Dimensions.get('window').height - this.props.fbHeight;
+    console.log('props', this.props);
     return (
       <Container height={containerHeight}>
         <Row flex>
@@ -28,6 +29,8 @@ export default class ScaleOptions extends Component {
             containerHeight={containerHeight}
           />
           <RightOptions style={{paddingTop: 10}}>
+            <Row>
+            <Col>
             <FpCheckBox
               label='Pentatonic'
               disabled={!Scale.exists(this.newExt('pentatonic'))}
@@ -52,8 +55,16 @@ export default class ScaleOptions extends Component {
               onChange={() => this.props.setScale({scale: this.newPre('melodic')})}
               checked={this.isThisPre('melodic')}
             />
-
-            {this.props.children}
+          </Col>
+          <Col>
+            <FpCheckBox
+              label='Show Note Names'
+              onChange={() => this.props.setScale({showNames: !this.props.showNames})}
+              checked={this.props.showNames}
+            />
+          </Col>
+          </Row>
+          {this.props.children}
           </RightOptions>
         </Row>
       </Container>

@@ -14,6 +14,7 @@ const Outer = styled(TouchableOpacity)`
 const Content = styled.Text`
   text-align: center;
   overflow: hidden;
+  font-family: Menlo;
 `
 export default class Fret extends Component {
 

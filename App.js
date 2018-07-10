@@ -20,7 +20,8 @@ const defaultSettings = {
   tonic: 'C',
   chord: '',
   scale: 'minor',
-  appMode: 'chord'
+  appMode: 'chord',
+  showNames: true
 }
 
 export default class App extends Component {

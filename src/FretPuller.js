@@ -62,7 +62,7 @@ export default class FretPuller extends Component {
   }
 
   updateFilter = (args={}) => {
-    if ((args.appMode || this.state.appMode) === 'scale') return this.updateScaleFretMatrix()
+    if ((args.appMode || this.state.appMode) === 'scale') return this.updateScaleFretMatrix(args)
 
     const argKeys = Object.keys(args)
     const newState = {...this.state, ...args}
@@ -80,15 +80,14 @@ export default class FretPuller extends Component {
     })
   }
 
-  updateScaleFretMatrix = ( settings ) => {
-    const keys = ['tuning', 'width', 'tonic', 'scale']
+  updateScaleFretMatrix = ( settings={} ) => {
+    const keys = ['tuning', 'width', 'tonic', 'scale', 'showNames']
     const state = keys.reduce( (acc, key) => {
-      acc[key] = (settings || [])[key] || this.state[key]
+      acc[key] = settings[key]===undefined ? this.state[key] : settings[key]
       return acc
     }, {})
     const fretMatrix = fretMatrixForScale( state )
     const blackOut = fretMatrix.map(stg => stg.map(fret => fret.state.status==='selected'))
-
     this.setState( {
       fretMatrix,
       selectionMatrix: blackOut,
@@ -97,13 +96,13 @@ export default class FretPuller extends Component {
     });
   }
 
-  changeFretboard = ( settings ) => {
-    const keys = ['tuning', 'width', 'chord', 'tonic', 'scale', 'appMode']
+  changeFretboard = ( settings={} ) => {
+    const keys = ['tuning', 'width', 'chord', 'tonic', 'scale', 'appMode', 'showNames']
     let state = keys.reduce( (acc, key) => {
-      acc[key] = settings[key] || this.state[key]
+      acc[key] = settings[key]===undefined ? this.state[key] : settings[key]
       return acc
     }, {})
-    if (settings.chord || settings.tonic || settings.tuning) {
+    if (settings.chord || settings.tonic || settings.tuning || settings.showNames!==undefined) {
       state = Object.assign(state, initChord(state))
     }
     this.updateFilter(Object.assign(this.state, state))

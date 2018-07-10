@@ -3,6 +3,7 @@
 // could be modified to expand the api with
 // functions that update an existing fretMatrix
 import {tokenize} from '../../utils/tokenize'
+import {romanIvls} from '../../utils/format'
 import {arrayRotate} from '../../utils'
 import {chordIntervals} from '../../utils/chordIntervals'
 import { range, compose, curry, update, merge, reverse } from 'lodash/fp'
@@ -69,12 +70,12 @@ export const locationsForPc = (tuning, width, pc) =>
     [],
   )
 
-export const updatesForLocsAndName = (locs, name, showName) =>
+export const updatesForLocsAndName = (locs, name, showNames) =>
   locs.map(([crd, pos]) => {
-    let status = 'selected'
-    return showName
+    const status = 'selected'
+    return showNames
       ? { loc: { crd, pos }, state: fretState(status, name ) }
-      : { loc: { crd, pos }, state: fretState(status, '') }
+      : { loc: { crd, pos }, state: fretState(status, romanIvls(name)) }
   })
 
 /* refactor this in
@@ -87,56 +88,57 @@ export const entities = {
 }
 */
 
-export const fretMatrixForPc = (tuning, width, pc, showName = false) => {
+export const fretMatrixForPc = (tuning, width, pc, showNames = false) => {
   const locs = locationsForPc(tuning, width, pc)
-  const updates = updatesForLocsAndName(locs, pc, showName)
+  const updates = updatesForLocsAndName(locs, pc, showNames)
 
   return updateFretMatrix(updates)(fretMatrix({ tuning, width, pc }))
 }
 
-export const fretMatrixForNote = (tuning, width, note, showName = false) => {
+export const fretMatrixForNote = (tuning, width, note, showNames = false) => {
   const locs = locationsForNote(tuning, width, note)
-  const updates = updatesForLocsAndName(locs, note, showName)
+  const updates = updatesForLocsAndName(locs, note, showNames)
   return updateFretMatrix(updates)(fretMatrix({ tuning, width }))
 }
 
-export const fretMatrixForInterval = (tuning, width, tonic, ivl, showName = false) => {
+export const fretMatrixForInterval = (tuning, width, tonic, ivl, showNames = false) => {
   const intervals = ['1P', ivl]
   const notes = [tonic, Distance.transpose(tonic, ivl)]
   const updates = notes.reduce(
     (acc, pc, i) => {
       const locs = locationsForPc(tuning, width, pc)
       const name = intervals[i]
-      return [...acc, ...updatesForLocsAndName(locs, name, showName)]
+      return [...acc, ...updatesForLocsAndName(locs, name, showNames)]
     },
     [],
   )
   return updateFretMatrix(updates)(fretMatrix({ tuning, width }))
 }
 
-export const fretMatrixForChord = (tuning, width, chord, showName = true) => {
-  let tokens = tokenize(chord)
+export const fretMatrixForChord = (tuning, width, chord, showNames = true) => {
+  const tokens = tokenize(chord)
   if (tokens.length === 2)
     intervals = chordIntervals(tokens[1])
   const updates = Chord.notes(...tokens).reduce(
     (acc, pc, i) => {
       const locs = chord ? locationsForPc(tuning, width, pc) : []
-      const name = pc
-      return [...acc, ...updatesForLocsAndName(locs, name, showName)]
+      const name = showNames ? pc : intervals[i]
+      console.log(intervals[i], showNames);
+      return [...acc, ...updatesForLocsAndName(locs, name, showNames)]
     },
     [],
   )
   return updateFretMatrix(updates)(fretMatrix({ tuning, width }))
 }
 
-export const fretMatrixForScale = ({tuning, width, tonic, scale, showName = true}) => {
+export const fretMatrixForScale = ({tuning, width, tonic, scale, showNames = true}) => {
   const intervals = Scale.intervals(scale)
   const updates = Scale.notes(tonic, scale).reduce(
     (acc, pc, i) => {
       const locs = locationsForPc(tuning, width, pc)
-      const name = pc
-      // const name = intervals[i]
-      return [...acc, ...updatesForLocsAndName(locs, name, showName)]
+      console.log({intervals});
+      const name = showNames ? pc : intervals[i]
+      return [...acc, ...updatesForLocsAndName(locs, name, showNames)]
     },
     [],
   )

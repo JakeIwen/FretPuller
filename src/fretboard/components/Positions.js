@@ -1,8 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { range } from 'lodash/fp'
 import styled from 'styled-components/native'
-import Nut from './Nut'
 import  Row  from 'react-native-row'
 
 const PosText = styled.Text`
@@ -13,8 +11,6 @@ const PosText = styled.Text`
 
 const positions = ['', '', '', '', 'III', '', 'V', '', 'VII', '', '', 'X', '',
   'XII', '', '', 'XV', '', 'XVII', '', 'IXX']
-
-// <Nut visible={false} />
 
 const Positions = ({ flexArr }) =>
   <Row dial={5} >
