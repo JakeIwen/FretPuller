@@ -11,12 +11,13 @@ export const Col = styled(Row)`
 `
 export const Br = () => <Text>{`\n`}</Text>
 
-export const SettingsWrapper = styled(Row)`
+export const SettingsWrapper = styled(Col)`
   align-self: flex-end;
   margin-top: auto;
 `
 
 export const Txt = styled.Text`
+  text-align: ${props => props.center ? 'center' : 'left'};
   font-size: ${props => props.size || 24};
   font-weight: ${props => props.selected ? 'bold' : 'normal' };
 `

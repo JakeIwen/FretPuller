@@ -60,6 +60,6 @@ export const FpButton = styled(fpButton)`
   justify-content: center;
   border-radius: 5px;
   margin: 1px;
-  height: ${props => props.height || '40px'};
-  width: ${props => props.width || '80px'};
+  height: ${props => props.height ? props.height + 'px' :  '40px'};
+  width: ${props => props.width ? props.width + 'px' :  '80px'};
 `

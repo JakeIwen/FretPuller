@@ -20,7 +20,6 @@ export default class ScaleOptions extends Component {
 
   render() {
     const containerHeight = Dimensions.get('window').height - this.props.fbHeight;
-    console.log('props', this.props);
     return (
       <Container height={containerHeight}>
         <Row flex>
@@ -54,13 +53,6 @@ export default class ScaleOptions extends Component {
               disabled={!Scale.exists(this.newPre('melodic'))}
               onChange={() => this.props.setScale({scale: this.newPre('melodic')})}
               checked={this.isThisPre('melodic')}
-            />
-          </Col>
-          <Col>
-            <FpCheckBox
-              label='Show Note Names'
-              onChange={() => this.props.setScale({showNames: !this.props.showNames})}
-              checked={this.props.showNames}
             />
           </Col>
           </Row>

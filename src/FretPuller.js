@@ -6,8 +6,8 @@ import {  Fretboard,
 import ScaleOptions from './ScaleOptions'
 import ChordOptions from './ChordOptions'
 import {initChord} from './utils/chordShapes'
-import { Col, SettingsWrapper } from './styled'
-import { Note } from 'tonal'
+import { Col, Row, SettingsWrapper } from './styled'
+import { Note } from './lib/tonal.min.js'
 import {fretTruth} from './utils/frets'
 import {getFilteredShapes} from './utils/fretFilter'
 import {indexLoop} from './utils/indexLoop'
@@ -15,7 +15,7 @@ import {getSelectionMatrix} from './utils/getSelectionMatrix'
 import {TuningModal} from './Tuning/TuningModal'
 import {FpButton} from './styled/options'
 
-const chordShapeKeys = ['incZeroFret', 'noGaps', 'allStrings', 'fretRange', 'activeStrings', 'allShapes', 'tuning']
+const chordShapeKeys = ['incZeroFret', 'noGaps', 'allStrings', 'fretRange', 'activeStrings', 'allShapes', 'tuning', 'maxFretSpan']
 
 
 export default class FretPuller extends Component {
@@ -63,7 +63,10 @@ export default class FretPuller extends Component {
 
   updateFilter = (args={}) => {
     if ((args.appMode || this.state.appMode) === 'scale') return this.updateScaleFretMatrix(args)
-
+    if (args.maxFretSpan!==undefined) {
+      if (args.maxFretSpan < 2) args.maxFretSpan = 2
+      else if (args.maxFretSpan > 7) args.maxFretSpan = 7
+    }
     const argKeys = Object.keys(args)
     const newState = {...this.state, ...args}
     const needsNewShapes = argKeys.some(key => chordShapeKeys.includes(key))
@@ -121,14 +124,21 @@ export default class FretPuller extends Component {
 
   settingsButtons = () =>
     <SettingsWrapper>
-      <FpButton
-        title='CHANGE TUNING'
-        onPress={()=>{
-          this.setState({showTuningModal: true})
-        }}/>
-      <FpButton
-        title={(this.state.appMode)=='chord' ? 'SCALE MODE' : 'CHORD MODE'}
-        onPress={()=>this.setAppMode((this.state.appMode)=='scale' ? 'chord' : 'scale')}/>
+      <Col>
+        <FpButton width={160}
+          title={`SHOW NOTE ${this.state.showNames ? 'INTERVALS' : 'NAMES'}`}
+          onPress={()=>this.changeFretboard({showNames: !this.state.showNames})}/>
+          <Row>
+            <FpButton
+              title='CHANGE TUNING'
+              onPress={()=>{
+                this.setState({showTuningModal: true})
+              }}/>
+            <FpButton
+              title={(this.state.appMode)=='chord' ? 'SCALE MODE' : 'CHORD MODE'}
+              onPress={()=>this.setAppMode((this.state.appMode)=='scale' ? 'chord' : 'scale')}/>
+        </Row>
+        </Col>
     </SettingsWrapper>
 
   scaleOptions = () =>
@@ -151,6 +161,7 @@ export default class FretPuller extends Component {
     >
       {this.settingsButtons()}
     </ChordOptions>
+
 
   optionsElements = () => {
     switch (!!this.state.fbHeight && this.state.appMode) {

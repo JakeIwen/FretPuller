@@ -4,7 +4,6 @@ import { View } from 'react-native'
 import { range } from 'lodash/fp'
 
 export const CheckBoxOptions = (props) => {
-  console.log({props});
   return (
   <View>
     <FpCheckBox
@@ -35,11 +34,6 @@ export const CheckBoxOptions = (props) => {
       label='No Inner Muted Strings'
       onChange={() => props.updateFilter({noGaps: !props.noGaps,})}
       checked={props.noGaps}
-    />
-    <FpCheckBox
-      label='Show Note Names'
-      onChange={() => props.changeFretboard({showNames: !props.showNames})}
-      checked={props.showNames}
     />
   </View>
 )}

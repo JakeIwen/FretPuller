@@ -1,5 +1,6 @@
 export const getFilteredShapes = (settings) => {
-  const {incZeroFret, noGaps, allStrings, fretRange, activeStrings, allShapes, tuning} = settings
+  const {incZeroFret, noGaps, allStrings, fretRange, activeStrings, allShapes, tuning, maxFretSpan} = settings
+
   return allShapes.filter( fretsInChord => {
 
     const positions = fretsInChord.map(fret => fret.loc.pos)
@@ -14,9 +15,12 @@ export const getFilteredShapes = (settings) => {
     const consecutive = crds.every((crd, i) => i==0 || crd-crds[i-1]==1)
     const stringsActive = crds.every(crd => activeStrings[crd])
 
+    const withinFretSpan = maxFretSpan >= (Math.max(...positions) - Math.min(...positions))
+
     return inRange &&
       allStringsReq &&
-      stringsActive && 
+      stringsActive &&
+      withinFretSpan &&
       (consecutive || !noGaps)
   })
 

@@ -26,7 +26,7 @@ const notesDetails = (name) => {
 
 export default ScaleInfo = ({tonic, scale}) => {
   const split = scale.split(' ')
-  const addendum = split.length > 1 ? '-' + split[1][0] : ''
+  const addendum = split.length > 1 ? '-' + split[1][0].toUpperCase() : ''
   return <Wrapper>
     <SelectionName>
       {accFormat(split[0] + addendum)}

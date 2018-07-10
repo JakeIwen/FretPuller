@@ -4,11 +4,9 @@
 // functions that update an existing fretMatrix
 import {tokenize} from '../../utils/tokenize'
 import {romanIvls} from '../../utils/format'
-import {arrayRotate} from '../../utils'
 import {chordIntervals} from '../../utils/chordIntervals'
-import { range, compose, curry, update, merge, reverse } from 'lodash/fp'
+import { range, compose, curry, update, merge } from 'lodash/fp'
 import { Distance, Interval, Note, Chord, Scale } from '../../../src/lib/tonal.min.js'
-import {ivlColors, colors} from '../../../src/theme/colors'
 
 const transpose = curry(Distance.transpose)
 
@@ -123,7 +121,6 @@ export const fretMatrixForChord = (tuning, width, chord, showNames = true) => {
     (acc, pc, i) => {
       const locs = chord ? locationsForPc(tuning, width, pc) : []
       const name = showNames ? pc : intervals[i]
-      console.log(intervals[i], showNames);
       return [...acc, ...updatesForLocsAndName(locs, name, showNames)]
     },
     [],
@@ -136,7 +133,6 @@ export const fretMatrixForScale = ({tuning, width, tonic, scale, showNames = tru
   const updates = Scale.notes(tonic, scale).reduce(
     (acc, pc, i) => {
       const locs = locationsForPc(tuning, width, pc)
-      console.log({intervals});
       const name = showNames ? pc : intervals[i]
       return [...acc, ...updatesForLocsAndName(locs, name, showNames)]
     },
