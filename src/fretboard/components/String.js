@@ -32,13 +32,17 @@ export default class String extends Component {
         <Switch
           disabled={this.props.appMode==='scale'}
           barHeight={18}
+          activeText={openNote}
+          inActiveText={openNote}
           circleSize={20}
-          renderInsideCircle={()=><Text style={{fontWeight:'bold'}}>{openNote}</Text>}
+          renderInsideCircle={<Text style={{fontWeight:'bold'}}>{openNote}</Text>}
           backgroundActive={'green'}
           backgroundInactive={'gray'}
-          onValueChange={(val)=>{
-            const newActive = [...activeStrings]
-            newActive[stringNum] = val
+          onValueChange={()=>{
+            const newActive = activeStrings
+            newActive[stringNum] = !activeStrings[stringNum]
+            // console.log(!activeStrings[stringNum])
+            // console.log({newActive, activeStrings, stringNum});
             updateFilter({activeStrings: newActive, allStrings: false})
           }}
           value={activeStrings[stringNum]}

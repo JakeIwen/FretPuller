@@ -1,8 +1,7 @@
 import {TouchableOpacity} from 'react-native'
 import React, {Component} from 'react'
 import RadioSelect from '../Aux/RadioSelect'
-import {Row, Col} from '../styled'
-import {  Txt } from '../styled/selections'
+import {Row, Col, Txt} from '../styled'
 import ScaleInfo from './ScaleInfo'
 import {indexLoop} from '../utils/indexLoop'
 import { modeNames} from '../lib/scaleNames'
@@ -18,7 +17,7 @@ export default class Selections extends Component {
     return (
       <Row>
         <Col>
-          <RadioSelect scale
+          <RadioSelect scale tonic
             preventUnselect
             height={(this.props.containerHeight - 5) / preferredList.length}
             options={preferredList}

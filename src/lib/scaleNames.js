@@ -4,11 +4,11 @@ export const basicScales = [
   "pentatonic"
 ]
 export const modeNames = [
-  "Major (Ionian)",
-  "Minor (Aeolian)",
-  "Dorian",
-  "Phrygian",
-  "Lydian",
-  "Mixolydian",
-  "Locrian",
+  "major (Ionian)",
+  "minor (Aeolian)",
+  "dorian",
+  "phrygian",
+  "lydian",
+  "mixolydian",
+  "locrian",
 ]

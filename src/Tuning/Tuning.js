@@ -1,8 +1,8 @@
 import React, {Component} from 'react'
 import styled from "styled-components/native"
 import {range} from 'lodash'
-import { SelectionButton, Txt } from '../styled/selections'
-import { Row, Col } from '../styled'
+import { SelectionButton } from '../styled/selections'
+import { Row, Col, Txt } from '../styled'
 import {tuningsNested} from '../lib/tunings.js'
 
 const allNotes = ["C", "C#", "D", "Eb", "E", "F", "F#", "G", "Ab", "A", "B"]

@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import { TouchableOpacity, Text} from 'react-native'
 import { Row, Br } from '../styled'
-import {Container, RightOptions, NavText, OptionSection} from '../styled/options'
+import {Container, RightOptions, NavText} from '../styled/options'
 import Selections from './Selections'
 import Dimensions from 'Dimensions'
 import { CheckBoxOptions } from './CheckBoxOptions'
@@ -22,8 +22,7 @@ export default class ChordOptions extends Component {
 
   // openStringCheckbox = () =>
   chordOptions = () =>
-    <OptionSection spaceAround>
-      <Row>
+      <Row spaceAround>
         <TouchableOpacity onPress={()=>this.props.updateFilter({
           variationIndex: this.props.variationIndex - 1
         })} >
@@ -36,12 +35,6 @@ export default class ChordOptions extends Component {
           <NavText>&rarr;</NavText>
         </TouchableOpacity>
       </Row>
-      {/* <Row>
-        <Col spaceBetween>
-          <Text>Max Fret Span</Text>
-        </Col>
-      </Row> */}
-    </OptionSection>
 
   render() {
     const containerHeight = Dimensions.get('window').height - this.props.fbHeight;
