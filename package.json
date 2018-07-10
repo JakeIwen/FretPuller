@@ -1,6 +1,6 @@
 {
   "name": "FretPuller",
-  "version": "0.3",
+  "version": "0.4",
   "private": true,
   "devDependencies": {
     "babel-core": "^6.17.0",

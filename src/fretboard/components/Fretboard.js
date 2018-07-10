@@ -7,6 +7,7 @@ import styled from 'styled-components/native'
 import String from './String'
 import Slider from '@ptomasroos/react-native-multi-slider'
 import Dimensions from 'Dimensions'
+const UPPER_PADDING = 5
 
 const widthCalc = (pos, fbWidth) =>{
   return ((Math.pow(2,(1/fbWidth)) - 1) / Math.pow(2,((pos+1)/fbWidth))) * 100 * 2
@@ -67,7 +68,7 @@ export default class FretBoard extends Component {
 
     return (
       <Board
-        style={{paddingTop: 20}}
+        style={{paddingTop: UPPER_PADDING}}
         onLayout={ event => this.props.setFretboardDims({fbHeight: event.nativeEvent.layout.height})}>
         {cuerda(fretMatrix, this.flexArr, otherProps)}
         {this.props.appMode==='chord' && <Slider

@@ -43,13 +43,13 @@ export const SelectionOption = styled(sButton)`
   align-items: center;
   justify-content: center;
   border-radius: 5px;
-  margin: 1px;
-  height: ${props => (props.height ? props.height-2 : 20 ) + 'px'};
+  height: ${props => (props.height-1 || 20)}px;
+  margin: 0.5px;
   width: 45px;
 `
 
 export const ScaleSelectionOption = styled(SelectionOption)`
-  height: ${props => (props.height-2 || 23)}px;
+  height: ${props => (props.height-1 || 23)}px;
   width: 70px;
 `
 

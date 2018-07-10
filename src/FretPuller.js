@@ -57,10 +57,6 @@ export default class FretPuller extends Component {
     })
   }
 
-  updateSelection = () => {
-
-  }
-
   updateFilter = (args={}) => {
     if ((args.appMode || this.state.appMode) === 'scale') return this.updateScaleFretMatrix(args)
     if (args.maxFretSpan!==undefined) {

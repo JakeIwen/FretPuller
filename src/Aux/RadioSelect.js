@@ -2,8 +2,8 @@ import React, { Component } from 'react'
 import styled from "styled-components/native"
 import { RadioButtons } from 'react-native-radio-buttons'
 // import { SegmentedControlIOS } from 'react-native/Libraries/Components/SegmentedControlIOS'
-import {accFormat} from '../../src/utils/format'
-import { ScaleSelectionOption, SelectionOption} from '../../src/styled/options'
+import {accFormat} from '../utils/format'
+import { ScaleSelectionOption, SelectionOption} from '../styled/options'
 
 const RenderContainer = styled.View`
   display: flex;

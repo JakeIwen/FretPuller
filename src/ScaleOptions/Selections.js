@@ -48,7 +48,7 @@ export default class Selections extends Component {
   render(){
     const {tonic, scale} = this.props
     return (
-      <Row flex style={{marginBottom: -40}}>
+      <Row flex style={{marginBottom: -90}}>
         <Col style={{width: 150}}>
           <Row spaceAround>
             <TouchableOpacity onPress={() => this.cycleTonic(tonic, -1)}>

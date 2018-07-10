@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import { TouchableOpacity, Text} from 'react-native'
+import { TouchableOpacity} from 'react-native'
 import { Row, Br, Txt} from '../styled'
 import {Container, RightOptions, NavText} from '../styled/options'
 import Selections from './Selections'
@@ -7,7 +7,7 @@ import Dimensions from 'Dimensions'
 import { CheckBoxOptions } from './CheckBoxOptions'
 
 export default class ChordOptions extends Component {
-  
+
   variationNums = () => this.props.chordShapes.length
     ? (<Txt  size={14} center>
         Variation <Br/>
@@ -54,7 +54,7 @@ export default class ChordOptions extends Component {
         <Row flex>
           <Selections
             setChord={this.props.changeFretboard}
-            height={containerHeight}
+            containerHeight={containerHeight}
             tonic={this.props.tonic}
           />
           <RightOptions>

@@ -66,17 +66,19 @@ export default class Selections extends Component {
     return (
       <Row>
         <Col>
-          <RadioSelect
-            preventUnselect
-            options={tonicList}
+          <RadioSelect preventUnselect
+            height={(this.props.containerHeight - 5) / preferredList.length}
+            options={preferredList}
             selectedOption={tonic}
             onValueChange={newTonic => this.setChord({tonic: newTonic})}/>
         </Col>
         {range(0, extensions.length+1).map(sIndex => {
+          const options = this.extOptions(extensions.slice(0,sIndex).join(''))
           return (
             <Col key={sIndex}>
               <RadioSelect
-                options={this.extOptions(extensions.slice(0,sIndex).join(''))}
+                height={(this.props.containerHeight - 5) / options.length}
+                options={options}
                 selectedOption={extensions[sIndex]}
                 onValueChange={newExt=>this.changeExtValue(newExt, sIndex)}/>
             </Col>
@@ -144,7 +146,7 @@ export default class Selections extends Component {
 
   render(){
     return (
-      <Row flex style={{marginBottom: -40}}>
+      <Row flex style={{marginBottom: -90}}>
         <Col style={{width: 140}}>
           <Row spaceAround>
             <TouchableOpacity onPress={()=>this.cycleTonic(this.state.tonic, -1)}>
