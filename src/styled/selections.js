@@ -1,16 +1,11 @@
 import styled from "styled-components/native"
-import { Button } from 'react-native-elements'
-
-export const ResetButton = styled(Button)`
-  padding: 10px;
-`
 
 export const SelectionButton = styled.TouchableHighlight`
   display: flex;
   align-items: center;
   border: ${props => props.activated ? '2px solid red' : '0'}
 `
-export const MockFret = styled.View`
+export const MockFret = styled.TouchableOpacity`
   display: flex;
   align-items: center;
   justify-content: center;

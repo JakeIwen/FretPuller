@@ -3,7 +3,7 @@ import styled from "styled-components/native"
 import { RadioButtons } from 'react-native-radio-buttons'
 // import { SegmentedControlIOS } from 'react-native/Libraries/Components/SegmentedControlIOS'
 import {accFormat} from '../utils/format'
-import { ScaleSelectionOption, SelectionOption} from '../styled/options'
+import {SelectionOption} from '../styled/options'
 
 const RenderContainer = styled.View`
   display: flex;
@@ -11,8 +11,6 @@ const RenderContainer = styled.View`
   justify-content: space-around;
   ${'' /* flex: 1; */}
 `
-
-const SOption = (props) => props.scale ? <ScaleSelectionOption {...props}/> : <SelectionOption {...props}/>
 
 export default class RadioSelect extends Component {
   isActivated = (option) => {
@@ -26,7 +24,7 @@ export default class RadioSelect extends Component {
     onValueChange(unselect ? '' : newSelectedOption)
   }
   renderOption = (option, selected, onSelect, index) => (
-    <SOption
+    <SelectionOption
       onPress={()=>this.setSelectedOption(option)}
       key={index}
       title={accFormat(option)}

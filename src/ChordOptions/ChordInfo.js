@@ -1,13 +1,13 @@
 import React from 'react'
-import { Chord, Note } from '../../src/lib/tonal.min.js'
-import {tonicColors} from '../../src/theme/colors'
-import {romanIvls, readFormat, accFormat} from '../../src/utils/format'
-import {tokenize} from '../../src/utils/tokenize'
-import {chordIntervals} from '../../src/utils/chordIntervals'
+import { Chord, Note } from '../lib/tonal.min.js'
+import {tonicColors} from '../theme/colors'
+import {romanIvls, readFormat, accFormat} from '../utils/format'
+import {tokenize} from '../utils/tokenize'
+import {chordIntervals} from '../utils/chordIntervals'
 import {Wrapper, SelectionName, MapKey, Ivl, Name} from '../styled/selectionInfo'
 import {MockFret} from '../styled/selections'
 
-const notesDetails = (name) => {
+const notesDetails = (name, highlightNote) => {
   const tokens = tokenize(name)
   const colorArr = tonicColors(tokens[0])
   const intervals = (tokens.length === 2)
@@ -18,18 +18,20 @@ const notesDetails = (name) => {
   return intervals.map( (ivl, i) =>
     <MapKey key={i}>
       <Ivl>{romanIvls(ivl)}: </Ivl>
-      <MockFret color={colorArr[Note.chroma(notes[i])]}>
+      <MockFret
+        onPressIn={()=>highlightNote()}
+        color={colorArr[Note.chroma(notes[i])]}>
         <Name>{accFormat(notes[i])}</Name>
       </MockFret>
     </MapKey>
   )
 }
 
-export default ChordInfo = ({tonic, chord}) => (
+export default ChordInfo = ({tonic, chord, highlightNote}) => (
   <Wrapper>
     <SelectionName>
-      {tonic + readFormat(chord)}
+      {accFormat(tonic) + readFormat(chord)}
     </SelectionName>
-    {notesDetails(tonic+chord)}
+    {notesDetails(tonic+chord, highlightNote)}
   </Wrapper>
 )

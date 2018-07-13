@@ -122,17 +122,17 @@ export default class FretPuller extends Component {
     <SettingsWrapper>
       <Col>
         <FpButton width={160}
-          title={`SHOW NOTE ${this.state.showNames ? 'INTERVALS' : 'NAMES'}`}
+          title={`SHOW ${this.state.showNames ? 'INTERVALS' : 'NOTE NAMES'}`}
           onPress={()=>this.changeFretboard({showNames: !this.state.showNames})}/>
           <Row>
             <FpButton
               title='CHANGE TUNING'
-              onPress={()=>{
-                this.setState({showTuningModal: true})
-              }}/>
+              onPress={()=> this.setState( {showTuningModal: true}) }/>
             <FpButton
               title={(this.state.appMode)=='chord' ? 'SCALE MODE' : 'CHORD MODE'}
-              onPress={()=>this.setAppMode((this.state.appMode)=='scale' ? 'chord' : 'scale')}/>
+              onPress={()=>this.setAppMode(
+                (this.state.appMode)=='scale' ? 'chord' : 'scale'
+              )}/>
         </Row>
         </Col>
     </SettingsWrapper>

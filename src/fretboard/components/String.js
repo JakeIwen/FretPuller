@@ -1,11 +1,11 @@
 import React, {Component} from 'react'
 import PropTypes from 'prop-types'
-import { Row } from '../../../src/styled'
-import { Note } from '../../../src/lib/tonal.min.js'
+import { Row } from '../../styled'
+import { Note } from '../../lib/tonal.min.js'
 import Fret from './Fret'
 import { Switch } from 'react-native-switch'
-import {tonicColors} from '../../../src/theme/colors'
-import {accFormat} from '../../../src/utils/format'
+import {tonicColors} from '../../theme/colors'
+import {accFormat} from '../../utils/format'
 
 export default class String extends Component {
 

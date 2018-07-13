@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from "styled-components/native"
 import {TouchableOpacity, Text,} from 'react-native'
-import {Col} from '../../src/styled'
+import {Col} from '../styled'
 
 export const Container = styled(Col)`
   width: 100%;
@@ -42,15 +42,12 @@ export const SelectionOption = styled(sButton)`
   display: flex;
   align-items: center;
   justify-content: center;
+  align-self: flex-start;
   border-radius: 5px;
-  height: ${props => (props.height-1 || 20)}px;
+  height: ${props => props.height-1 || (props.scale ? 23 : 20) }px;
   margin: 0.5px;
-  width: 45px;
-`
-
-export const ScaleSelectionOption = styled(SelectionOption)`
-  height: ${props => (props.height-1 || 23)}px;
-  width: 70px;
+  width: ${props => props.scale ? 70 : 45}px;
+  max-height: 40px;
 `
 
 export const FpButton = styled(fpButton)`

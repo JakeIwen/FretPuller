@@ -52,10 +52,11 @@ export default class ChordOptions extends Component {
     return (
       <Container height={containerHeight}>
         <Row flex>
-          <Selections
+          <Selections {...this.props}
             setChord={this.props.changeFretboard}
             containerHeight={containerHeight}
             tonic={this.props.tonic}
+            highlightNotes={this.props.highlightNotes}
           />
           <RightOptions>
             <Row>

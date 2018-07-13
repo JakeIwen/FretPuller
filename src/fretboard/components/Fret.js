@@ -2,8 +2,8 @@ import React, {Component} from 'react'
 import PropTypes from 'prop-types'
 import {TouchableOpacity, View} from 'react-native'
 import styled from 'styled-components/native'
-import {hexToRGBGray} from '../../../src/utils/bgFade'
-import {accFormat} from '../../../src/utils/format'
+import {hexToRGBGray} from '../../utils/bgFade'
+import {accFormat} from '../../utils/format'
 
 const Outer = styled(TouchableOpacity)`
   flex: ${props => props.flex};
