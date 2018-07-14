@@ -47,6 +47,7 @@ export const initChord = ({tuning, width, chord, tonic, scale, appMode, showName
 
   const selectionMatrix = fretMatrix.map(stg => stg.map(fret => fret.state.status==='selected'))
 
+
   return {
     tuning,
     chord,
@@ -57,7 +58,7 @@ export const initChord = ({tuning, width, chord, tonic, scale, appMode, showName
     fretMatrix,
     chordShapes,
     allShapes: chordShapes,
-    selectionMatrix,
+    // selectionMatrix,
     possibilitiesMatrix: selectionMatrix,
     variationIndex: 0,
     showTuningModal: false,

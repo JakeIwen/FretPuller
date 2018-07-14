@@ -1,6 +1,6 @@
 export const getFilteredShapes = (settings) => {
   const {incZeroFret, noGaps, allStrings, fretRange, activeStrings, allShapes, tuning, maxFretSpan} = settings
-
+  console.log('fretFilter', {settings});
   return allShapes.filter( fretsInChord => {
 
     const positions = fretsInChord.map(fret => fret.loc.pos)

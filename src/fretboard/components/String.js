@@ -10,7 +10,9 @@ import {accFormat} from '../../utils/format'
 export default class String extends Component {
 
   render() {
-    const {updateFilter, activeStrings, stringNum, frets, tonic, selectionMatrix, defaultMatrix} = this.props
+    const {updateFilter, activeStrings, stringNum, frets, tonic, getSelectionMatrix, defaultMatrix} = this.props
+    const selectionMatrix = getSelectionMatrix()
+    console.log('STRINGJS'), {selectionMatrix};
     const selectionArr = selectionMatrix[stringNum]
     const defMatrix = defaultMatrix[stringNum] || []
     const colorArr = tonicColors(tonic)
