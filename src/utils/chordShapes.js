@@ -63,6 +63,7 @@ export const initChord = ({tuning, width, chord, tonic, scale, appMode, showName
     variationIndex: 0,
     showTuningModal: false,
     activeStrings: range(0, tuning.length).map(()=>true),
+    reverseLookup: false
   }
 }
 

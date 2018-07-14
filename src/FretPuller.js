@@ -15,6 +15,7 @@ import {indexLoop} from './utils/indexLoop'
 import {TuningModal} from './Tuning/TuningModal'
 import {FpButton} from './styled/options'
 import {getChordsIncludingNotes} from './utils/getChordsIncludingNotes'
+import {cloneDeep} from 'lodash'
 
 const chordShapeKeys = ['incZeroFret', 'noGaps', 'allStrings', 'fretRange', 'activeStrings', 'allShapes', 'tuning', 'maxFretSpan']
 
@@ -38,39 +39,51 @@ export default class FretPuller extends Component {
   onFretClick = (fret) => {
     // this.selectPitch(midi)
     console.log({fretMatrix});
-
-    const fretMatrix = this.getNewFretMatrix(fret)
+    let reverseLookup = this.state.reverseLookup
+    console.log({reverseLookup});
+    const {fretMatrix} = this.getUpdatedFretMatrix(fret, reverseLookup)
     console.log({fretMatrix});
+    reverseLookup = true
     // console.log({selectionMatrix});
-    getChordsIncludingNotes()
-    this.setState({fretMatrix})
+    const midis = fretMatrix.map(stgs=>stgs.map(fret=>fret.midi))
+    getChordsIncludingNotes([...new Set(midis)])
+    this.setState({fretMatrix, reverseLookup})
+    console.log('newstate', this.state);
 
   }
 
   getSelectionMatrix = () => {
     const state = this.state
     if ((state || {}).fretMatrix) {
+      try {
       return this.state.fretMatrix.map( (stg) =>
         stg.map( (fret) => fret.state.status==="selected" )
       )
+    } catch(err){
+      debugger;
+    }
     } else {
       return []
     }
   }
 
-  getNewFretMatrix = (clickedFret) => {
+  getUpdatedFretMatrix = (clickedFret, reverseLookup) => {
     console.log({clickedFret});
     const {crd, pos} = clickedFret.loc
-    clickedFret.status = clickedFret.status==="selected"
+    clickedFret.state.status = clickedFret.state.status==="selected"
       ? "unselected"
       : "selected"
-    const strings = this.state.fretMatrix
-    const string = strings[crd]
-    const frets = string
-    frets[pos] = clickedFret
-    console.log({strings, frets});
+    let fretMatrix = cloneDeep(this.state.fretMatrix)
+    if (!reverseLookup) {
+      fretMatrix = fretMatrix.map(stg => stg.map(fret => {
+         fret.state.status='unselected'
+         return fret
+       })
+      )
+    }
+    fretMatrix[crd][pos] = clickedFret
 
-    return strings
+    return {fretMatrix, reverseLookup}
   }
 
   selectPitch = (midi) => {

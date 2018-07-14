@@ -1,12 +1,13 @@
 import React, {Component} from 'react'
 import PropTypes from 'prop-types'
 import { Row } from '../../styled'
-import { Note } from '../../lib/tonal.min.js'
+import { Note, dictionary, Dictionary } from '../../lib/tonal.min.js'
 import Fret from './Fret'
 import { Switch } from 'react-native-switch'
 import {tonicColors} from '../../theme/colors'
 import {accFormat} from '../../utils/format'
-
+console.log({dictionary, Dictionary, Note});
+console.log(Dictionary.chord());
 export default class String extends Component {
 
   render() {
