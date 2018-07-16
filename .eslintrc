@@ -12,7 +12,7 @@
   "plugins": [ "react", "react-native", "eslint-plugin-react" ],
   "extends": ["eslint:recommended", "plugin:react/recommended"],
   "rules": {
-    # "react/no-unused-state": 1
+    "react/no-unused-state": 1,
     "react/display-name": 0,
     "react/prop-types": 0,
     "react-native/no-unused-styles": 1,
@@ -26,6 +26,6 @@
     "no-console": 0,
     "no-debugger": 0,
     "no-undef": 0,
-
+    "no-unused-vars": 1,
   }
 }

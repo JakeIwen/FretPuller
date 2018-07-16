@@ -11,10 +11,9 @@ import { Note } from './lib/tonal.min.js'
 // import {fretTruth} from './utils/frets'
 import {getFilteredShapes} from './utils/fretFilter'
 import {indexLoop} from './utils/indexLoop'
-// import {getSelectionMatrix} from './utils/getSelectionMatrix'
+import {getSelectionMatrix, getChordsIncludingNotes} from './utils/fbUtils'
 import {TuningModal} from './Tuning/TuningModal'
 import {FpButton} from './styled/options'
-import {getChordsIncludingNotes} from './utils/getChordsIncludingNotes'
 import {cloneDeep} from 'lodash'
 
 const chordShapeKeys = ['incZeroFret', 'noGaps', 'allStrings', 'fretRange', 'activeStrings', 'allShapes', 'tuning', 'maxFretSpan']
@@ -27,7 +26,7 @@ export default class FretPuller extends Component {
     this.state = {
       ...props,
       ...initChord(props),
-      // selectionMatrix: this.getSelectionMatrix(),
+      // selectionMatrix: getSelectionMatrix(this.state.fretMatrix),
       fbHeight: 0,
       showTuningModal: false,
       keepAllFrets: true
@@ -38,33 +37,14 @@ export default class FretPuller extends Component {
 
   onFretClick = (fret) => {
     // this.selectPitch(midi)
-    console.log({fretMatrix});
     let reverseLookup = this.state.reverseLookup
-    console.log({reverseLookup});
     const {fretMatrix} = this.getUpdatedFretMatrix(fret, reverseLookup)
-    console.log({fretMatrix});
     reverseLookup = true
-    // console.log({selectionMatrix});
-    const midis = fretMatrix.map(stgs=>stgs.map(fret=>fret.midi))
-    getChordsIncludingNotes([...new Set(midis)])
+    const possibleChords = getChordsIncludingNotes(fretMatrix)
+    console.log(possibleChords)
     this.setState({fretMatrix, reverseLookup})
     console.log('newstate', this.state);
 
-  }
-
-  getSelectionMatrix = () => {
-    const state = this.state
-    if ((state || {}).fretMatrix) {
-      try {
-      return this.state.fretMatrix.map( (stg) =>
-        stg.map( (fret) => fret.state.status==="selected" )
-      )
-    } catch(err){
-      debugger;
-    }
-    } else {
-      return []
-    }
   }
 
   getUpdatedFretMatrix = (clickedFret, reverseLookup) => {
@@ -83,7 +63,7 @@ export default class FretPuller extends Component {
     }
     fretMatrix[crd][pos] = clickedFret
 
-    return {fretMatrix, reverseLookup}
+    return {fretMatrix}
   }
 
   selectPitch = (midi) => {
@@ -174,13 +154,12 @@ export default class FretPuller extends Component {
               onPress={()=>this.setAppMode(
                 (this.state.appMode)=='scale' ? 'chord' : 'scale'
               )}/>
-        </Row>
+          </Row>
         </Col>
     </SettingsWrapper>
 
   scaleOptions = () =>
-    <ScaleOptions
-      {...this.state}
+    <ScaleOptions {...this.state}
       setScale={this.updateScaleFretMatrix}
       changeFretboard={this.changeFretboard}
       setAppMode={this.setAppMode}
@@ -189,8 +168,7 @@ export default class FretPuller extends Component {
     </ScaleOptions>
 
   chordOptions = () =>
-    <ChordOptions
-      {...this.state}
+    <ChordOptions {...this.state}
       changeFretboard={this.changeFretboard}
       showAll={this.showAll}
       updateFilter={this.updateFilter}
@@ -199,12 +177,19 @@ export default class FretPuller extends Component {
       {this.settingsButtons()}
     </ChordOptions>
 
+  lookupOptions = () =>
+    <Col></Col>
+
+
 
   optionsElements = () => {
-    switch (!!this.state.fbHeight && this.state.appMode) {
-      case 'chord':
+    console.log('state', this.state);
+    switch (!!this.state.fbHeight) {
+      case (this.state.reverseLookup):
+        return this.lookupOptions()
+      case this.state.appMode==='chord':
         return this.chordOptions()
-      case 'scale':
+      case this.state.appMode==='scale':
         return this.scaleOptions()
       default:
         return null
@@ -221,7 +206,7 @@ export default class FretPuller extends Component {
           updateFilter={this.updateFilter}
           setFretboardDims={dims => this.setState(dims)}
           {...this.state}
-          getSelectionMatrix={this.getSelectionMatrix}
+          getSelectionMatrix={() => getSelectionMatrix(this.state.fretMatrix)}
         />
         {this.optionsElements()}
         <TuningModal {...this.state} onSave={this.changeFretboard} />

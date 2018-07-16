@@ -3,6 +3,7 @@ import { TouchableOpacity} from 'react-native'
 import { Row, Br, Txt} from '../styled'
 import {Container, RightOptions, NavText} from '../styled/options'
 import Selections from './Selections'
+// import Possibilities from './Possibilities'
 import Dimensions from 'Dimensions'
 import { CheckBoxOptions } from './CheckBoxOptions'
 
@@ -31,27 +32,46 @@ export default class ChordOptions extends Component {
       </TouchableOpacity>
     </Row>
 
-    maxSpan = () =>
-      <Row spaceAround>
-        <TouchableOpacity onPress={()=>this.props.updateFilter({
-          maxFretSpan: this.props.maxFretSpan - 1
-        })} >
-          <NavText>&larr;</NavText>
-        </TouchableOpacity>
-        <Txt size={14} center>{'Max Fret Span'}<Br/>
-        {this.props.maxFretSpan}</Txt>
-        <TouchableOpacity onPress={()=>this.props.updateFilter({
-          maxFretSpan: this.props.maxFretSpan + 1
-        })} >
-          <NavText>&rarr;</NavText>
-        </TouchableOpacity>
-      </Row>
+  maxSpan = () =>
+    <Row spaceAround>
+      <TouchableOpacity onPress={()=>this.props.updateFilter({
+        maxFretSpan: this.props.maxFretSpan - 1
+      })} >
+        <NavText>&larr;</NavText>
+      </TouchableOpacity>
+      <Txt size={14} center>{'Max Fret Span'}<Br/>
+      {this.props.maxFretSpan}</Txt>
+      <TouchableOpacity onPress={()=>this.props.updateFilter({
+        maxFretSpan: this.props.maxFretSpan + 1
+      })} >
+        <NavText>&rarr;</NavText>
+      </TouchableOpacity>
+    </Row>
+
+  possibilitiesOrSelections = () => {
+    if (this.props.reverseLookup) {
+      // return <Possibilities {...this.props}
+      //   setChord={this.props.changeFretboard}
+      //   containerHeight={containerHeight}
+      //   tonic={this.props.tonic}
+      //   highlightNotes={this.props.highlightNotes}
+      // />
+    } else {
+      return <Selections {...this.props}
+        setChord={this.props.changeFretboard}
+        containerHeight={containerHeight}
+        tonic={this.props.tonic}
+        highlightNotes={this.props.highlightNotes}
+      />
+    }
+  }
 
   render() {
     const containerHeight = Dimensions.get('window').height - this.props.fbHeight;
     return (
       <Container height={containerHeight}>
         <Row flex>
+          {/* {this.possibilitiesOrSelections} */}
           <Selections {...this.props}
             setChord={this.props.changeFretboard}
             containerHeight={containerHeight}
