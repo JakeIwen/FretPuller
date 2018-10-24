@@ -7,7 +7,7 @@ import ScaleOptions from './ScaleOptions'
 import ChordOptions from './ChordOptions'
 import {initChord} from './utils/chordShapes'
 import { Col, SettingsWrapper } from './styled'
-import { Note } from 'tonal'
+import { Note } from './lib/tonal.min.js'
 import {fretTruth} from './utils/frets'
 import {getFilteredShapes} from './utils/fretFilter'
 import {indexLoop} from './utils/indexLoop'
@@ -15,18 +15,22 @@ import {getSelectionMatrix} from './utils/getSelectionMatrix'
 import {TuningModal} from './Tuning/TuningModal'
 import {FpButton} from './styled/options'
 const chordShapeKeys = ['incZeroFret', 'noGaps', 'allStrings', 'fretRange', 'activeStrings', 'allShapes', 'tuning']
+console.log('hi');
 
 
 export default class FretPuller extends Component {
   constructor(props) {
     super(props)
 
-    this.state = {
+    const state = {
       ...this.props,
       ...initChord(this.props),
       fbHeight: 0,
       showTuningModal: false
     }
+    
+    this.state = {...state, selectionMatrix: getSelectionMatrix({...state})}
+    
   }
 
   onFretClick = (fret) => {
@@ -58,14 +62,16 @@ export default class FretPuller extends Component {
   }
 
   updateFilter = (args) => {
-    if (this.state.scale) return this.updateScaleFretMatrix()
-
+    console.log({args});
+    
+    if (this.state.appMode=="scale") return this.updateScaleFretMatrix()
     const argKeys = Object.keys(args)
     const newState = {...this.state, ...args}
     const needsNewShapes = argKeys.some(key => chordShapeKeys.includes(key))
     const chordShapes = needsNewShapes
       ? getFilteredShapes(newState)
       : newState.chordShapes
+    
     const variationIndex = indexLoop(newState.variationIndex, chordShapes)
     const selectionMatrix = getSelectionMatrix({...newState, variationIndex, chordShapes})
     this.setState({
@@ -74,14 +80,18 @@ export default class FretPuller extends Component {
       variationIndex,
       selectionMatrix
     })
+    console.log('st', this.state);
   }
 
-  updateScaleFretMatrix = ( settings ) => {
-    const keys = ['tuning', 'width', 'tonic', 'scale']
-    const state = keys.reduce( (acc, key) => {
-      acc[key] = (settings || [])[key] || this.state[key]
+  getStateOrInputVals = (keys, inputs) => 
+    keys.reduce( (acc, key) => {
+      acc[key] = (inputs || [])[key] || this.state[key]
       return acc
     }, {})
+  
+  updateScaleFretMatrix = ( settings ) => {
+    const keys = ['tuning', 'width', 'tonic', 'scale']
+    const state = this.getStateOrInputVals(keys, settings)
     const fretMatrix = fretMatrixForScale( state )
     const blackOut = fretMatrix.map(stg => stg.map(fret => fret.state.status==='selected'))
 
@@ -95,10 +105,7 @@ export default class FretPuller extends Component {
 
   changeFretboard = ( settings ) => {
     const keys = ['tuning', 'width', 'chord', 'tonic', 'scale', 'appMode']
-    let state = keys.reduce( (acc, key) => {
-      acc[key] = settings[key] || this.state[key]
-      return acc
-    }, {})
+    let state = this.getStateOrInputVals(keys, settings)
     if (settings.chord || settings.tonic || settings.tuning) {
       state = Object.assign(state, initChord(state))
     }
@@ -111,9 +118,9 @@ export default class FretPuller extends Component {
   }
 
   setAppMode = (mode) => {
-    this.setState({
-      ...initChord({...this.state, appMode: mode})
-    })
+    const state = initChord({...this.state, appMode: mode})
+    if (mode === 'chord') state.selectionMatrix = getSelectionMatrix({...state})
+    this.setState({...state})
   }
 
   settingsButtons = () =>

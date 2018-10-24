@@ -4,6 +4,7 @@ import { range } from 'lodash/fp'
 import CheckBox from 'react-native-checkbox'
 
 export const CheckBoxOptions = (props) => {
+  // debugger;
   return (
   <View>
     <CheckBox

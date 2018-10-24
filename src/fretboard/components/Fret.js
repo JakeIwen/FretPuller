@@ -1,8 +1,9 @@
 import React, {Component} from 'react'
 import PropTypes from 'prop-types'
-import {TouchableOpacity, Text, View} from 'react-native'
+import {TouchableOpacity, View} from 'react-native'
 import styled from 'styled-components/native'
-import {animateLoop, interpolateFade, hexToRGBGray} from '../../../src/utils/bgFade'
+import {hexToRGBGray} from '../../../src/utils/bgFade'
+import {accFormat} from '../../../src/utils/format'
 
 const Outer = styled(TouchableOpacity)`
   flex: ${props => props.flex};
@@ -17,8 +18,8 @@ const Content = styled.Text`
 export default class Fret extends Component {
 
   render() {
-    let { fret, text, onFretClick, flex, bgColor, highlighted, selected } = this.props
-    let color = highlighted ? bgColor : hexToRGBGray(bgColor)
+    const { fret, text, onFretClick, flex, bgColor, highlighted, selected } = this.props
+    const color = highlighted ? bgColor : hexToRGBGray(bgColor)
 
     return (
       <Outer
@@ -28,7 +29,7 @@ export default class Fret extends Component {
         >
         <View
           style={{backgroundColor: (selected && color) || `transparent`}} >
-          <Content>{text}</Content>
+          <Content>{accFormat(text)}</Content>
         </View>
       </Outer>
     )

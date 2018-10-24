@@ -1,7 +1,5 @@
 {
   "expo": {
-    "sdkVersion": "23.0.0"
-  },
-  "name": "fretpuller",
-  "displayName": "FP-Test"
+    "sdkVersion": "24.0.0"
+  }
 }

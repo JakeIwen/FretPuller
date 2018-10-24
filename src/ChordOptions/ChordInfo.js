@@ -1,7 +1,7 @@
 import React from 'react'
 import { Chord, Note } from '../../src/lib/tonal.min.js'
 import {tonicColors} from '../../src/theme/colors'
-import {romanIvls, readFormat} from '../../src/utils/format'
+import {romanIvls, readFormat, accFormat} from '../../src/utils/format'
 import {tokenize} from '../../src/utils/tokenize'
 import {chordIntervals} from '../../src/utils/chordIntervals'
 import {Wrapper, SelectionName, MapKey, Ivl, Name} from '../styled/selectionInfo'
@@ -19,7 +19,7 @@ const notesDetails = (name) => {
     <MapKey key={i}>
       <Ivl>{romanIvls(ivl)}: </Ivl>
       <MockFret color={colorArr[Note.chroma(notes[i])]}>
-        <Name>{notes[i]}</Name>
+        <Name>{accFormat(notes[i])}</Name>
       </MockFret>
     </MapKey>
   )

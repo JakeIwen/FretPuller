@@ -8,11 +8,21 @@ import ChordInfo from './ChordInfo'
 import {indexLoop} from '../../src/utils/indexLoop'
 import { range } from 'lodash/fp'
 // require('../../src/lib/tonal.min.js')
-
+Object.defineProperties(Array.prototype, {
+  count: {
+    value: function(query) {
+      let count = 0;
+      for(let i=0; i<this.length; i++)
+        if (this[i]==query)
+          count++;
+      return count;
+    }
+  }
+});
 const tonicList = ["C", "D", "E", "F", "G", "A", "B"]
 const preferredList = ["C", "C#", "D", "Eb", "E", "F", "F#", "G", "Ab", "A", "Bb", "B"]
 const allNames = Chord.names().sort().reverse()
-
+console.log({allNames});
 export default class Selections extends Component {
   constructor(props) {
     super(props)
@@ -76,42 +86,44 @@ export default class Selections extends Component {
           return (
             <Col key={sIndex}>
               <RadioSelect
-                options={this.extOptions(extensions.slice(0,sIndex).join(''))}
+                options={this.extOptions(extensions.slice(0,sIndex).join(''), sIndex)}
                 selectedOption={extensions[sIndex]}
                 onValueChange={newExt=>this.changeExtValue(newExt, sIndex)}/>
             </Col>
           )
         })}
-
       </Row>
     )
   }
-  extOptions = (currentName) => {
+  
+  extOptions = (currentName, sIndex) => {
     //must begin with currentName to be a possible chord/
-    const possibilities = currentName
-      ? allNames.filter(name => name.startsWith(currentName))
-        .map(name => name.replace(currentName, ''))
-      : allNames
-    const res = ['']
+    // TODO: find extra possibilities with aliases
+    // TODO: slash chords A/G
+    let possibilities = [...new Set(allNames.filter(name => name.startsWith(currentName))
+      .map(name => name.replace(currentName, '')))].filter(p => p)
+    
+    if (sIndex > 1) return possibilities
+    const counts = []
+    
     if (possibilities.length) {
-      let lastPoss = possibilities[0]
-      possibilities.forEach((poss,i)=> {
-        if (i===0) return
-        let j = 0
-        while(poss[j]===lastPoss[j]) j++
-        if (j) {
-          if(j==poss.length-1) j++
-          res.pop()
-          res.push(poss.slice(0,j))
-        } else {
-          res.push(poss)
-        }
-        lastPoss = poss
-      })
+      for (let len = Math.max(...possibilities.map(p=>p.length)); len; len--) {
+        const clippedPosses = possibilities.map(p => p.slice(0,len))
+        clippedPosses.forEach(term => {
+          const matches = possibilities.filter(poss => poss.slice(0,len) === term)
+          if (matches.length > 1) {
+            possibilities = possibilities.filter(poss => poss.slice(0,len) !== term)
+            counts.push([term, matches.length, matches])
+          }
+        } )
+      }
     }
-    return res.filter(item=>{
-      return !!item
-    })
+    
+    const ret = counts.map(c => c[0]).concat(possibilities)
+    const res = ret
+      .filter( val => !ret.some(term=>val.startsWith(term) && term!==val)).sort().reverse()
+      // .sort((a,b) => (parseInt(a) && parseInt(b)) ? parseInt(b) - parseInt(a) : b - a)
+    return res
   }
 
   reset = () => this.setChord({extensions: []})

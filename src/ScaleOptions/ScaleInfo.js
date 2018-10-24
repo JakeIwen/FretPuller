@@ -1,7 +1,7 @@
 import React from 'react'
 import { Scale, Note } from '../lib/tonal.min.js'
 import { tonicColors} from '../theme/colors'
-import {romanIvls} from '../utils/format'
+import {romanIvls, accFormat} from '../utils/format'
 import {tokenize} from '../utils/tokenize'
 import {Wrapper, SelectionName, MapKey, Ivl, Name} from '../styled/selectionInfo'
 import {MockFret} from '../styled/selections'
@@ -18,7 +18,7 @@ const notesDetails = (name) => {
     <MapKey key={i}>
       <Ivl>{romanIvls(ivl)}: </Ivl>
       <MockFret scale color={colorArr[Note.chroma(notes[i])]}>
-        <Name>{notes[i]}</Name>
+        <Name>{accFormat(notes[i])}</Name>
       </MockFret>
     </MapKey>
   )

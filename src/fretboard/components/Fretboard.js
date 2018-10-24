@@ -8,9 +8,8 @@ import String from './String'
 import Slider from '@ptomasroos/react-native-multi-slider'
 import Dimensions from 'Dimensions'
 
-const widthCalc = (pos, fbWidth) =>{
-  return ((Math.pow(2,(1/fbWidth)) - 1) / Math.pow(2,((pos+1)/fbWidth))) * 100 * 2
-}
+const widthCalc = (pos, fbWidth) =>
+  ((Math.pow(2,(1/fbWidth)) - 1) / Math.pow(2,((pos+1)/fbWidth))) * 100 * 2
 
 const Board = styled.View`
   width: 100%;
