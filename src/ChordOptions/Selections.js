@@ -8,17 +8,7 @@ import ChordInfo from './ChordInfo'
 import {indexLoop} from '../../src/utils/indexLoop'
 import { range } from 'lodash/fp'
 // require('../../src/lib/tonal.min.js')
-Object.defineProperties(Array.prototype, {
-  count: {
-    value: function(query) {
-      let count = 0;
-      for(let i=0; i<this.length; i++)
-        if (this[i]==query)
-          count++;
-      return count;
-    }
-  }
-});
+
 const tonicList = ["C", "D", "E", "F", "G", "A", "B"]
 const preferredList = ["C", "C#", "D", "Eb", "E", "F", "F#", "G", "Ab", "A", "Bb", "B"]
 const allNames = Chord.names().sort().reverse()
@@ -109,8 +99,12 @@ export default class Selections extends Component {
     if (possibilities.length) {
       for (let len = Math.max(...possibilities.map(p=>p.length)); len; len--) {
         const clippedPosses = possibilities.map(p => p.slice(0,len))
+        console.log({clippedPosses});
         clippedPosses.forEach(term => {
           const matches = possibilities.filter(poss => poss.slice(0,len) === term)
+          // if (term=='sus') {
+          //   debugger;
+          // }
           if (matches.length > 1) {
             possibilities = possibilities.filter(poss => poss.slice(0,len) !== term)
             counts.push([term, matches.length, matches])
@@ -153,6 +147,8 @@ export default class Selections extends Component {
       )}
     </Row>
   )
+  
+
 
   render(){
     return (

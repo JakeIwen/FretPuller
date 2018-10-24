@@ -28,7 +28,7 @@ const notesDetails = (name) => {
 export default ChordInfo = ({tonic, chord}) => (
   <Wrapper>
     <SelectionName>
-      {tonic + readFormat(chord)}
+      {accFormat(tonic) + readFormat(chord)}
     </SelectionName>
     {notesDetails(tonic+chord)}
   </Wrapper>

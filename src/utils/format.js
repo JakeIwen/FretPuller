@@ -11,6 +11,16 @@ export const readFormat = chord => {
   else return accFormat(chord)
 }
 
+export const btnFormat = (ext) => {
+  switch (ext) {
+    case 'o': return 'dim'
+    case '+': return 'aug'
+    case 'm': return 'min'
+    case 'M': return 'Maj'
+    default : return ext
+  }
+}
+
 function romanize (num) {
 	if (!+num) return false
 	const	digits = String(+num).split("")

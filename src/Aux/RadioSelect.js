@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import styled from "styled-components/native"
 import { RadioButtons } from 'react-native-radio-buttons'
 // import { SegmentedControlIOS } from 'react-native/Libraries/Components/SegmentedControlIOS'
-import {accFormat} from '../../src/utils/format'
+import {accFormat, btnFormat} from '../../src/utils/format'
 import { ScaleSelectionOption, SelectionOption} from '../../src/styled/options'
 
 const RenderContainer = styled.View`
@@ -29,7 +29,7 @@ export default class RadioSelect extends Component {
     <SOption
       onPress={()=>this.setSelectedOption(option)}
       key={index}
-      title={accFormat(option)}
+      title={btnFormat(accFormat(option))}
       activated={this.isActivated(option)}
       height={this.props.height}
       scale={this.props.scale}
