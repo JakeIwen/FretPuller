@@ -99,12 +99,8 @@ export default class Selections extends Component {
     if (possibilities.length) {
       for (let len = Math.max(...possibilities.map(p=>p.length)); len; len--) {
         const clippedPosses = possibilities.map(p => p.slice(0,len))
-        console.log({clippedPosses});
         clippedPosses.forEach(term => {
           const matches = possibilities.filter(poss => poss.slice(0,len) === term)
-          // if (term=='sus') {
-          //   debugger;
-          // }
           if (matches.length > 1) {
             possibilities = possibilities.filter(poss => poss.slice(0,len) !== term)
             counts.push([term, matches.length, matches])
@@ -117,6 +113,7 @@ export default class Selections extends Component {
     const res = ret
       .filter( val => !ret.some(term=>val.startsWith(term) && term!==val)).sort().reverse()
       // .sort((a,b) => (parseInt(a) && parseInt(b)) ? parseInt(b) - parseInt(a) : b - a)
+    console.log({res});
     return res
   }
 

@@ -16,15 +16,15 @@ const positions = ['', '', '', '', 'III', '', 'V', '', 'VII', '', '', 'X', '',
 
 // <Nut visible={false} />
 
-const Positions = ({ flexArr }) =>
-  <Row dial={5} >
+const Positions = ({ flexArr }) => {
+  return (<Row dial={5} >
     <PosText style={{width: 30}} />
     {flexArr.map((pos, i) =>
       <PosText flex={flexArr[i]} key={`pos-${i}`}>
         {positions[i]}
       </PosText>
     )}
-  </Row>
+  </Row>)}
 
 Positions.propTypes = {flexArr: PropTypes.arrayOf(PropTypes.number).isRequired}
 

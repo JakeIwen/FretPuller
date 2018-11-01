@@ -6,12 +6,7 @@ import Selections from './Selections'
 import Dimensions from 'Dimensions'
 import { CheckBoxOptions } from './CheckBoxOptions'
 
-
-
-
 export default class ChordOptions extends Component {
-
-
 
   variationNums = () => this.props.chordShapes.length
     ? (<Text>

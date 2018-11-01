@@ -40,8 +40,11 @@ export default class FretBoard extends Component {
       widthCalc(numFrets, numFrets),
       ...range(0, numFrets-1).map( n => widthCalc(n, numFrets) )
     ]
+    console.log('flexarr', this.flexArr);
+    
     const sliderStops = [0, ...this.flexArr.map((val,i) => sumArray(this.flexArr.slice(0,i+1)))]
     this.sliderStops = sliderStops
+    console.log('ss', sliderStops);
 
     this.state = {
       sliderValue: this.props.fretRange.map(fretNum =>
@@ -70,13 +73,13 @@ export default class FretBoard extends Component {
         onLayout={ event => this.props.setFretboardDims({fbHeight: event.nativeEvent.layout.height})}>
         {cuerda(fretMatrix, this.flexArr, otherProps)}
         {this.props.appMode==='chord' && <Slider
-          sliderLength={Dimensions.get('window').width-40}
+          sliderLength={Dimensions.get('window').width}
           values={this.state.sliderValue}
           min={0}
           max={100}
           step={1}
           onValuesChangeFinish={this.sliderValuesChange}
-          containerStyle={{ zIndex: 10, height: 15, paddingLeft: 30 , marginBottom: -13, marginLeft: 20}}
+          containerStyle={{ zIndex: 10, height: 15, paddingLeft: 0 , marginBottom: -13, marginLeft: 40}}
         />}
         <Positions flexArr={[widthCalc(numFrets, numFrets), ...this.flexArr]}/>
       </Board>
@@ -89,3 +92,17 @@ FretBoard.propTypes = {
   onFretClick: PropTypes.func,
   theme: PropTypes.shape({}),
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
