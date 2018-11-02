@@ -2,6 +2,7 @@ import React, {Component} from 'react'
 import { range } from 'lodash/fp'
 import {tuningsNested} from './src/lib/tunings.js'
 import FretPuller from './src/FretPuller'
+import PropTypes from 'prop-types'
 
 const tuning = tuningsNested['Mandolin']['Standard']
 

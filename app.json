@@ -1,5 +1,27 @@
 {
   "expo": {
-    "sdkVersion": "24.0.0"
+    "name": "FretPuller",
+    "description": "This project is really great.",
+    "slug": "FretPuller",
+    "privacy": "public",
+    "sdkVersion": "30.0.0",
+    "platforms": ["ios"],
+    "version": "1.0.0",
+    "orientation": "landscape",
+    "icon": "./assets/icon.png",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "updates": {
+      "fallbackToCacheTimeout": 0
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "bundleIdentifier": "com.lionfeather.fret"
+    }
   }
 }
