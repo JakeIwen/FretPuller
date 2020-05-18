@@ -10,13 +10,14 @@
     "reinst": "rm -rf node_modules/ && yarn install"
   },
   "dependencies": {
-    "react-native": "https://github.com/expo/react-native/archive/sdk-33.0.0.tar.gz",
-"expo": "^33.0.0",
-"react": "16.8.3",
     "@ptomasroos/react-native-multi-slider": "^1.0.0",
+    "expo": "^35.0.0",
     "lodash": "^4.17.11",
+    "pitchfinder": "^2.0.9",
     "prop-types": "^15.6.2",
-    "react-dom": "^16.6.0",
+    "react": "16.8.3",
+    "react-dom": "16.8.3",
+    "react-native": "https://github.com/expo/react-native/archive/sdk-35.0.0.tar.gz",
     "react-native-checkbox": "^2.0.0",
     "react-native-elements": "^0.19.1",
     "react-native-gesture-responder": "^0.1.1",
@@ -25,11 +26,10 @@
     "react-native-multi-slider": "^0.3.6",
     "react-native-picker": "^4.3.7",
     "react-native-radio-buttons": "^1.0.0",
+    "react-native-recording": "^0.4.1",
     "react-native-row": "^1.1.1",
     "react-native-swiper": "^1.5.13",
     "react-native-switch": "^1.5.0",
-    "styled-components": "^4.0.3",
-    "pitchfinder": "^2.0.9",
-    "react-native-recording": "^0.4.1"
+    "styled-components": "^4.0.3"
   }
 }
