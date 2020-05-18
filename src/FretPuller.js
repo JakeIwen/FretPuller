@@ -14,6 +14,9 @@ import {indexLoop} from './utils/indexLoop'
 import {getSelectionMatrix} from './utils/getSelectionMatrix'
 import {TuningModal} from './Tuning/TuningModal'
 import {FpButton} from './styled/options'
+import RNTuner   from './lib/react-native-tuner/src/app'
+
+
 const chordShapeKeys = ['incZeroFret', 'noGaps', 'allStrings', 'fretRange', 'activeStrings', 'allShapes', 'tuning']
 console.log('hi');
 
@@ -126,13 +129,16 @@ export default class FretPuller extends Component {
   settingsButtons = () =>
     <SettingsWrapper>
       <FpButton
-        title='CHANGE TUNING'
+        title='TUNING / INSTRUMENT'
         onPress={()=>{
           this.setState({showTuningModal: true})
         }}/>
       <FpButton
         title={(this.state.appMode)=='chord' ? 'SCALE MODE' : 'CHORD MODE'}
         onPress={()=>this.setAppMode((this.state.appMode)=='scale' ? 'chord' : 'scale')}/>
+      <FpButton
+        title={'Tuner'}
+        onPress={()=>this.setState({appMode: 'tuner'})}/>
     </SettingsWrapper>
 
   scaleOptions = () =>
@@ -155,6 +161,12 @@ export default class FretPuller extends Component {
     >
       {this.settingsButtons()}
     </ChordOptions>
+    
+  tuner = () => {
+    return (
+      <RNTuner/>
+    )
+  }
 
   optionsElements = () => {
     switch (!!this.state.fbHeight && this.state.appMode) {
@@ -162,6 +174,8 @@ export default class FretPuller extends Component {
         return this.chordOptions()
       case 'scale':
         return this.scaleOptions()
+      case 'tuner':
+        return this.tuner()
       default:
         return null
     }

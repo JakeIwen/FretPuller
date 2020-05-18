@@ -61,4 +61,4 @@ export default class ScaleOptions extends Component {
   }
 }
 
-const getQBConfig = ({realm, appToken}) => ({realm, ...appToken && {appToken}})
+const getQBConfig = ({realm, appToken}) => ({realm, ...(appToken && {appToken})})

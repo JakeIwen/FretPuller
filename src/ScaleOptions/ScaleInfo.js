@@ -1,6 +1,6 @@
 import React from 'react'
 import { Scale, Note } from '../lib/tonal.min.js'
-import { tonicColors} from '../theme/colors'
+import {tonicColors} from '../theme/colors'
 import {romanIvls, accFormat} from '../utils/format'
 import {tokenize} from '../utils/tokenize'
 import {Wrapper, SelectionName, MapKey, Ivl, Name} from '../styled/selectionInfo'
